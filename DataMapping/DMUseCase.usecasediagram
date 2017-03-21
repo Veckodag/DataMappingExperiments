@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<useCaseModelRoot xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm10="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner" xmlns:dm11="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm12="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ActivityDesigner" xmlns:dm13="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner" dslVersion="1.0.0.0" Id="e1e98d61-1d21-440f-b79c-ecb69b6f7ef0" name="DMUseCase" linkedPackageId="3fb9ee86-f05c-4b96-8f06-f6a87d66ee10" xmlns="http://schemas.microsoft.com/dsltools/UseCaseModel">
+  <profileInstances>
+    <packageHasProfileInstances Id="44c5917c-f467-47fb-88ee-ee9d9bcad0c3">
+      <profileInstance Id="afd67859-60ef-4f29-b864-1e27d282b741" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="de7224a0-ca99-4e93-90e0-ea5a1d2fb282">
+      <profileInstance Id="042cd74b-1a13-4ca5-b3fb-d3d5fe978fdb" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <useCaseModelRootHasTypes>
+      <useCase Id="37d63228-780a-4fa4-ad16-787e38bb8e9e" name="Excel fil" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="efc797eb-805a-49ab-b89a-62b9193e5c1a" />
+        <targetEnds>
+          <association Id="fa64115c-ae9f-435a-82ec-52803319dc68" isDerived="false" sourceEndRoleName="UseCase1" targetEndRoleName="Subsystem1" isLeaf="false" isAbstract="false">
+            <subsystemMoniker Id="83ef95bb-ad00-43c8-b9df-9843ec354418" LastKnownName="Console App" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="d93245f4-8281-40b5-a61d-0292dfc69ea5" name="UseCase1" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="a2bcd0aa-6ac4-4d58-9637-fa8aca4f48aa" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9fc65374-f9d7-48df-95c9-dc5618f72361" name="Subsystem1" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="1ccfd5ca-354f-42bb-ba6b-9348707eeb8e" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="88497a38-ecd5-45a1-b779-deb2c7be4a18" />
+          </association>
+        </targetEnds>
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <subsystem Id="83ef95bb-ad00-43c8-b9df-9843ec354418" name="Console App" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="02eec360-2692-4c71-bc5e-06e6c7b3980d" />
+        <targetEnds>
+          <association Id="e1d0b369-9471-4bcf-a7dd-bec454a4e534" isDerived="false" sourceEndRoleName="Subsystem1" targetEndRoleName="UseCase2" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="3d2832db-e6ba-4cd3-8520-294d98e08f4b" LastKnownName="XML fil" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9d940784-770c-4e86-b281-1134fc6d037d" name="Subsystem1" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="0776aaba-ef41-49d0-ac12-99e1e054d950" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="5f05c445-ecde-49dd-8e08-55852f5541fc" name="UseCase2" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="3ce8be63-1290-4feb-af13-3b9eb324770a" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="737a6940-b733-4487-9b56-bcb4988f4f39" />
+          </association>
+        </targetEnds>
+      </subsystem>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="3d2832db-e6ba-4cd3-8520-294d98e08f4b" name="XML fil" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="fb4ea8f7-ff33-4331-bafc-c86f9a0a946f" />
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <packageHasNamedElement>
+      <useCase Id="652374a4-3134-4529-8c08-54953b563bd8" name="ExcelManager" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="f230c016-8456-4844-957d-7a8d1a930ae4" />
+        <subjects>
+          <subsystemMoniker Id="83ef95bb-ad00-43c8-b9df-9843ec354418" LastKnownName="Console App" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase Id="1d5cc8a2-d3d9-4c68-8a04-c648bd75770c" name="Mapping klasser" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="81a70e27-9b80-4e4a-b17a-33ae9e015a2e" />
+        <suppliersInternal>
+          <dependency Id="6983f37e-0ee0-4b85-9ae0-e90d5a6ed8a5">
+            <useCaseMoniker Id="652374a4-3134-4529-8c08-54953b563bd8" LastKnownName="ExcelManager" />
+            <elementDefinition Id="37c690c5-3bd2-49bb-9f57-15b8d43e8091" />
+          </dependency>
+        </suppliersInternal>
+        <subjects>
+          <subsystemMoniker Id="83ef95bb-ad00-43c8-b9df-9843ec354418" LastKnownName="Console App" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase Id="66ca1854-f381-4779-95fc-c7d992ee047b" name="Config fil" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="f3421c25-c28b-436f-9bd3-49908903d5cb" />
+        <suppliersInternal>
+          <dependency Id="0f4d97e1-fe46-4625-bc2e-6f0b0dc2a676">
+            <useCaseMoniker Id="652374a4-3134-4529-8c08-54953b563bd8" LastKnownName="ExcelManager" />
+            <elementDefinition Id="3056d06d-e787-4ce7-bef4-8bc4d095f991" />
+          </dependency>
+        </suppliersInternal>
+        <subjects>
+          <subsystemMoniker Id="83ef95bb-ad00-43c8-b9df-9843ec354418" LastKnownName="Console App" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+  </packagedElements>
+  <package Id="3fb9ee86-f05c-4b96-8f06-f6a87d66ee10" name="DataMapping">
+    <elementDefinition Id="dd741f4f-10cc-4757-8f26-d4409e02c55c" />
+  </package>
+</useCaseModelRoot>

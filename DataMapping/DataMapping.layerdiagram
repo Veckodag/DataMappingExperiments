@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="c315d627-24d8-4da3-9965-ff39ca564669" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/LayerDesigner">
+  <comments>
+    <comment Id="75709d74-024c-47d6-8e83-cb5f8eb14af9" name="Comment1">
+      <body>Excel file</body>
+    </comment>
+  </comments>
+</layerModel>

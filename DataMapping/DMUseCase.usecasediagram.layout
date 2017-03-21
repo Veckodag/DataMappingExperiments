@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<useCaseDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="DMUseCase">
+  <useCaseModelRootMoniker Id="e1e98d61-1d21-440f-b79c-ecb69b6f7ef0" />
+  <nestedChildShapes>
+    <useCaseShape Id="f8d522cc-d0fb-4a2d-be76-50a5002207b1" absoluteBounds="1.875, 3.25, 1, 0.5" customColor="238, 237, 131" heightOffset="0">
+      <useCaseMoniker Id="37d63228-780a-4fa4-ad16-787e38bb8e9e" LastKnownName="Excel fil" />
+      <relativeChildShapes />
+    </useCaseShape>
+    <useCaseShape Id="5857e1c8-ba57-43c0-9f3e-08e599039c38" absoluteBounds="8.125, 3.25, 1, 0.5" customColor="238, 237, 131" heightOffset="0">
+      <useCaseMoniker Id="3d2832db-e6ba-4cd3-8520-294d98e08f4b" LastKnownName="XML fil" />
+      <relativeChildShapes />
+    </useCaseShape>
+    <SubsystemShape Id="3a7def87-fa8c-408a-bb3c-304e79935d64" absoluteBounds="3.625, 1.75, 3.875, 3.625" customColor="White">
+      <subsystemMoniker Id="83ef95bb-ad00-43c8-b9df-9843ec354418" LastKnownName="Console App" />
+      <nestedChildShapes>
+        <useCaseShape Id="e4b75633-0ff3-41bb-badd-fcce0453baac" absoluteBounds="4.875, 3.25, 1.125, 0.5" customColor="238, 237, 131" heightOffset="0">
+          <useCaseMoniker Id="652374a4-3134-4529-8c08-54953b563bd8" LastKnownName="ExcelManager" />
+          <relativeChildShapes />
+        </useCaseShape>
+        <useCaseShape Id="e413b0fd-e737-4f34-8c5e-797b01ab4af1" absoluteBounds="4.875, 4.375, 1, 0.5" customColor="238, 237, 131" heightOffset="0">
+          <useCaseMoniker Id="1d5cc8a2-d3d9-4c68-8a04-c648bd75770c" LastKnownName="Mapping klasser" />
+          <relativeChildShapes />
+        </useCaseShape>
+        <useCaseShape Id="a7004ebb-d1d0-4e0a-8e03-f74c0bd809ea" absoluteBounds="5, 2.25, 1, 0.5" customColor="238, 237, 131" heightOffset="0">
+          <useCaseMoniker Id="66ca1854-f381-4779-95fc-c7d992ee047b" LastKnownName="Config fil" />
+          <relativeChildShapes />
+        </useCaseShape>
+      </nestedChildShapes>
+    </SubsystemShape>
+    <useCaseAssociationConnector edgePoints="[(2.87461597536577 : 3.50979639167384); (3.625 : 3.52450980392157)]" fixedFrom="Algorithm" fixedTo="Algorithm" customColor="113, 111, 110" sourceMultiplicity="" targetMultiplicity="">
+      <associationMoniker Id="fa64115c-ae9f-435a-82ec-52803319dc68" />
+      <relativeChildShapes />
+      <nodes>
+        <useCaseShapeMoniker Id="f8d522cc-d0fb-4a2d-be76-50a5002207b1" />
+        <SubsystemShapeMoniker Id="3a7def87-fa8c-408a-bb3c-304e79935d64" />
+      </nodes>
+    </useCaseAssociationConnector>
+    <useCaseAssociationConnector edgePoints="[(7.5 : 3.52295918367347); (8.12541597344971 : 3.51019559237858)]" fixedFrom="Algorithm" fixedTo="Algorithm" customColor="113, 111, 110" sourceMultiplicity="" targetMultiplicity="">
+      <associationMoniker Id="e1d0b369-9471-4bcf-a7dd-bec454a4e534" />
+      <relativeChildShapes />
+      <nodes>
+        <SubsystemShapeMoniker Id="3a7def87-fa8c-408a-bb3c-304e79935d64" />
+        <useCaseShapeMoniker Id="5857e1c8-ba57-43c0-9f3e-08e599039c38" />
+      </nodes>
+    </useCaseAssociationConnector>
+    <useCaseDependencyConnector edgePoints="[(5.38888353362018 : 4.37509639483682); (5.42361534294816 : 3.74992382693303)]" fixedFrom="Algorithm" fixedTo="Algorithm" customColor="Black">
+      <dependencyMoniker Id="6983f37e-0ee0-4b85-9ae0-e90d5a6ed8a5" />
+      <relativeChildShapes />
+      <nodes>
+        <useCaseShapeMoniker Id="e413b0fd-e737-4f34-8c5e-797b01ab4af1" />
+        <useCaseShapeMoniker Id="e4b75633-0ff3-41bb-badd-fcce0453baac" />
+      </nodes>
+    </useCaseDependencyConnector>
+    <useCaseDependencyConnector edgePoints="[(5.48438262381114 : 2.74987801902177); (5.4531189753227 : 3.25009639483682)]" fixedFrom="Algorithm" fixedTo="Algorithm" customColor="Black">
+      <dependencyMoniker Id="0f4d97e1-fe46-4625-bc2e-6f0b0dc2a676" />
+      <relativeChildShapes />
+      <nodes>
+        <useCaseShapeMoniker Id="a7004ebb-d1d0-4e0a-8e03-f74c0bd809ea" />
+        <useCaseShapeMoniker Id="e4b75633-0ff3-41bb-badd-fcce0453baac" />
+      </nodes>
+    </useCaseDependencyConnector>
+  </nestedChildShapes>
+</useCaseDiagram>
