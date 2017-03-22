@@ -50,10 +50,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndaResurserMedDatakatalogFörImport.cs" />
     <Compile Include="ExcelManager.cs" />
+    <Compile Include="ExcelManagerOLD.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

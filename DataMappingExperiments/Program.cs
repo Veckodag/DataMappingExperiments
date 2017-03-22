@@ -9,11 +9,11 @@ namespace DataMappingExperiments
   {
     static void Main(string[] args)
     {
-      string fileName =
+      string excelFile =
         @"c:\users\fresan\documents\visual studio 2015\Projects\DataMappingExperiments\DataMappingExperiments\Testdata\Fln-Blg Plattformar Enkel.xlsx";
       string xsd = @"C:\Users\fresan\documents\visual studio 2015\Projects\DataMappingExperiments\DataMappingExperiments\Testdata\ANDAImport.xsd";
       //TODO: 1. Take a excel file input
-      StartExcelManager(fileName);
+      StartExcelManager(excelFile);
       //TODO: 2. Map the data from the excel against a class
       //TODO: 3. Output data into a XML format
       Console.ReadLine();
@@ -23,6 +23,10 @@ namespace DataMappingExperiments
     //https://github.com/ExcelDataReader/ExcelDataReader
     //https://www.codeproject.com/articles/10581/convert-excel-to-xml-file-xml-schema-and-validate
     //https://coderwall.com/p/app3ya/read-excel-file-in-c
+
+    //How to validate XML against a XSD
+    //http://stackoverflow.com/questions/10025986/validate-xml-against-xsd-in-a-single-method
+    //https://msdn.microsoft.com/en-us/library/system.xml.schema.validationeventargs.severity.aspx
 
     static void StartExcelManager(string fileName)
     {
@@ -34,14 +38,24 @@ namespace DataMappingExperiments
       try
       {
         var excelManager = new ExcelManager();
-        excelManager.ExcelConversion(fileName);
+        // Massive string with all the good stuff
+        string xmlString = excelManager.GetXML(fileName);
+        xmlString = xmlString.Replace("&amp;", "&");
+
+        if (string.IsNullOrEmpty(xmlString))
+        {
+          Console.WriteLine("The content of the Excel file is empty!");
+        }
+
+        Console.WriteLine(xmlString);
+
+        excelManager.CreateXMLFile(xmlString);
+
       }
-      catch (Exception)
+      catch (Exception exception)
       {
-        
-        throw;
+        Console.WriteLine("Something went wrong: " + exception.Message);
       }
-      ;
     }
   }
 }

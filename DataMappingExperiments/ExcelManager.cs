@@ -5,114 +5,149 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Serialization;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace DataMappingExperiments
 {
   public class ExcelManager
   {
-    private Excel.Application _excelApp;
+    #region ExcelToXmlString
 
-    public ExcelManager()
+    public string GetXML(string fileName)
     {
-      _excelApp = new Excel.Application();
+      using (DataSet dataSet = new DataSet())
+      {
+        dataSet.Tables.Add(ReadExcelFile(fileName));
+        return dataSet.GetXml();
+      }
     }
 
-    public void ExcelConversion(string fileName)
+    private DataTable ReadExcelFile(string fileName)
     {
-      OpenExcelSpreadsheet(fileName);
-    }
+      DataTable dataTable = new DataTable();
 
-    public void OpenExcelSpreadsheet(string fileName)
-    {
       try
       {
-        var workbook = _excelApp.Workbooks.Open(fileName);
-        ExcelScanInternal(workbook);
-        workbook.Close();
-        Marshal.ReleaseComObject(workbook);
-        Marshal.ReleaseComObject(_excelApp);
-      }
-      catch (Exception)
-      {
-        Console.WriteLine(" Oh no!");
-        throw;
-      }
-
-
-    }
-
-    private void ExcelScanInternal(Excel.Workbook workbook)
-    {
-      try
-      {
-        //Only working with the first sheet
-        //Excel is not 0 based
-        var sheet = (Excel.Worksheet)workbook.Sheets[1];
-        var excelRange = sheet.UsedRange;
-
-        var rowCount = excelRange.Rows.Count;
-        var colCount = excelRange.Columns.Count;
-        var cellValue = "";
-
-        // Something like this to retrive cell values
-        for (int i = 1; i < rowCount; i++)
+        using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(fileName, false))
         {
-          for (int j = 1; j < colCount; j++)
+          var workbookPart = spreadsheetDocument.WorkbookPart;
+          IEnumerable<Sheet> sheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>();
+
+          string relationshipId = sheetcollection.First().Id.Value;
+          var worksheetPart = (WorksheetPart) workbookPart.GetPartById(relationshipId);
+
+          SheetData sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
+          IEnumerable<Row> rowCollection = sheetData.Descendants<Row>();
+
+          //When there is no data left to process
+          if (!rowCollection.Any())
           {
-            if (excelRange.Cells[i, j] != null)
+            return dataTable;
+          }
+
+          //Adds the columns
+          foreach (Cell cell in rowCollection.ElementAt(0))
+          {
+            dataTable.Columns.Add(GetValueOfCell(spreadsheetDocument, cell));
+          }
+
+          //Adds the rows into the dataTable
+          foreach (Row row in rowCollection)
+          {
+            DataRow tempRow = dataTable.NewRow();
+            int colIndex = 0;
+
+            //Every cell in selected row
+            foreach (Cell cell in row.Descendants<Cell>())
             {
-              cellValue = (sheet.Cells[i, j] as Excel.Range).Value;
-              var what = cellValue.GetType();
-              Console.Write(what);
+              int cellColumnIndex = GetColumnIndex(GetColumnName(cell.CellReference));
+
+              while (colIndex < cellColumnIndex)
+              {
+                //Empties the cell at the right index
+                tempRow[colIndex] = string.Empty;
+                colIndex++;
+              }
+              //Then sets the cell value at the right index
+              tempRow[colIndex] = GetValueOfCell(spreadsheetDocument, cell);
+              colIndex++;
             }
-
-            // Excel header (First row in excel)
-            //if (i == 1)
-            //{
-
-            //}
-
-            //Checking values
-            if (cellValue == "Väderskydd")
-            {
-              Console.Write(cellValue);
-            }
+            //The row updates after each cell value
+            dataTable.Rows.Add(tempRow);
           }
         }
+        dataTable.Rows.RemoveAt(0);
+        return dataTable;
       }
-      catch (Exception)
+      catch (IOException exception)
       {
-        Console.Write(" Failure in the Excel Scan");
-        throw;
+        throw new IOException(exception.Message);
       }
     }
 
-    private void XmlSerialization()
+    //Get index of column from given column name
+    private int GetColumnIndex(string columnName)
     {
-      //Example on how to seralize XML
-      //All classes have to inherit from a base class that is added to the list
-      List<object> list = new List<object> {new mySerializableClass()};
-      XmlSerializer mySerializer = new XmlSerializer(typeof(object), new Type[] {typeof(mySerializableClass)});
+      int columnIndex = 0, factor = 1;
 
-      using(FileStream fileStream = new FileStream("myFile.xml", FileMode.Create))
+      //From right to left
+      for (int position = columnName.Length - 1; position >= 0; position--)
       {
-        mySerializer.Serialize(fileStream, list);
+        if (char.IsLetter(columnName[position]))
+        {
+          columnIndex += factor*(columnName[position] - 'A' + 1) - 1;
+          factor *= 26;
+        }
       }
+      return columnIndex;
     }
 
-    //Test for reading in XML
-    public T ConvertXml<T>(string xml)
+    private string GetColumnName(string cellReference)
     {
-      var serializer = new XmlSerializer(typeof(T));
-      return (T) serializer.Deserialize(new StringReader(xml));
+      //Makes sure that the Excel column name is valid, ex A1 or AA
+      Regex regex = new Regex("[A-Za-z]+");
+      Match match = regex.Match(cellReference);
+      return match.Value;
     }
-  }
 
-  internal class mySerializableClass
-  {
+    private string GetValueOfCell(SpreadsheetDocument spreadsheetDocument, Cell cell)
+    {
+      SharedStringTablePart sharedString = spreadsheetDocument.WorkbookPart.SharedStringTablePart;
+      if (cell.CellValue == null)
+      {
+        return string.Empty;
+      }
 
+      //Makes sure we return the value (innerText) in the right format
+      //as sharedstring or something else
+      string cellValue = cell.CellValue.InnerText;
+
+      if (cell.DataType != null && cell.DataType.Value == CellValues.SharedString)
+      {
+        var cellText = sharedString.SharedStringTable.ChildElements[int.Parse(cellValue)].InnerText;
+        return cellText;
+      }
+      return cellValue;
+    }
+
+    #endregion
+
+    public void CreateXMLFile(string xmlString)
+    {
+      //XmlDocument xmlDocument = new XmlDocument();
+      //xmlDocument.LoadXml(xmlString);
+      //xmlDocument.Save("test.xml");
+
+      //File.WriteAllText("test.xml", xmlString, Encoding.ASCII);
+
+      //XmlTextWriter textWriter = new XmlTextWriter(xmlString, Encoding.UTF8);
+
+    }
   }
 }
