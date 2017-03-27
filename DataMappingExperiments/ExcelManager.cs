@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.Serialization;
-using DocumentFormat.OpenXml;
+using System.Xml.Schema;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace DataMappingExperiments
 {
@@ -138,16 +135,33 @@ namespace DataMappingExperiments
 
     #endregion
 
-    public void CreateXMLFile(string xmlString)
+    public string CreateXMLFile(string xmlString)
     {
-      //XmlDocument xmlDocument = new XmlDocument();
-      //xmlDocument.LoadXml(xmlString);
-      //xmlDocument.Save("test.xml");
+      
+      string xmlName = "test.xml";
+      //Writes a new XML file, unicode to keep swedish characters
+      File.WriteAllText(xmlName, xmlString, Encoding.Unicode);
+      return xmlName;
+    }
 
-      //File.WriteAllText("test.xml", xmlString, Encoding.ASCII);
+    public void ValidateXML(string xsd, string xmlName)
+    {
+      XmlSchemaSet schemaSet = new XmlSchemaSet();
 
-      //XmlTextWriter textWriter = new XmlTextWriter(xmlString, Encoding.UTF8);
+      //XSD file with the namespace
+      schemaSet.Add("http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316", xsd);
 
+      XmlReaderSettings settings = new XmlReaderSettings();
+      settings.ValidationType = ValidationType.Schema;
+      settings.Schemas = schemaSet;
+      settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
+
+
+    }
+
+    private void ValidationCallBack(object sender, ValidationEventArgs e)
+    {
+      
     }
   }
 }

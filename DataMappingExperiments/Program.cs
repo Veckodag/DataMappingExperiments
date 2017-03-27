@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Web;
 using System.Xml;
 using XmlSchema = System.Xml.Schema.XmlSchema;
 
@@ -9,11 +10,11 @@ namespace DataMappingExperiments
   {
     static void Main(string[] args)
     {
-      string excelFile =
+      string excelFilePath =
         @"c:\users\fresan\documents\visual studio 2015\Projects\DataMappingExperiments\DataMappingExperiments\Testdata\Fln-Blg Plattformar Enkel.xlsx";
-      string xsd = @"C:\Users\fresan\documents\visual studio 2015\Projects\DataMappingExperiments\DataMappingExperiments\Testdata\ANDAImport.xsd";
+      string xsdFilePath = @"C:\Users\fresan\documents\visual studio 2015\Projects\DataMappingExperiments\DataMappingExperiments\Testdata\ANDAImport.xsd";
       //TODO: 1. Take a excel file input
-      StartExcelManager(excelFile);
+      StartExcelManager(excelFilePath, xsdFilePath);
       //TODO: 2. Map the data from the excel against a class
       //TODO: 3. Output data into a XML format
       Console.ReadLine();
@@ -28,7 +29,7 @@ namespace DataMappingExperiments
     //http://stackoverflow.com/questions/10025986/validate-xml-against-xsd-in-a-single-method
     //https://msdn.microsoft.com/en-us/library/system.xml.schema.validationeventargs.severity.aspx
 
-    static void StartExcelManager(string fileName)
+    static void StartExcelManager(string fileName, string xsdFile)
     {
       if (string.IsNullOrEmpty(fileName) || !File.Exists(fileName))
       {
@@ -37,20 +38,24 @@ namespace DataMappingExperiments
       }
       try
       {
+        #region ExcelInput
         var excelManager = new ExcelManager();
         // Massive string with all the good stuff
         string xmlString = excelManager.GetXML(fileName);
-        xmlString = xmlString.Replace("&amp;", "&");
+        //Decode the string because of special characters
+        xmlString = HttpUtility.HtmlDecode(xmlString);
 
         if (string.IsNullOrEmpty(xmlString))
         {
           Console.WriteLine("The content of the Excel file is empty!");
         }
-
         Console.WriteLine(xmlString);
+        #endregion
 
-        excelManager.CreateXMLFile(xmlString);
+        //Create the XML
+        string xmlName = excelManager.CreateXMLFile(xmlString);
 
+        excelManager.ValidateXML(xsdFile, xmlName);
       }
       catch (Exception exception)
       {
