@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Web;
 using System.Xml;
 using XmlSchema = System.Xml.Schema.XmlSchema;
@@ -12,7 +13,7 @@ namespace DataMappingExperiments
     {
       string excelFilePath =
         @"c:\users\fresan\documents\visual studio 2015\Projects\DataMappingExperiments\DataMappingExperiments\Testdata\Fln-Blg Plattformar Enkel.xlsx";
-      string xsdFilePath = @"C:\Users\fresan\documents\visual studio 2015\Projects\DataMappingExperiments\DataMappingExperiments\Testdata\ANDAImport.xsd";
+      string xsdFilePath = @"C:\Users\fresan\documents\visual studio 2015\Projects\DataMappingExperiments\DataMappingExperiments\Testdata\ANDAImport.xml";
       //TODO: 1. Take a excel file input
       StartExcelManager(excelFilePath, xsdFilePath);
       //TODO: 2. Map the data from the excel against a class
@@ -39,11 +40,13 @@ namespace DataMappingExperiments
       try
       {
         #region ExcelInput
+
         var excelManager = new ExcelManager();
         // Massive string with all the good stuff
         string xmlString = excelManager.GetXML(fileName);
         //Decode the string because of special characters
         xmlString = HttpUtility.HtmlDecode(xmlString);
+        xmlString = @"<?xml version=""1.0"" encoding=""UTF-8""?>" + Environment.NewLine + xmlString;
 
         if (string.IsNullOrEmpty(xmlString))
         {
@@ -51,11 +54,10 @@ namespace DataMappingExperiments
         }
         Console.WriteLine(xmlString);
         #endregion
-
         //Create the XML
         string xmlName = excelManager.CreateXMLFile(xmlString);
 
-        excelManager.ValidateXML(xsdFile, xmlName);
+        //excelManager.ValidateXML(xsdFile, xmlName);
       }
       catch (Exception exception)
       {

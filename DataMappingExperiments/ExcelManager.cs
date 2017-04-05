@@ -21,6 +21,8 @@ namespace DataMappingExperiments
       using (DataSet dataSet = new DataSet())
       {
         dataSet.Tables.Add(ReadExcelFile(fileName));
+        dataSet.Tables[0].TableName = @"<anda:Plattform xmlns:anda=""http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316"">";
+        //dataSet.DataSetName = "Container";
         return dataSet.GetXml();
       }
     }
@@ -39,6 +41,7 @@ namespace DataMappingExperiments
           string relationshipId = sheetcollection.First().Id.Value;
           var worksheetPart = (WorksheetPart) workbookPart.GetPartById(relationshipId);
 
+          //Only working with the first sheet
           SheetData sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
           IEnumerable<Row> rowCollection = sheetData.Descendants<Row>();
 
@@ -140,7 +143,7 @@ namespace DataMappingExperiments
       
       string xmlName = "test.xml";
       //Writes a new XML file, unicode to keep swedish characters
-      File.WriteAllText(xmlName, xmlString, Encoding.Unicode);
+      //File.WriteAllText(xmlName, xmlString, Encoding.Unicode);
       return xmlName;
     }
 
@@ -151,12 +154,26 @@ namespace DataMappingExperiments
       //XSD file with the namespace
       schemaSet.Add("http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316", xsd);
 
-      XmlReaderSettings settings = new XmlReaderSettings();
-      settings.ValidationType = ValidationType.Schema;
-      settings.Schemas = schemaSet;
+      XmlReaderSettings settings = new XmlReaderSettings
+      {
+        ValidationType = ValidationType.Schema,
+        Schemas = schemaSet
+      };
       settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
 
+      //Won't work
+      //Dataset cannot instantiate an abstract complextype
+      //try
+      //{
+      //  DataSet schemaCheckDataSet = new DataSet();
 
+      //  schemaCheckDataSet.ReadXmlSchema(xsd);
+      //  schemaCheckDataSet.ReadXml(xmlName);
+      //}
+      //catch (Exception exception)
+      //{
+      //  Console.WriteLine("XML Schema validation error: " + exception.Message);
+      //}
     }
 
     private void ValidationCallBack(object sender, ValidationEventArgs e)
