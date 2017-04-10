@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using Microsoft.Office.Interop.Excel;
 
-namespace DataMappingExperiments
+namespace DataMappingExperiments.Obsolete
 {
   [Obsolete("Use the newer excelmanager")]
   public class ExcelManagerOLD

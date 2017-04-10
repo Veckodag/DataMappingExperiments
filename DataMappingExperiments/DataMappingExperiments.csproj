@@ -55,10 +55,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndaResurserMedDatakatalogFörImport.cs" />
+    <Compile Include="DataMapping\IMapper.cs" />
+    <Compile Include="DataMapping\PlattformMapper.cs" />
+    <Compile Include="DataMapping\RälMapper.cs" />
     <Compile Include="ExcelManager.cs" />
-    <Compile Include="ExcelManagerOLD.cs" />
+    <Compile Include="Obsolete\ExcelManagerOLD.cs" />
+    <Compile Include="Helpers\ExtensionMethods.cs" />
+    <Compile Include="DataMapping\Mapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Helpers\StringManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

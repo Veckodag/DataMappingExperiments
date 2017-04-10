@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Schema;
+using DataMappingExperiments.DataMapping;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
@@ -16,15 +16,40 @@ namespace DataMappingExperiments
   {
     #region ExcelToXmlString
 
+    private Mapper _mapper;
     public string GetXML(string fileName)
     {
-      using (DataSet dataSet = new DataSet())
+      //Get the name of the Dataset from config
+      using (DataSet dataSet = new DataSet("Plattform"))
       {
+        _mapper = GetMappingType(MapperType.Plattform);
         dataSet.Tables.Add(ReadExcelFile(fileName));
-        dataSet.Tables[0].TableName = @"<anda:Plattform xmlns:anda=""http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316"">";
-        //dataSet.DataSetName = "Container";
+        dataSet.Namespace = @"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316";
+        dataSet.Tables[0].Namespace = "";
+        dataSet.Prefix = "anda";
         return dataSet.GetXml();
+        //return dataSet.GetXmlSchema();
       }
+    }
+
+    public Mapper GetMappingType(MapperType mapperType)
+    {
+      switch (mapperType)
+      {
+        case MapperType.Plattform:
+          return new PlattformMapper();
+        case MapperType.Räl:
+          return new RälMapper();
+        default:
+          Console.WriteLine("Not a mapping type!");
+          break;
+      }
+      return null;
+    }
+    public enum MapperType
+    {
+      Plattform,
+      Räl
     }
 
     private DataTable ReadExcelFile(string fileName)
@@ -39,7 +64,7 @@ namespace DataMappingExperiments
           IEnumerable<Sheet> sheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>();
 
           string relationshipId = sheetcollection.First().Id.Value;
-          var worksheetPart = (WorksheetPart) workbookPart.GetPartById(relationshipId);
+          var worksheetPart = (WorksheetPart)workbookPart.GetPartById(relationshipId);
 
           //Only working with the first sheet
           SheetData sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
@@ -54,12 +79,22 @@ namespace DataMappingExperiments
           //Adds the columns
           foreach (Cell cell in rowCollection.ElementAt(0))
           {
-            dataTable.Columns.Add(GetValueOfCell(spreadsheetDocument, cell));
+            //Value of the BIS attribute
+            //TODO: Här ställs XML attributet in
+            int cellColumnIndex = GetColumnIndex(GetColumnName(cell.CellReference));
+
+            var bisAttribute = GetValueOfCell(spreadsheetDocument, cell);
+            var mappedValue = _mapper.MapXmlAttribute(cellColumnIndex, bisAttribute);
+            dataTable.Columns.Add(mappedValue);
+
           }
 
           //Adds the rows into the dataTable
           foreach (Row row in rowCollection)
           {
+            if (row.RowIndex == 1)
+              continue;
+
             DataRow tempRow = dataTable.NewRow();
             int colIndex = 0;
 
@@ -75,6 +110,7 @@ namespace DataMappingExperiments
                 colIndex++;
               }
               //Then sets the cell value at the right index
+              //TODO: Känn av index och skicka in det för mappning
               tempRow[colIndex] = GetValueOfCell(spreadsheetDocument, cell);
               colIndex++;
             }
@@ -82,7 +118,7 @@ namespace DataMappingExperiments
             dataTable.Rows.Add(tempRow);
           }
         }
-        dataTable.Rows.RemoveAt(0);
+        //dataTable.Rows.RemoveAt(0);
         return dataTable;
       }
       catch (IOException exception)
@@ -101,7 +137,7 @@ namespace DataMappingExperiments
       {
         if (char.IsLetter(columnName[position]))
         {
-          columnIndex += factor*(columnName[position] - 'A' + 1) - 1;
+          columnIndex += factor * (columnName[position] - 'A' + 1) - 1;
           factor *= 26;
         }
       }
@@ -138,9 +174,11 @@ namespace DataMappingExperiments
 
     #endregion
 
+    #region XMLFileCreation
+
     public string CreateXMLFile(string xmlString)
     {
-      
+
       string xmlName = "test.xml";
       //Writes a new XML file, unicode to keep swedish characters
       //File.WriteAllText(xmlName, xmlString, Encoding.Unicode);
@@ -160,25 +198,12 @@ namespace DataMappingExperiments
         Schemas = schemaSet
       };
       settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
-
-      //Won't work
-      //Dataset cannot instantiate an abstract complextype
-      //try
-      //{
-      //  DataSet schemaCheckDataSet = new DataSet();
-
-      //  schemaCheckDataSet.ReadXmlSchema(xsd);
-      //  schemaCheckDataSet.ReadXml(xmlName);
-      //}
-      //catch (Exception exception)
-      //{
-      //  Console.WriteLine("XML Schema validation error: " + exception.Message);
-      //}
     }
 
     private void ValidationCallBack(object sender, ValidationEventArgs e)
     {
-      
+
     }
+    #endregion
   }
 }

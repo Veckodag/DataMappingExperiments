@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Text;
-using System.Web;
-using System.Xml;
-using XmlSchema = System.Xml.Schema.XmlSchema;
+using DataMappingExperiments.Helpers;
 
 namespace DataMappingExperiments
 {
@@ -44,9 +41,8 @@ namespace DataMappingExperiments
         var excelManager = new ExcelManager();
         // Massive string with all the good stuff
         string xmlString = excelManager.GetXML(fileName);
-        //Decode the string because of special characters
-        xmlString = HttpUtility.HtmlDecode(xmlString);
-        xmlString = @"<?xml version=""1.0"" encoding=""UTF-8""?>" + Environment.NewLine + xmlString;
+       
+        xmlString = StringManager.FormattingXmlString(xmlString);
 
         if (string.IsNullOrEmpty(xmlString))
         {
