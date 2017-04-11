@@ -12,5 +12,10 @@ namespace DataMappingExperiments.Helpers
       xmlString = @"<?xml version=""1.0"" encoding=""UTF-8""?>" + Environment.NewLine + xmlString;
       return xmlString;
     }
+
+    public static string StringDecoding(string xmlString)
+    {
+      return HttpUtility.HtmlDecode(xmlString);
+    }
   }
 }

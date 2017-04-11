@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Schema;
+using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.DataMapping;
+using DataMappingExperiments.Helpers;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
@@ -17,22 +19,48 @@ namespace DataMappingExperiments
     #region ExcelToXmlString
 
     private Mapper _mapper;
+    private BIS_GrundObjekt _BisObjekt;
+    private List<BIS_GrundObjekt> _BisList;
     public string GetXML(string fileName)
     {
       //Get the name of the Dataset from config
       using (DataSet dataSet = new DataSet("Plattform"))
       {
+        //TODO: Get the mappingtype from a config file
         _mapper = GetMappingType(MapperType.Plattform);
+        _BisList = new List<BIS_GrundObjekt>();
         dataSet.Tables.Add(ReadExcelFile(fileName));
+
         dataSet.Namespace = @"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316";
-        dataSet.Tables[0].Namespace = "";
+        dataSet.DataSetName = "container";
         dataSet.Prefix = "anda";
-        return dataSet.GetXml();
+
+        dataSet.Tables[0].TableName = "plattform";
+        dataSet.Tables[0].Prefix = "anda";
+        dataSet.Tables[0].Namespace = "";
+        
+
+        var set = dataSet.GetXml();
+
+        return set;
         //return dataSet.GetXmlSchema();
       }
     }
 
-    public Mapper GetMappingType(MapperType mapperType)
+    private BIS_GrundObjekt GetBisObjectType(MapperType mapperType)
+    {
+      switch (mapperType)
+      {
+          case MapperType.Plattform:
+            return new BIS_Plattform();
+          case MapperType.Räl:
+            return new BIS_Räl();
+        default:
+          throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
+      }
+    }
+
+    private Mapper GetMappingType(MapperType mapperType)
     {
       switch (mapperType)
       {
@@ -41,15 +69,8 @@ namespace DataMappingExperiments
         case MapperType.Räl:
           return new RälMapper();
         default:
-          Console.WriteLine("Not a mapping type!");
-          break;
+          throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }
-      return null;
-    }
-    public enum MapperType
-    {
-      Plattform,
-      Räl
     }
 
     private DataTable ReadExcelFile(string fileName)
@@ -86,6 +107,7 @@ namespace DataMappingExperiments
             var bisAttribute = GetValueOfCell(spreadsheetDocument, cell);
             var mappedValue = _mapper.MapXmlAttribute(cellColumnIndex, bisAttribute);
             dataTable.Columns.Add(mappedValue);
+            //dataTable.Columns.Add(bisAttribute);
 
           }
 
@@ -97,6 +119,9 @@ namespace DataMappingExperiments
 
             DataRow tempRow = dataTable.NewRow();
             int colIndex = 0;
+
+            //A object to use for mapping values
+            _BisObjekt = GetBisObjectType(MapperType.Plattform);
 
             //Every cell in selected row
             foreach (Cell cell in row.Descendants<Cell>())
@@ -111,14 +136,17 @@ namespace DataMappingExperiments
               }
               //Then sets the cell value at the right index
               //TODO: Känn av index och skicka in det för mappning
-              tempRow[colIndex] = GetValueOfCell(spreadsheetDocument, cell);
+              var attribute = GetValueOfCell(spreadsheetDocument, cell);
+              _BisObjekt = _mapper.MapXmlValue(cellColumnIndex, attribute, _BisObjekt);
+              tempRow[colIndex] = attribute;
+
               colIndex++;
             }
             //The row updates after each cell value
+            _BisList.Add(_BisObjekt);
             dataTable.Rows.Add(tempRow);
           }
         }
-        //dataTable.Rows.RemoveAt(0);
         return dataTable;
       }
       catch (IOException exception)

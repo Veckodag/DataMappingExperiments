@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace DataMappingExperiments.Helpers
 {
@@ -83,6 +85,17 @@ namespace DataMappingExperiments.Helpers
       int position = text.IndexOf(searchString, StringComparison.Ordinal);
       if (position < 0) return text;
       return text.Substring(0, position) + replacementString + text.Substring(position + searchString.Length);
+    }
+
+    public static string SerializeObject<T>(this T toSerialize)
+    {
+      XmlSerializer xmlSerializer = new XmlSerializer(toSerialize.GetType());
+
+      using (StringWriter textWriter = new StringWriter())
+      {
+        xmlSerializer.Serialize(textWriter, toSerialize);
+        return textWriter.ToString();
+      }
     }
   }
 }

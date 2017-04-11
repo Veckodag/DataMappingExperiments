@@ -55,10 +55,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndaResurserMedDatakatalogFörImport.cs" />
+    <Compile Include="BisObjekt\BIS_GrundObjekt.cs" />
+    <Compile Include="BisObjekt\BIS_Plattform.cs" />
+    <Compile Include="BisObjekt\BIS_Räl.cs" />
     <Compile Include="DataMapping\IMapper.cs" />
     <Compile Include="DataMapping\PlattformMapper.cs" />
     <Compile Include="DataMapping\RälMapper.cs" />
     <Compile Include="ExcelManager.cs" />
+    <Compile Include="Helpers\EnumCollection.cs" />
     <Compile Include="Obsolete\ExcelManagerOLD.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="DataMapping\Mapper.cs" />
@@ -77,6 +81,7 @@
   <ItemGroup>
     <Content Include="Testdata\ANDAImport.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
