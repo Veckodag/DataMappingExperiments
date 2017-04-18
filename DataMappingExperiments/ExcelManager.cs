@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Schema;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.DataMapping;
@@ -24,27 +26,38 @@ namespace DataMappingExperiments
     public string GetXML(string fileName)
     {
       //Get the name of the Dataset from config
-      using (DataSet dataSet = new DataSet("Plattform"))
+      using (DataSet dataSet = new DataSet("Container"))
       {
         //TODO: Get the mappingtype from a config file
         _mapper = GetMappingType(MapperType.Plattform);
         _BisList = new List<BIS_GrundObjekt>();
+
+        //Dataset
         dataSet.Tables.Add(ReadExcelFile(fileName));
-
         dataSet.Namespace = @"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316";
-        dataSet.DataSetName = "container";
         dataSet.Prefix = "anda";
-
         dataSet.Tables[0].TableName = "plattform";
         dataSet.Tables[0].Prefix = "anda";
         dataSet.Tables[0].Namespace = "";
-        
 
         var set = dataSet.GetXml();
 
-        return set;
-        //return dataSet.GetXmlSchema();
+        //Return set gives an unformatted version of the excel properties
+        //return set;
+        //TODO: Return correct formatting
+        return XmlDocumentFormatting(set);
       }
+    }
+
+    private string XmlDocumentFormatting(string set)
+    {
+      XDocument document = new XDocument();
+      document = XDocument.Parse(set);
+
+      //var plattformar = 
+      //Console.WriteLine(plattformar);
+
+      return document.ToString();
     }
 
     private BIS_GrundObjekt GetBisObjectType(MapperType mapperType)
@@ -135,7 +148,6 @@ namespace DataMappingExperiments
                 colIndex++;
               }
               //Then sets the cell value at the right index
-              //TODO: Känn av index och skicka in det för mappning
               var attribute = GetValueOfCell(spreadsheetDocument, cell);
               _BisObjekt = _mapper.MapXmlValue(cellColumnIndex, attribute, _BisObjekt);
               tempRow[colIndex] = attribute;
@@ -209,7 +221,7 @@ namespace DataMappingExperiments
 
       string xmlName = "test.xml";
       //Writes a new XML file, unicode to keep swedish characters
-      //File.WriteAllText(xmlName, xmlString, Encoding.Unicode);
+      File.WriteAllText(xmlName, xmlString, Encoding.Unicode);
       return xmlName;
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using DataMappingExperiments.Helpers;
 
@@ -8,24 +9,14 @@ namespace DataMappingExperiments
   {
     static void Main(string[] args)
     {
-      string excelFilePath =
-        @"c:\users\fresan\documents\visual studio 2015\Projects\DataMappingExperiments\DataMappingExperiments\Testdata\Fln-Blg Plattformar Enkel.xlsx";
-      string xsdFilePath = @"C:\Users\fresan\documents\visual studio 2015\Projects\DataMappingExperiments\DataMappingExperiments\Testdata\ANDAImport.xml";
+      string excelFilePath = ConfigurationManager.AppSettings["ExcelFile"];
+      string xsdFilePath = ConfigurationManager.AppSettings["XsdFile"];
       //TODO: 1. Take a excel file input
       StartExcelManager(excelFilePath, xsdFilePath);
       //TODO: 2. Map the data from the excel against a class
       //TODO: 3. Output data into a XML format
       Console.ReadLine();
     }
-
-    //https://code.msdn.microsoft.com/office/How-to-convert-excel-file-7a9bb404
-    //https://github.com/ExcelDataReader/ExcelDataReader
-    //https://www.codeproject.com/articles/10581/convert-excel-to-xml-file-xml-schema-and-validate
-    //https://coderwall.com/p/app3ya/read-excel-file-in-c
-
-    //How to validate XML against a XSD
-    //http://stackoverflow.com/questions/10025986/validate-xml-against-xsd-in-a-single-method
-    //https://msdn.microsoft.com/en-us/library/system.xml.schema.validationeventargs.severity.aspx
 
     static void StartExcelManager(string fileName, string xsdFile)
     {
@@ -51,7 +42,7 @@ namespace DataMappingExperiments
         Console.WriteLine(xmlString);
         #endregion
         //Create the XML
-        string xmlName = excelManager.CreateXMLFile(xmlString);
+        //string xmlName = excelManager.CreateXMLFile(xmlString);
 
         //excelManager.ValidateXML(xsdFile, xmlName);
       }

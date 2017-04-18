@@ -10,6 +10,16 @@ namespace DataMappingExperiments.BisObjekt
   {
     public string Senast_Ändrad { get; set; }
     public string Senast_Ändrad_Av { get; set; }
-    //TODO: Finish this class
+    public string Rälmodell { get; set; }
+    public int Vikt { get; set; }
+    public string Längd { get; set; }
+    public string Skarvtyp { get; set; }
+    public int Inläggningsår { get; set; }
+    public int Tillverkngingsår { get; set; }
+    public string Rev_Klass { get; set; }
+    public string Tillverkare { get; set; }
+    public string Stålsort { get; set; }
+    public string Tillv_Process { get; set; }
+    public string Notering { get; set; }
   }
 }
