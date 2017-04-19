@@ -42,7 +42,7 @@ namespace DataMappingExperiments
         Console.WriteLine(xmlString);
         #endregion
         //Create the XML
-        string xmlName = excelManager.CreateXMLFile(xmlString);
+        //string xmlName = excelManager.CreateXMLFile(xmlString);
 
       }
       catch (Exception exception)

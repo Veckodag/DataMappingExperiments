@@ -68,8 +68,9 @@ namespace DataMappingExperiments
 
       foreach (var node in nodes)
       {
-        stringBuilder.Append(
-          "  <anda:Plattform xmlns:anda=\"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316\">" + Environment.NewLine);
+        stringBuilder.Append("  <anda:Plattform xmlns:anda=\"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316\">" + Environment.NewLine);
+
+        //xElement: Name and value
         foreach (var xElement in node.Elements())
         {
           //The first positions are related to nätanknytningar
@@ -81,6 +82,15 @@ namespace DataMappingExperiments
             numericSet.Append(elementString);
             counter++;
           }
+          else if (counter == 16)
+          {
+            string value = xElement.Value;
+            if (value == "S & L")
+            {
+              //Manage it well
+            }
+
+          }
           else
           {
             string elementString = ElementFormatting(xElement);
@@ -88,6 +98,7 @@ namespace DataMappingExperiments
             counter++;
           }
         }
+        //The stringbuilding and clean at the end
         stringSet.Insert(0, "    <anda:stringSet>" + Environment.NewLine);
         stringBuilder.Append(stringSet);
         stringBuilder.Append("    </anda:stringSet>" + Environment.NewLine);
@@ -106,7 +117,7 @@ namespace DataMappingExperiments
       //Return document for unformatted string
       return stringBuilder.ToString();
     }
-
+    //Arranges the string in the correct format
     private string ElementFormatting(XElement xElement)
     {
       string nodeStart =  $"      <anda:{xElement.Name} JSonMapToPropertyName=\"value\">{Environment.NewLine}";
