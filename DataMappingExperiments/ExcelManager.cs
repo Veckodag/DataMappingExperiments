@@ -36,28 +36,86 @@ namespace DataMappingExperiments
         dataSet.Tables.Add(ReadExcelFile(fileName));
         dataSet.Namespace = @"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316";
         dataSet.Prefix = "anda";
+        //Set table name
         dataSet.Tables[0].TableName = "plattform";
         dataSet.Tables[0].Prefix = "anda";
         dataSet.Tables[0].Namespace = "";
 
         var set = dataSet.GetXml();
 
-        //Return set gives an unformatted version of the excel properties
-        //return set;
-        //TODO: Return correct formatting
+        //Return set; gives an unformatted version of the excel properties
         return XmlDocumentFormatting(set);
       }
     }
-
+    //Rebuilds the xmlformatting
     private string XmlDocumentFormatting(string set)
     {
+      //Main stringbuilder
+      var stringBuilder = new StringBuilder();
+      //Seperates the sets and adds them under the correct nodes
+      var numericSet = new StringBuilder();
+      var stringSet = new StringBuilder();
+      //Document based on the dataset
       XDocument document = new XDocument();
       document = XDocument.Parse(set);
 
-      //var plattformar = 
-      //Console.WriteLine(plattformar);
+      stringBuilder.Append("<anda:container xmlns:anda=\"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316\">" + Environment.NewLine);
 
-      return document.ToString();
+      //Get the data in each node. Nodes are 4 for plattform.
+      var nodes = document.Descendants("plattform").Select(node => node);
+      //Counter to manages position for values in the node.
+      int counter = 0;
+
+      foreach (var node in nodes)
+      {
+        stringBuilder.Append(
+          "  <anda:Plattform xmlns:anda=\"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316\">" + Environment.NewLine);
+        foreach (var xElement in node.Elements())
+        {
+          //The first positions are related to nätanknytningar
+          if (counter < 11)
+            counter++;
+          else if (counter == 12 || counter == 13)
+          {
+            string elementString = ElementFormatting(xElement);
+            numericSet.Append(elementString);
+            counter++;
+          }
+          else
+          {
+            string elementString = ElementFormatting(xElement);
+            stringSet.Append(elementString);
+            counter++;
+          }
+        }
+        stringSet.Insert(0, "    <anda:stringSet>" + Environment.NewLine);
+        stringBuilder.Append(stringSet);
+        stringBuilder.Append("    </anda:stringSet>" + Environment.NewLine);
+
+        numericSet.Insert(0, "    <anda:numericSet>" + Environment.NewLine);
+        stringBuilder.Append(numericSet);
+        stringBuilder.Append("    </anda:numericSet>" + Environment.NewLine);
+
+        stringBuilder.Append("  </anda:Plattform>" + Environment.NewLine);
+        stringSet.Clear();
+        numericSet.Clear();
+        counter = 0;
+      }
+      stringBuilder.Append("</anda:container>");
+
+      //Return document for unformatted string
+      return stringBuilder.ToString();
+    }
+
+    private string ElementFormatting(XElement xElement)
+    {
+      string nodeStart =  $"      <anda:{xElement.Name} JSonMapToPropertyName=\"value\">{Environment.NewLine}";
+      string nodeValue = $"        <anda:value>{xElement.Value}</anda:value>{Environment.NewLine}";
+      string nodeInstance = $"        <anda:generalProperty softType=\"Property\" instanceRef=\"{xElement.Name}\"/>{Environment.NewLine}";
+      string nodeEnd = $"      </anda:{xElement.Name}>{Environment.NewLine}";
+
+      return nodeStart + nodeValue + nodeInstance + nodeEnd;
+
     }
 
     private BIS_GrundObjekt GetBisObjectType(MapperType mapperType)
@@ -218,31 +276,10 @@ namespace DataMappingExperiments
 
     public string CreateXMLFile(string xmlString)
     {
-
       string xmlName = "test.xml";
       //Writes a new XML file, unicode to keep swedish characters
       File.WriteAllText(xmlName, xmlString, Encoding.Unicode);
       return xmlName;
-    }
-
-    public void ValidateXML(string xsd, string xmlName)
-    {
-      XmlSchemaSet schemaSet = new XmlSchemaSet();
-
-      //XSD file with the namespace
-      schemaSet.Add("http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316", xsd);
-
-      XmlReaderSettings settings = new XmlReaderSettings
-      {
-        ValidationType = ValidationType.Schema,
-        Schemas = schemaSet
-      };
-      settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
-    }
-
-    private void ValidationCallBack(object sender, ValidationEventArgs e)
-    {
-
     }
     #endregion
   }

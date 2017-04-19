@@ -42,9 +42,8 @@ namespace DataMappingExperiments
         Console.WriteLine(xmlString);
         #endregion
         //Create the XML
-        //string xmlName = excelManager.CreateXMLFile(xmlString);
+        string xmlName = excelManager.CreateXMLFile(xmlString);
 
-        //excelManager.ValidateXML(xsdFile, xmlName);
       }
       catch (Exception exception)
       {
