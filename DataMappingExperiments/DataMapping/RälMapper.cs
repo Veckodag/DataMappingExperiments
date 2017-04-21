@@ -18,11 +18,8 @@ namespace DataMappingExperiments.DataMapping
       MapperType = MapperType.Räl;
     }
     public override MapperType MapperType { get; set; }
+    public override string Name => "Räl";
 
-    public override void HelloFromThisMappingclass()
-    {
-      Console.WriteLine("I'am a Räl mapper!");
-    }
     public override string MapXmlAttribute(int index, string attributeValue)
     {
       return attributeValue;

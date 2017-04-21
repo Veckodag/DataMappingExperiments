@@ -13,10 +13,7 @@ namespace DataMappingExperiments.DataMapping
   {
     public abstract MapperType MapperType { get; set; }
 
-    public virtual void HelloFromThisMappingclass()
-    {
-      Console.WriteLine("I'am a normal mapper!");
-    }
+    public virtual string Name => "Mapper";
 
     public abstract string MapXmlAttribute(int index, string attributeValue);
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt BisObject);

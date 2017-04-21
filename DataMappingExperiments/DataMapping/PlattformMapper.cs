@@ -12,11 +12,8 @@ namespace DataMappingExperiments.DataMapping
     }
 
     public override MapperType MapperType { get; set; }
+    public override string Name => "Plattform";
 
-    public override void HelloFromThisMappingclass()
-    {
-      Console.WriteLine("I'am a plattform mapper!");
-    }
     public override string MapXmlAttribute(int index, string attributeValue)
     {
       return attributeValue;

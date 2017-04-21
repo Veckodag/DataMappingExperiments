@@ -37,7 +37,7 @@ namespace DataMappingExperiments
         dataSet.Namespace = @"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316";
         dataSet.Prefix = "anda";
         //Set table name
-        dataSet.Tables[0].TableName = "plattform";
+        dataSet.Tables[0].TableName = _mapper.Name;
         dataSet.Tables[0].Prefix = "anda";
         dataSet.Tables[0].Namespace = "";
 
@@ -62,13 +62,13 @@ namespace DataMappingExperiments
       stringBuilder.Append("<anda:container xmlns:anda=\"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316\">" + Environment.NewLine);
 
       //Get the data in each node. Nodes are 4 for plattform.
-      var nodes = document.Descendants("plattform").Select(node => node);
+      var nodes = document.Descendants(_mapper.Name).Select(node => node);
       //Counter to manages position for values in the node.
       int counter = 0;
 
       foreach (var node in nodes)
       {
-        stringBuilder.Append("  <anda:Plattform xmlns:anda=\"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316\">" + Environment.NewLine);
+        stringBuilder.Append($"  <anda:{_mapper.Name} xmlns:anda=\"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316\">" + Environment.NewLine);
 
         //xElement: Name and value
         foreach (var xElement in node.Elements())
@@ -82,15 +82,15 @@ namespace DataMappingExperiments
             numericSet.Append(elementString);
             counter++;
           }
-          else if (counter == 16)
-          {
-            string value = xElement.Value;
-            if (value == "S & L")
-            {
-              //Manage it well
-            }
+          //else if (counter == 16)
+          //{
+          //  string value = xElement.Value;
+          //  if (value == "S & L")
+          //  {
+          //    //Manage it well
+          //  }
 
-          }
+          //}
           else
           {
             string elementString = ElementFormatting(xElement);
@@ -99,11 +99,16 @@ namespace DataMappingExperiments
           }
         }
         //The stringbuilding and clean at the end
-        stringSet.Insert(0, "    <anda:stringSet>" + Environment.NewLine);
+        stringSet.Insert(0, "    <anda:stringSet>" + Environment.NewLine 
+                          + "    <anda:start> </anda:start>" + Environment.NewLine
+                          + "    <anda:end> </anda:end>" + Environment.NewLine);
         stringBuilder.Append(stringSet);
         stringBuilder.Append("    </anda:stringSet>" + Environment.NewLine);
 
-        numericSet.Insert(0, "    <anda:numericSet>" + Environment.NewLine);
+        numericSet.Insert(0, "    <anda:numericSet>" + Environment.NewLine
+                          + "    <anda:start> </anda:start>" + Environment.NewLine
+                          + "    <anda:end> </anda:end>" + Environment.NewLine);
+        
         stringBuilder.Append(numericSet);
         stringBuilder.Append("    </anda:numericSet>" + Environment.NewLine);
 
