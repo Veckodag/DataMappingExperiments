@@ -28,5 +28,10 @@ namespace DataMappingExperiments.DataMapping
     {
       throw new NotImplementedException();
     }
+
+    public override void ObjectStructure(List<BIS_GrundObjekt> bisList)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

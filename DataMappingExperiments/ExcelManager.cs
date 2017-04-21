@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
+using System.Xml.Serialization;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.DataMapping;
 using DataMappingExperiments.Helpers;
@@ -44,9 +45,25 @@ namespace DataMappingExperiments
         var set = dataSet.GetXml();
 
         //Return set; gives an unformatted version of the excel properties
+        //CreateObjects();
         return XmlDocumentFormatting(set);
       }
     }
+
+    void CreateObjects()
+    {
+      var container = new Container();
+
+      _mapper.ObjectStructure(_BisList);
+
+      foreach (BIS_Plattform bisItem in _BisList)
+      {
+        //XmlSerializer serializer = new XmlSerializer(typeof(Plattform));
+        //TextWriter tw = new StreamWriter(@"c:\temp\plattform.xml");
+        //serializer.Serialize(tw, plattform);
+      }
+    }
+
     //Rebuilds the xmlformatting
     private string XmlDocumentFormatting(string set)
     {
@@ -82,15 +99,6 @@ namespace DataMappingExperiments
             numericSet.Append(elementString);
             counter++;
           }
-          //else if (counter == 16)
-          //{
-          //  string value = xElement.Value;
-          //  if (value == "S & L")
-          //  {
-          //    //Manage it well
-          //  }
-
-          //}
           else
           {
             string elementString = ElementFormatting(xElement);

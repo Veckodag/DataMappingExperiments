@@ -22,6 +22,5 @@ namespace DataMappingExperiments.BisObjekt
     public string PlattformsUtrustning { get; set; }
     public string BesiktningsKlass { get; set; }
     public string Notering { get; set; }
-
   }
 }
