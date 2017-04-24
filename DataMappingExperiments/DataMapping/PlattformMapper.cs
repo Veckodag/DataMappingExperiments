@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
 
@@ -79,25 +80,28 @@ namespace DataMappingExperiments.DataMapping
 
     public override void ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
+      Container container = new Container();
+      container.softTypes = new SoftType[4];
+      
       foreach (BIS_Plattform bisPlattform in bisList)
       {
         Plattform plattform = new Plattform
         {
           id = Guid.NewGuid().ToString(),
           notering = bisPlattform.Notering,
-          name = "Name",
+          name = "Name?",
+          arbetsnamn = "arbetsnamn?",
+          versionId = "versionsId",
           stringSet = new PlattformStringSet
           {
-            Väderskydd = new Plattform_Väderskydd(),
-            Beläggning = new Plattform_Beläggning(),
-            Brunnolock = new Plattform_Brunnolock(),
-            Fotsteg = new Plattform_Fotsteg(),
-            Höjd = new Plattform_Höjd(),
-            Höjd_beskr = new Plattform_Höjd_beskr(),
-            Kmtal = new Plattform_Kmtal(),
-            Kmtalti = new Plattform_Kmtalti(),
-            Skyddsräcken = new Plattform_Skyddsräcken(),
-            Skylt = new Plattform_Skylt(),
+            Väderskydd = SkapaPlattformVäderskydd(bisPlattform, new Plattform_Väderskydd()),
+            Beläggning = SkapaPlattformBeläggning(bisPlattform, new Plattform_Beläggning()),
+            Brunnolock = SkapaPlattformBrunnOLock(bisPlattform, new Plattform_Brunnolock()),
+            Fotsteg = SkapaPlattformFotsteg(bisPlattform, new Plattform_Fotsteg()),
+            Höjd = SkapaPlattformHöjd(bisPlattform, new Plattform_Höjd()),
+            Höjd_beskr = SkapaPlattformHöjdBeskrivning(bisPlattform, new Plattform_Höjd_beskr()),
+            Skyddsräcken = SkapaPlattfomrSkyddsräcken(bisPlattform, new Plattform_Skyddsräcken()),
+            Skylt = SkapaPlattformSkylt(bisPlattform, new Plattform_Skylt()),
             Plattformsutrustning = new Plattform_Plattformsutrustning(),
             Plattformskantmtrl = new Plattform_Plattformskantmtrl(),
             Skyddszonochledstråk = new Plattform_Skyddszonochledstråk()
@@ -109,6 +113,104 @@ namespace DataMappingExperiments.DataMapping
           }
         };
       }
+    }
+
+    private Plattform_Skylt SkapaPlattformSkylt(BIS_Plattform bisPlattform, Plattform_Skylt plattformSkylt)
+    {
+      throw new NotImplementedException();
+    }
+
+    private Plattform_Skyddsräcken SkapaPlattfomrSkyddsräcken(BIS_Plattform bisPlattform, Plattform_Skyddsräcken plattformSkyddsräcken)
+    {
+      throw new NotImplementedException();
+    }
+
+    private Plattform_Höjd_beskr SkapaPlattformHöjdBeskrivning(BIS_Plattform bisPlattform, Plattform_Höjd_beskr plattformHöjdBeskr)
+    {
+      throw new NotImplementedException();
+    }
+
+    private Plattform_Höjd SkapaPlattformHöjd(BIS_Plattform bisPlattform, Plattform_Höjd plattformHöjd)
+    {
+      Höjd höjd = new Höjd
+      {
+        instanceRef = "Höjd",
+        softType = "Property"
+      };
+
+      plattformHöjd.generalProperty = höjd;
+      plattformHöjd.value = bisPlattform.Höjd;
+      plattformHöjd.JSonMapToPropertyName = "value";
+
+      return plattformHöjd;
+    }
+
+    private Plattform_Fotsteg SkapaPlattformFotsteg(BIS_Plattform bisPlattform, Plattform_Fotsteg plattformFotsteg)
+    {
+      Fotsteg fotsteg = new Fotsteg
+      {
+        instanceRef = "Fotsteg",
+        softType = "Property"
+      };
+
+      plattformFotsteg.generalProperty = fotsteg;
+      plattformFotsteg.value = bisPlattform.Fotsteg;
+      plattformFotsteg.JSonMapToPropertyName = "value";
+
+      return plattformFotsteg;
+    }
+
+    private Plattform_Brunnolock SkapaPlattformBrunnOLock(BIS_Plattform bisPlattform, Plattform_Brunnolock plattformBrunnolock)
+    {
+      //Kanalisation
+      Brunnolock brunnolock = new Brunnolock
+      {
+        instanceRef = "Brunnolock",
+        softType = "Property"
+      };
+
+      plattformBrunnolock.generalProperty = brunnolock;
+      plattformBrunnolock.value = bisPlattform.Brunn_Och_Lock;
+      plattformBrunnolock.JSonMapToPropertyName = "value";
+
+      return plattformBrunnolock;
+    }
+
+    private Plattform_Beläggning SkapaPlattformBeläggning(BIS_Plattform bisPlattform, Plattform_Beläggning plattformBeläggning)
+    {
+      Beläggning beläggning = new Beläggning
+      {
+        instanceRef = "Beläggning",
+        softType = "Property"
+      };
+
+      plattformBeläggning.generalProperty = beläggning;
+      plattformBeläggning.value = bisPlattform.Beläggning;
+      plattformBeläggning.JSonMapToPropertyName = "value";
+
+      return plattformBeläggning;
+    }
+
+    private Plattform_Väderskydd SkapaPlattformVäderskydd(BIS_Plattform bisPlattform, Plattform_Väderskydd plattformVäderskydd)
+    {
+      Väderskydd väderskydd = new Väderskydd
+      {
+        instanceRef = "Väderskydd",
+        softType = "Property"
+      };
+
+      plattformVäderskydd.generalProperty = väderskydd;
+      plattformVäderskydd.value = bisPlattform.Väderskydd;
+      //Not sure, should be a XML attribute
+      plattformVäderskydd.JSonMapToPropertyName = "value";
+
+      return plattformVäderskydd;
+    }
+
+    public class XmlAttributeDataMapper<T>
+    {
+      [XmlAttribute]
+      public T Value { get; set; }
     }
   }
 }
