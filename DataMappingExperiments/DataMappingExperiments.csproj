@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndaObjekt\ANDA_Plattform.cs" />
+    <Compile Include="Obsolete\Plattform.cs" />
     <Compile Include="AndaResurserMedDatakatalogFörImport.cs" />
     <Compile Include="BisObjekt\BIS_GrundObjekt.cs" />
     <Compile Include="BisObjekt\BIS_Plattform.cs" />

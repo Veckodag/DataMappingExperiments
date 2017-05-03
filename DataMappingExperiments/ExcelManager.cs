@@ -49,7 +49,7 @@ namespace DataMappingExperiments
         return XmlDocumentFormatting(set);
       }
     }
-
+    //TODO: Build it all programmatically
     void CreateObjects()
     {
       var container = new Container();
@@ -64,6 +64,7 @@ namespace DataMappingExperiments
       }
     }
 
+    #region STRINGDANCER
     //Rebuilds the xmlformatting
     private string XmlDocumentFormatting(string set)
     {
@@ -141,6 +142,8 @@ namespace DataMappingExperiments
       return nodeStart + nodeValue + nodeInstance + nodeEnd;
 
     }
+
+    #endregion
 
     private BIS_GrundObjekt GetBisObjectType(MapperType mapperType)
     {

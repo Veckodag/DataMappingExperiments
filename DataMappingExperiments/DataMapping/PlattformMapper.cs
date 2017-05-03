@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml.Serialization;
+using DataMappingExperiments.AndaObjekt;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
 
@@ -81,55 +83,187 @@ namespace DataMappingExperiments.DataMapping
     public override void ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
       Container container = new Container();
-      container.softTypes = new SoftType[4];
-      
+      var containerSoftTypes = new List<SoftType>();
+      var anläggningsLista = new List<Tuple<SoftType_Anläggningsspecifikation, SoftType_FTAnläggningsspecifikation>>();
+      var plattformar = new List<ANDA_Plattform>();
+         
       foreach (BIS_Plattform bisPlattform in bisList)
       {
-        Plattform plattform = new Plattform
+        //var entrydefaultIn = new AnläggningsspecifikationEntrydefaultIn();
+        //var specifikationDefaultIn = new AnläggningsspecifikationdefaultIn();
+        //var produkt = new BreakdownElementRealization_Anläggningsspecifikation_anläggningsprodukt();
+        //var reference = new AnläggningsproduktReference();
+
+        //entrydefaultIn.data = specifikationDefaultIn;
+        //produkt.value = reference;
+        //specifikationDefaultIn.anläggningsprodukt = new BreakdownElementRealization_Anläggningsspecifikation_anläggningsprodukt[bisList.Count];
+
+
+
+        var plattformInstance = new GeografiskPlaceringsreferensEntrydefaultIn();
+        var specifikationInstance = new GeografiskPlaceringsreferensdefaultIn();
+        
+        ANDA_Plattform plattform = new ANDA_Plattform
         {
           id = Guid.NewGuid().ToString(),
           notering = bisPlattform.Notering,
           name = "Name?",
           arbetsnamn = "arbetsnamn?",
           versionId = "versionsId",
-          stringSet = new PlattformStringSet
+          stringSet = new ANDA_PlattformStringset
           {
             Väderskydd = SkapaPlattformVäderskydd(bisPlattform, new Plattform_Väderskydd()),
             Beläggning = SkapaPlattformBeläggning(bisPlattform, new Plattform_Beläggning()),
             Brunnolock = SkapaPlattformBrunnOLock(bisPlattform, new Plattform_Brunnolock()),
             Fotsteg = SkapaPlattformFotsteg(bisPlattform, new Plattform_Fotsteg()),
             Höjd = SkapaPlattformHöjd(bisPlattform, new Plattform_Höjd()),
-            Höjd_beskr = SkapaPlattformHöjdBeskrivning(bisPlattform, new Plattform_Höjd_beskr()),
-            Skyddsräcken = SkapaPlattfomrSkyddsräcken(bisPlattform, new Plattform_Skyddsräcken()),
+            Skyddsräcken = SkapaPlattformSkyddsräcken(bisPlattform, new Plattform_Skyddsräcken()),
             Skylt = SkapaPlattformSkylt(bisPlattform, new Plattform_Skylt()),
-            Plattformsutrustning = new Plattform_Plattformsutrustning(),
-            Plattformskantmtrl = new Plattform_Plattformskantmtrl(),
-            Skyddszonochledstråk = new Plattform_Skyddszonochledstråk()
+            Plattformsutrustning = SkapaPlattformsUtrustning(bisPlattform, new Plattform_Plattformsutrustning()),
+            Plattformskantmtrl = SkapaPlattformsKantMaterial(bisPlattform, new Plattform_Plattformskantmtrl()),
+            Skyddszonochledstråk = SkapaPlattformSkyddszonOchLedstråk(bisPlattform, new Plattform_Skyddszonochledstråk())
           },
-          numericSet = new PlattformNumericSet
+          numericSet = new ANDA_PlattformNumericSet
           {
-            Breddm = new Plattform_Breddm(),
-            Längdm = new Plattform_Längdm()
+            Breddm = SkapaPlattformBredd(bisPlattform, new Plattform_Breddm()),
+            Längdm = SkapaPlattformLängd(bisPlattform, new Plattform_Längdm())
           }
         };
+        //add to list!
+        plattformar.Add(plattform);
       }
+      //add to container
+      foreach (var tuple in anläggningsLista)
+      {
+        containerSoftTypes.Add(tuple.Item1);
+        containerSoftTypes.Add(tuple.Item2);
+      }
+
+      container.softTypes = containerSoftTypes.ToArray();
+      //XmlSerializer serializer = new XmlSerializer(typeof(Container));
+      //TextWriter tw = new StreamWriter(@"c:\temp\plattform.xml");
+      //serializer.Serialize(tw, container);
+
+    }
+
+    private Plattform_Längdm SkapaPlattformLängd(BIS_Plattform bisPlattform, Plattform_Längdm plattformLängdm)
+    {
+      Längdm1 längd = new Längdm1
+      {
+        instanceRef = "Längdm",
+        softType = "Property"
+      };
+
+      plattformLängdm.generalProperty = längd;
+      plattformLängdm.value = Convert.ToDecimal(bisPlattform.Längd);
+      plattformLängdm.JSonMapToPropertyName = "value";
+
+      return plattformLängdm;
+    }
+
+    private Plattform_Breddm SkapaPlattformBredd(BIS_Plattform bisPlattform, Plattform_Breddm plattformBreddm)
+    {
+      Breddm bredd = new Breddm
+      {
+        instanceRef = "Breddm",
+        softType = "Property"
+      };
+
+      plattformBreddm.generalProperty = bredd;
+      plattformBreddm.value = Convert.ToDecimal(bisPlattform.Bredd);
+      plattformBreddm.JSonMapToPropertyName = "value";
+      //EMPTY UNIT?
+      
+      return plattformBreddm;
+    }
+
+    private Plattform_Skyddszonochledstråk SkapaPlattformSkyddszonOchLedstråk(BIS_Plattform bisPlattform, Plattform_Skyddszonochledstråk plattformSkyddszonochledstråk)
+    {
+      Skyddszonochledstråk skyddszonochledstråk = new Skyddszonochledstråk
+      {
+        instanceRef = "Skyddszonochledstråk",
+        softType = "Property"
+      };
+
+      if (bisPlattform.Skyddszon_Och_Ledstråk != "?")
+        bisPlattform.Skyddszon_Och_Ledstråk = "Ja";
+
+      plattformSkyddszonochledstråk.generalProperty = skyddszonochledstråk;
+      plattformSkyddszonochledstråk.value = bisPlattform.Skyddszon_Och_Ledstråk;
+      plattformSkyddszonochledstråk.JSonMapToPropertyName = "value";
+
+      return plattformSkyddszonochledstråk;
+    }
+
+    private Plattform_Plattformskantmtrl SkapaPlattformsKantMaterial(BIS_Plattform bisPlattform, Plattform_Plattformskantmtrl plattformPlattformskantmtrl)
+    {
+      Plattformskantmtrl plattformskantmtrl = new Plattformskantmtrl
+      {
+        instanceRef = "Plattformskantmtrl",
+        softType = "Property"
+      };
+
+      plattformPlattformskantmtrl.generalProperty = plattformskantmtrl;
+      plattformPlattformskantmtrl.value = bisPlattform.Plattformskant_mtrl;
+      plattformPlattformskantmtrl.JSonMapToPropertyName = "value";
+
+      return plattformPlattformskantmtrl;
+    }
+
+    private Plattform_Plattformsutrustning SkapaPlattformsUtrustning(BIS_Plattform bisPlattform, Plattform_Plattformsutrustning plattformPlattformsutrustning)
+    {
+      Plattformsutrustning plattformsutrustning = new Plattformsutrustning
+      {
+        instanceRef = "Plattformsutrustning",
+        softType = "Property"
+      };
+
+      if (bisPlattform.PlattformsUtrustning == "?")
+        bisPlattform.PlattformsUtrustning = "Okänt";
+
+      plattformPlattformsutrustning.generalProperty = plattformsutrustning;
+      plattformPlattformsutrustning.value = bisPlattform.PlattformsUtrustning;
+      plattformPlattformsutrustning.JSonMapToPropertyName = "value";
+
+      return plattformPlattformsutrustning;
+
     }
 
     private Plattform_Skylt SkapaPlattformSkylt(BIS_Plattform bisPlattform, Plattform_Skylt plattformSkylt)
     {
-      throw new NotImplementedException();
+      Skylt skylt = new Skylt
+      {
+        instanceRef = "Skylt",
+        softType = "Property"
+      };
+
+      //Skylt objekt
+
+      plattformSkylt.generalProperty = skylt;
+      plattformSkylt.value = bisPlattform.Skylt;
+      plattformSkylt.JSonMapToPropertyName = "value";
+
+      return plattformSkylt;
     }
 
-    private Plattform_Skyddsräcken SkapaPlattfomrSkyddsräcken(BIS_Plattform bisPlattform, Plattform_Skyddsräcken plattformSkyddsräcken)
+    private Plattform_Skyddsräcken SkapaPlattformSkyddsräcken(BIS_Plattform bisPlattform, Plattform_Skyddsräcken plattformSkyddsräcken)
     {
-      throw new NotImplementedException();
-    }
+      Skyddsräcken skyddsräcken = new Skyddsräcken
+      {
+        instanceRef = "Skyddsräcken",
+        softType = "Property"
+      };
 
-    private Plattform_Höjd_beskr SkapaPlattformHöjdBeskrivning(BIS_Plattform bisPlattform, Plattform_Höjd_beskr plattformHöjdBeskr)
-    {
-      throw new NotImplementedException();
-    }
+      if (bisPlattform.Skyddsräcken == "?")
+        bisPlattform.Skyddsräcken = "Okänt";
 
+      plattformSkyddsräcken.generalProperty = skyddsräcken;
+      plattformSkyddsräcken.value = bisPlattform.Skyddsräcken;
+      plattformSkyddsräcken.JSonMapToPropertyName = "value";
+
+      return plattformSkyddsräcken;
+
+    }
     private Plattform_Höjd SkapaPlattformHöjd(BIS_Plattform bisPlattform, Plattform_Höjd plattformHöjd)
     {
       Höjd höjd = new Höjd
@@ -153,6 +287,9 @@ namespace DataMappingExperiments.DataMapping
         softType = "Property"
       };
 
+      if (bisPlattform.Fotsteg == "?")
+        bisPlattform.Fotsteg = "Okänt";
+
       plattformFotsteg.generalProperty = fotsteg;
       plattformFotsteg.value = bisPlattform.Fotsteg;
       plattformFotsteg.JSonMapToPropertyName = "value";
@@ -168,6 +305,9 @@ namespace DataMappingExperiments.DataMapping
         instanceRef = "Brunnolock",
         softType = "Property"
       };
+
+      if (bisPlattform.Brunn_Och_Lock == "?")
+        bisPlattform.Brunn_Och_Lock = "Okänt";
 
       plattformBrunnolock.generalProperty = brunnolock;
       plattformBrunnolock.value = bisPlattform.Brunn_Och_Lock;
@@ -198,6 +338,8 @@ namespace DataMappingExperiments.DataMapping
         instanceRef = "Väderskydd",
         softType = "Property"
       };
+
+      // Typ av väderskydd: Skydd || Tak
 
       plattformVäderskydd.generalProperty = väderskydd;
       plattformVäderskydd.value = bisPlattform.Väderskydd;
