@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Xml.Serialization;
 using DataMappingExperiments.AndaObjekt;
@@ -32,10 +33,10 @@ namespace DataMappingExperiments.DataMapping
           myPlattform.Höjd = attributeValue;
           break;
         case 12:
-          myPlattform.Längd = int.Parse(attributeValue);
+          myPlattform.Längd = decimal.Parse(attributeValue, CultureInfo.InvariantCulture);
           break;
         case 13:
-          myPlattform.Bredd = attributeValue;
+          myPlattform.Bredd = decimal.Parse(attributeValue, CultureInfo.InvariantCulture);
           break;
         case 14:
           myPlattform.Plattformskant_mtrl = attributeValue;
@@ -84,66 +85,74 @@ namespace DataMappingExperiments.DataMapping
     {
       Container container = new Container();
       var containerSoftTypes = new List<SoftType>();
-      var anläggningsLista = new List<Tuple<SoftType_Anläggningsspecifikation, SoftType_FTAnläggningsspecifikation>>();
-      var plattformar = new List<ANDA_Plattform>();
+      //var plattformar = new List<GeografiskPlaceringsreferensdefaultIn>();
          
-      foreach (BIS_Plattform bisPlattform in bisList)
+      //foreach (BIS_Plattform bisPlattform in bisList)
+      //{
+      //  var geografiskSofttype = new SoftType_GeografiskPlaceringsreferens();
+      //  var ftGeografiskSofttype = new SoftType_FTGeografiskPlaceringsreferens();
+      //  var plattformInstance = new GeografiskPlaceringsreferensEntrydefaultIn();
+      //  var specifikationInstance = new GeografiskPlaceringsreferensdefaultIn();
+      //  var företeelseTyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp();
+      //  var typ = new FTGeografiskPlaceringsreferensReference();
+
+      //  företeelseTyp.@class = typ;
+      //  specifikationInstance.anläggningsprodukt = new BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsprodukt[4];
+
+      //  plattformInstance.data = specifikationInstance;
+      //  ANDA_Plattform plattform = new ANDA_Plattform
+      //  {
+      //    id = Guid.NewGuid().ToString(),
+      //    notering = bisPlattform.Notering,
+      //    name = "Name?",
+      //    arbetsnamn = "arbetsnamn?",
+      //    versionId = "versionsId",
+      //    stringSet = new ANDA_PlattformStringset
+      //    {
+      //      Väderskydd = SkapaPlattformVäderskydd(bisPlattform, new Plattform_Väderskydd()),
+      //      Beläggning = SkapaPlattformBeläggning(bisPlattform, new Plattform_Beläggning()),
+      //      Brunnolock = SkapaPlattformBrunnOLock(bisPlattform, new Plattform_Brunnolock()),
+      //      Fotsteg = SkapaPlattformFotsteg(bisPlattform, new Plattform_Fotsteg()),
+      //      Höjd = SkapaPlattformHöjd(bisPlattform, new Plattform_Höjd()),
+      //      Skyddsräcken = SkapaPlattformSkyddsräcken(bisPlattform, new Plattform_Skyddsräcken()),
+      //      Skylt = SkapaPlattformSkylt(bisPlattform, new Plattform_Skylt()),
+      //      Plattformsutrustning = SkapaPlattformsUtrustning(bisPlattform, new Plattform_Plattformsutrustning()),
+      //      Plattformskantmtrl = SkapaPlattformsKantMaterial(bisPlattform, new Plattform_Plattformskantmtrl()),
+      //      Skyddszonochledstråk = SkapaPlattformSkyddszonOchLedstråk(bisPlattform, new Plattform_Skyddszonochledstråk())
+      //    },
+      //    numericSet = new ANDA_PlattformNumericSet
+      //    {
+      //      Breddm = SkapaPlattformBredd(bisPlattform, new Plattform_Breddm()),
+      //      Längdm = SkapaPlattformLängd(bisPlattform, new Plattform_Längdm())
+      //    }
+      //  };
+      //  //add to list!
+      //  specifikationInstance = plattform;
+      //  plattformar.Add(specifikationInstance);
+      //}
+
+      //Test data!
+      // ANDA plattform funkar inte än, solve it!
+      var myTestPlattform = new GeografiskPlaceringsreferensEntrydefaultIn
       {
-        //var entrydefaultIn = new AnläggningsspecifikationEntrydefaultIn();
-        //var specifikationDefaultIn = new AnläggningsspecifikationdefaultIn();
-        //var produkt = new BreakdownElementRealization_Anläggningsspecifikation_anläggningsprodukt();
-        //var reference = new AnläggningsproduktReference();
-
-        //entrydefaultIn.data = specifikationDefaultIn;
-        //produkt.value = reference;
-        //specifikationDefaultIn.anläggningsprodukt = new BreakdownElementRealization_Anläggningsspecifikation_anläggningsprodukt[bisList.Count];
-
-
-
-        var plattformInstance = new GeografiskPlaceringsreferensEntrydefaultIn();
-        var specifikationInstance = new GeografiskPlaceringsreferensdefaultIn();
-        
-        ANDA_Plattform plattform = new ANDA_Plattform
+        data = new Plattform
         {
-          id = Guid.NewGuid().ToString(),
-          notering = bisPlattform.Notering,
-          name = "Name?",
-          arbetsnamn = "arbetsnamn?",
-          versionId = "versionsId",
-          stringSet = new ANDA_PlattformStringset
-          {
-            Väderskydd = SkapaPlattformVäderskydd(bisPlattform, new Plattform_Väderskydd()),
-            Beläggning = SkapaPlattformBeläggning(bisPlattform, new Plattform_Beläggning()),
-            Brunnolock = SkapaPlattformBrunnOLock(bisPlattform, new Plattform_Brunnolock()),
-            Fotsteg = SkapaPlattformFotsteg(bisPlattform, new Plattform_Fotsteg()),
-            Höjd = SkapaPlattformHöjd(bisPlattform, new Plattform_Höjd()),
-            Skyddsräcken = SkapaPlattformSkyddsräcken(bisPlattform, new Plattform_Skyddsräcken()),
-            Skylt = SkapaPlattformSkylt(bisPlattform, new Plattform_Skylt()),
-            Plattformsutrustning = SkapaPlattformsUtrustning(bisPlattform, new Plattform_Plattformsutrustning()),
-            Plattformskantmtrl = SkapaPlattformsKantMaterial(bisPlattform, new Plattform_Plattformskantmtrl()),
-            Skyddszonochledstråk = SkapaPlattformSkyddszonOchLedstråk(bisPlattform, new Plattform_Skyddszonochledstråk())
-          },
-          numericSet = new ANDA_PlattformNumericSet
-          {
-            Breddm = SkapaPlattformBredd(bisPlattform, new Plattform_Breddm()),
-            Längdm = SkapaPlattformLängd(bisPlattform, new Plattform_Längdm())
-          }
-        };
-        //add to list!
-        plattformar.Add(plattform);
-      }
-      //add to container
-      foreach (var tuple in anläggningsLista)
-      {
-        containerSoftTypes.Add(tuple.Item1);
-        containerSoftTypes.Add(tuple.Item2);
-      }
+          id = "007",
+          notering = "Test",
+          versionId = "1001",
+          name = "Test-Plattform"
+        }
+      };
 
+      var testGeografiskSofttype = new SoftType_GeografiskPlaceringsreferens();
+      var testInstanceList = new List<GeografiskPlaceringsreferensInstances> {myTestPlattform};
+      testGeografiskSofttype.instances = testInstanceList.ToArray();
+      containerSoftTypes.Add(testGeografiskSofttype);
       container.softTypes = containerSoftTypes.ToArray();
-      //XmlSerializer serializer = new XmlSerializer(typeof(Container));
-      //TextWriter tw = new StreamWriter(@"c:\temp\plattform.xml");
-      //serializer.Serialize(tw, container);
-
+      
+      XmlSerializer serializer = new XmlSerializer(typeof(Container));
+      TextWriter tw = new StreamWriter(@"c:\temp\plattform.xml");
+      serializer.Serialize(tw, container);
     }
 
     private Plattform_Längdm SkapaPlattformLängd(BIS_Plattform bisPlattform, Plattform_Längdm plattformLängdm)
@@ -153,9 +162,9 @@ namespace DataMappingExperiments.DataMapping
         instanceRef = "Längdm",
         softType = "Property"
       };
-
+      
       plattformLängdm.generalProperty = längd;
-      plattformLängdm.value = Convert.ToDecimal(bisPlattform.Längd);
+      plattformLängdm.value = bisPlattform.Längd;
       plattformLängdm.JSonMapToPropertyName = "value";
 
       return plattformLängdm;
@@ -168,9 +177,9 @@ namespace DataMappingExperiments.DataMapping
         instanceRef = "Breddm",
         softType = "Property"
       };
-
+      
       plattformBreddm.generalProperty = bredd;
-      plattformBreddm.value = Convert.ToDecimal(bisPlattform.Bredd);
+      plattformBreddm.value = bisPlattform.Bredd;
       plattformBreddm.JSonMapToPropertyName = "value";
       //EMPTY UNIT?
       

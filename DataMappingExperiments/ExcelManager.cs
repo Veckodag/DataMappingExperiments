@@ -45,23 +45,14 @@ namespace DataMappingExperiments
         var set = dataSet.GetXml();
 
         //Return set; gives an unformatted version of the excel properties
-        //CreateObjects();
+        CreateObjects();
         return XmlDocumentFormatting(set);
       }
     }
     //TODO: Build it all programmatically
     void CreateObjects()
     {
-      var container = new Container();
-
       _mapper.ObjectStructure(_BisList);
-
-      foreach (BIS_Plattform bisItem in _BisList)
-      {
-        //XmlSerializer serializer = new XmlSerializer(typeof(Plattform));
-        //TextWriter tw = new StreamWriter(@"c:\temp\plattform.xml");
-        //serializer.Serialize(tw, plattform);
-      }
     }
 
     #region STRINGDANCER

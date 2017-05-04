@@ -25,8 +25,7 @@ namespace DataMappingExperiments
         Console.WriteLine("The file is invalid. Select a valid file.");  
         return;
       }
-      try
-      {
+
         #region ExcelInput
 
         var excelManager = new ExcelManager();
@@ -44,11 +43,6 @@ namespace DataMappingExperiments
         //Create the XML
         //string xmlName = excelManager.CreateXMLFile(xmlString);
 
-      }
-      catch (Exception exception)
-      {
-        Console.WriteLine("Something went wrong: " + exception.Message);
-      }
     }
   }
 }

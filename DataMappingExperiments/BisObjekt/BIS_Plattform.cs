@@ -8,8 +8,8 @@ namespace DataMappingExperiments.BisObjekt
     public string Senast_Ändrad { get; set; }
     public string Senast_Ändrad_Av { get; set; }
     public string Höjd { get; set; }
-    public int Längd { get; set; }
-    public string Bredd { get; set; }
+    public decimal Längd { get; set; }
+    public decimal Bredd { get; set; }
     public string Plattformskant_mtrl { get; set; }
     public string Beläggning { get; set; }
     //I anda är de 2 booleans: harSkyddszon, harLedstråk
