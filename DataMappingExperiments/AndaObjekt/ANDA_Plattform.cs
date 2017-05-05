@@ -4,17 +4,19 @@ using System.Xml.Serialization;
 namespace DataMappingExperiments.AndaObjekt
 {
   [Serializable]
+  [XmlType(Namespace = "http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316")]
+  [XmlRoot(Namespace = "http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316", IsNullable = false, ElementName = "Plattform")]
   public class ANDA_Plattform : Plattform
   {
-    //TODO: Besiktningsklass
+    
   }
-
+  [Serializable]
   public class ANDA_PlattformNumericSet : PlattformNumericSet
   {
     public decimal Verklighöjd { get; set; }
   }
-
-  public class ANDA_PlattformStringset : PlattformStringSet
+  [Serializable]
+  public class ANDA_PlattformStringSet : PlattformStringSet
   {
     public string Nominellhöjd { get; set; }
     public ANDA_Väderskydd AndaVäderskydd { get; set; }
@@ -45,7 +47,6 @@ namespace DataMappingExperiments.AndaObjekt
     public string Skärmtakindivid => "";
     public string SkärmtakPlacering => "";
   }
-
   public class ANDA_Väderskydd
   {
     public string Väderskyddprodukt { get; set; }

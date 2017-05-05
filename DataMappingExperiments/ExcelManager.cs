@@ -46,7 +46,8 @@ namespace DataMappingExperiments
 
         //Return set; gives an unformatted version of the excel properties
         CreateObjects();
-        return XmlDocumentFormatting(set);
+        //return XmlDocumentFormatting(set);
+        return set;
       }
     }
     //TODO: Build it all programmatically

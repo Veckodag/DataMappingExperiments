@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DataMappingExperiments.BisObjekt
+﻿namespace DataMappingExperiments.BisObjekt
 {
   
   public class BIS_Plattform : BIS_GrundObjekt

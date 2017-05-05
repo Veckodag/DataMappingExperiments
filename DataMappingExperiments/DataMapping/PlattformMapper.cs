@@ -15,15 +15,12 @@ namespace DataMappingExperiments.DataMapping
     {
       MapperType = MapperType.Plattform;
     }
-
     public override MapperType MapperType { get; set; }
     public override string Name => "Plattform";
-
     public override string MapXmlAttribute(int index, string attributeValue)
     {
       return attributeValue;
     }
-
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt plattform)
     {
       var myPlattform = (BIS_Plattform) plattform;
@@ -80,79 +77,148 @@ namespace DataMappingExperiments.DataMapping
       }
       return myPlattform;
     }
-
     public override void ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
       Container container = new Container();
       var containerSoftTypes = new List<SoftType>();
-      //var plattformar = new List<GeografiskPlaceringsreferensdefaultIn>();
-         
-      //foreach (BIS_Plattform bisPlattform in bisList)
-      //{
-      //  var geografiskSofttype = new SoftType_GeografiskPlaceringsreferens();
-      //  var ftGeografiskSofttype = new SoftType_FTGeografiskPlaceringsreferens();
-      //  var plattformInstance = new GeografiskPlaceringsreferensEntrydefaultIn();
-      //  var specifikationInstance = new GeografiskPlaceringsreferensdefaultIn();
-      //  var företeelseTyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp();
-      //  var typ = new FTGeografiskPlaceringsreferensReference();
+      var plattformar = new List<GeografiskPlaceringsreferensInstances>();
+      var FTPlattformar = new List<FTGeografiskPlaceringsreferensInstances>();
 
-      //  företeelseTyp.@class = typ;
-      //  specifikationInstance.anläggningsprodukt = new BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsprodukt[4];
-
-      //  plattformInstance.data = specifikationInstance;
-      //  ANDA_Plattform plattform = new ANDA_Plattform
-      //  {
-      //    id = Guid.NewGuid().ToString(),
-      //    notering = bisPlattform.Notering,
-      //    name = "Name?",
-      //    arbetsnamn = "arbetsnamn?",
-      //    versionId = "versionsId",
-      //    stringSet = new ANDA_PlattformStringset
-      //    {
-      //      Väderskydd = SkapaPlattformVäderskydd(bisPlattform, new Plattform_Väderskydd()),
-      //      Beläggning = SkapaPlattformBeläggning(bisPlattform, new Plattform_Beläggning()),
-      //      Brunnolock = SkapaPlattformBrunnOLock(bisPlattform, new Plattform_Brunnolock()),
-      //      Fotsteg = SkapaPlattformFotsteg(bisPlattform, new Plattform_Fotsteg()),
-      //      Höjd = SkapaPlattformHöjd(bisPlattform, new Plattform_Höjd()),
-      //      Skyddsräcken = SkapaPlattformSkyddsräcken(bisPlattform, new Plattform_Skyddsräcken()),
-      //      Skylt = SkapaPlattformSkylt(bisPlattform, new Plattform_Skylt()),
-      //      Plattformsutrustning = SkapaPlattformsUtrustning(bisPlattform, new Plattform_Plattformsutrustning()),
-      //      Plattformskantmtrl = SkapaPlattformsKantMaterial(bisPlattform, new Plattform_Plattformskantmtrl()),
-      //      Skyddszonochledstråk = SkapaPlattformSkyddszonOchLedstråk(bisPlattform, new Plattform_Skyddszonochledstråk())
-      //    },
-      //    numericSet = new ANDA_PlattformNumericSet
-      //    {
-      //      Breddm = SkapaPlattformBredd(bisPlattform, new Plattform_Breddm()),
-      //      Längdm = SkapaPlattformLängd(bisPlattform, new Plattform_Längdm())
-      //    }
-      //  };
-      //  //add to list!
-      //  specifikationInstance = plattform;
-      //  plattformar.Add(specifikationInstance);
-      //}
-
-      //Test data!
-      // ANDA plattform funkar inte än, solve it!
-      var myTestPlattform = new GeografiskPlaceringsreferensEntrydefaultIn
+      foreach (BIS_Plattform bisPlattform in bisList)
       {
-        data = new Plattform
+        //TODO: Samma grej men med FT
+        var plattformsInstans = new GeografiskPlaceringsreferensEntrydefaultIn
         {
-          id = "007",
-          notering = "Test",
-          versionId = "1001",
-          name = "Test-Plattform"
-        }
-      };
+          Array = true,
+          id = "Plattform",
 
-      var testGeografiskSofttype = new SoftType_GeografiskPlaceringsreferens();
-      var testInstanceList = new List<GeografiskPlaceringsreferensInstances> {myTestPlattform};
-      testGeografiskSofttype.instances = testInstanceList.ToArray();
-      containerSoftTypes.Add(testGeografiskSofttype);
+        };
+        Plattform plattform = new Plattform
+        {
+          id = Guid.NewGuid().ToString(),
+          notering = bisPlattform.Notering,
+          name = "Plattform-Namn",
+          versionId = "Alpha",
+          företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
+          {
+            @class = new FTGeografiskPlaceringsreferensReference
+            {
+              instanceRef = "Plattform",
+              softType = "FTGeografiskPlaceringsreferens"
+            }
+          },
+          stringSet = new PlattformStringSet
+          {
+            Väderskydd = SkapaPlattformVäderskydd(bisPlattform, new Plattform_Väderskydd()),
+            Beläggning = SkapaPlattformBeläggning(bisPlattform, new Plattform_Beläggning()),
+            Brunnolock = SkapaPlattformBrunnOLock(bisPlattform, new Plattform_Brunnolock()),
+            Fotsteg = SkapaPlattformFotsteg(bisPlattform, new Plattform_Fotsteg()),
+            Höjd = SkapaPlattformHöjd(bisPlattform, new Plattform_Höjd()),
+            Skyddsräcken = SkapaPlattformSkyddsräcken(bisPlattform, new Plattform_Skyddsräcken()),
+            Skylt = SkapaPlattformSkylt(bisPlattform, new Plattform_Skylt()),
+            Plattformsutrustning = SkapaPlattformsUtrustning(bisPlattform, new Plattform_Plattformsutrustning()),
+            Plattformskantmtrl = SkapaPlattformsKantMaterial(bisPlattform, new Plattform_Plattformskantmtrl()),
+            Skyddszonochledstråk = SkapaPlattformSkyddszonOchLedstråk(bisPlattform, new Plattform_Skyddszonochledstråk())
+          },
+          numericSet = new PlattformNumericSet
+          {
+            Breddm = SkapaPlattformBredd(bisPlattform, new Plattform_Breddm()),
+            Längdm = SkapaPlattformLängd(bisPlattform, new Plattform_Längdm())
+          }
+        };
+        //add to list!
+        plattformsInstans.data = plattform;
+        plattformar.Add(plattformsInstans);
+        var ftPlattformsInstans = new FTGeografiskPlaceringsreferensdefaultIn
+        {
+          id = "Plattform",
+          name = "Plattform-Namn"
+        };
+      }
+      //Real Test
+      //Add new softypes to containerSoftTypes
+      var geografiskSofttype = new SoftType_GeografiskPlaceringsreferens
+      {
+        instances = plattformar.ToArray()
+      };
+      var geografiskFTSofttype = new SoftType_FTGeografiskPlaceringsreferens
+      {
+        instances = FTPlattformar.ToArray()
+      };
+      containerSoftTypes.Add(geografiskSofttype);
+      List<SoftType> extraSofttypeList = createSoftypes();
+
+
+      #region Pre-test
+      //Test data!
+      //ANDA plattform funkar inte än, solve it!
+      //var myTestPlattform = new GeografiskPlaceringsreferensEntrydefaultIn
+      //{
+      //  data = new Plattform
+      //  {
+      //    id = "plattformTest007",
+      //    notering = "Test",
+      //    versionId = "10001",
+      //    name = "TestPlattform1",
+      //    stringSet = new PlattformStringSet
+      //    {
+      //      Skyddsräcken = TestRäcken()
+      //    },
+      //    företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
+      //    {
+      //      @class = new FTGeografiskPlaceringsreferensReference
+      //      {
+      //        instanceRef = "Plattform",
+      //        softType = "FTGeografiskPlaceringsreferens"
+      //      }
+      //    }
+      //  }
+      //};
+
+      ////Correct object structure
+      //var testGeografiskSofttype = new SoftType_GeografiskPlaceringsreferens();
+      //var testInstanceList = new List<GeografiskPlaceringsreferensInstances> {myTestPlattform};
+      //testGeografiskSofttype.instances = testInstanceList.ToArray();
+      //containerSoftTypes.Add(testGeografiskSofttype);
+      //container.softTypes = containerSoftTypes.ToArray();
+      #endregion
+
       container.softTypes = containerSoftTypes.ToArray();
-      
+      serialization(container);
+    }
+
+    private List<SoftType> createSoftypes()
+    {
+      var softtypeList = new List<SoftType>();
+      //Vilka softtypes behövs
+
+
+
+      return softtypeList;
+    }
+
+    private void serialization(Container container)
+    {
       XmlSerializer serializer = new XmlSerializer(typeof(Container));
-      TextWriter tw = new StreamWriter(@"c:\temp\plattform.xml");
+      TextWriter tw = new StreamWriter(@"C:\Users\fresan\Documents\Mappning ANDA\plattform.xml");
       serializer.Serialize(tw, container);
+    }
+
+
+    private Plattform_Skyddsräcken TestRäcken()
+
+    {
+      var testRäcke = new Plattform_Skyddsräcken();
+      Skyddsräcken räcke = new Skyddsräcken
+      {
+        instanceRef = "Skyddsräcken",
+        softType = "Property"
+      };
+      testRäcke.generalProperty = räcke;
+      testRäcke.value = "Okänt";
+      testRäcke.JSonMapToPropertyName = "value";
+
+      return testRäcke;
     }
 
     private Plattform_Längdm SkapaPlattformLängd(BIS_Plattform bisPlattform, Plattform_Längdm plattformLängdm)
@@ -166,6 +232,7 @@ namespace DataMappingExperiments.DataMapping
       plattformLängdm.generalProperty = längd;
       plattformLängdm.value = bisPlattform.Längd;
       plattformLängdm.JSonMapToPropertyName = "value";
+      plattformLängdm.Unit = new EmptyUnit();
 
       return plattformLängdm;
     }
@@ -181,7 +248,7 @@ namespace DataMappingExperiments.DataMapping
       plattformBreddm.generalProperty = bredd;
       plattformBreddm.value = bisPlattform.Bredd;
       plattformBreddm.JSonMapToPropertyName = "value";
-      //EMPTY UNIT?
+      plattformBreddm.Unit = new EmptyUnit();
       
       return plattformBreddm;
     }
@@ -348,20 +415,12 @@ namespace DataMappingExperiments.DataMapping
         softType = "Property"
       };
 
-      // Typ av väderskydd: Skydd || Tak
-
       plattformVäderskydd.generalProperty = väderskydd;
       plattformVäderskydd.value = bisPlattform.Väderskydd;
-      //Not sure, should be a XML attribute
+
       plattformVäderskydd.JSonMapToPropertyName = "value";
 
       return plattformVäderskydd;
-    }
-
-    public class XmlAttributeDataMapper<T>
-    {
-      [XmlAttribute]
-      public T Value { get; set; }
     }
   }
 }
