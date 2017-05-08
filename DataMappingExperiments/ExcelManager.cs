@@ -50,7 +50,9 @@ namespace DataMappingExperiments
         return set;
       }
     }
-    //TODO: Build it all programmatically
+    /// <summary>
+    /// The entry method for XML mapping and structuring
+    /// </summary>
     void CreateObjects()
     {
       _mapper.ObjectStructure(_BisList);

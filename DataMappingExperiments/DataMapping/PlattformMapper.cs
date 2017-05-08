@@ -86,7 +86,6 @@ namespace DataMappingExperiments.DataMapping
 
       foreach (BIS_Plattform bisPlattform in bisList)
       {
-        //TODO: Samma grej men med FT
         var plattformsInstans = new GeografiskPlaceringsreferensEntrydefaultIn
         {
           Array = true,
@@ -129,11 +128,19 @@ namespace DataMappingExperiments.DataMapping
         //add to list!
         plattformsInstans.data = plattform;
         plattformar.Add(plattformsInstans);
-        var ftPlattformsInstans = new FTGeografiskPlaceringsreferensdefaultIn
+
+        var ftPlattformsInstans = new FTGeografiskPlaceringsreferensEntrydefaultIn
         {
-          id = "Plattform",
-          name = "Plattform-Namn"
+          Array = true,
+          id = "FTPlattform",
+          inputSchemaRef = "defaultIn",
+          data = new FTGeografiskPlaceringsreferensdefaultIn
+          {
+            id = "FTPlattform",
+            name = "FTPlattform"
+          }
         };
+        FTPlattformar.Add(ftPlattformsInstans);
       }
       //Real Test
       //Add new softypes to containerSoftTypes
@@ -146,6 +153,7 @@ namespace DataMappingExperiments.DataMapping
         instances = FTPlattformar.ToArray()
       };
       containerSoftTypes.Add(geografiskSofttype);
+      containerSoftTypes.Add(geografiskFTSofttype);
       List<SoftType> extraSofttypeList = createSoftypes();
 
 

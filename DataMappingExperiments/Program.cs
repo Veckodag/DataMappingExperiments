@@ -11,10 +11,9 @@ namespace DataMappingExperiments
     {
       string excelFilePath = ConfigurationManager.AppSettings["ExcelFile"];
       string xsdFilePath = ConfigurationManager.AppSettings["XsdFile"];
-      //TODO: 1. Take a excel file input
+
       StartExcelManager(excelFilePath, xsdFilePath);
-      //TODO: 2. Map the data from the excel against a class
-      //TODO: 3. Output data into a XML format
+      
       Console.ReadLine();
     }
 
