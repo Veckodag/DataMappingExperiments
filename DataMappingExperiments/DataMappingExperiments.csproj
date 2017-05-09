@@ -69,6 +69,7 @@
     <Compile Include="Obsolete\ExcelManagerOLD.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="DataMapping\Mapper.cs" />
+    <Compile Include="Obsolete\ProgramNotesToSelf.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\StringManager.cs" />

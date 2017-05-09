@@ -193,7 +193,7 @@ namespace DataMappingExperiments
           foreach (Cell cell in rowCollection.ElementAt(0))
           {
             //Value of the BIS attribute
-            //TODO: Här ställs XML attributet in
+            //Här ställs XML attributet in
             int cellColumnIndex = GetColumnIndex(GetColumnName(cell.CellReference));
 
             var bisAttribute = GetValueOfCell(spreadsheetDocument, cell);

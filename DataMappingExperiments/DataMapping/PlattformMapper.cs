@@ -80,10 +80,11 @@ namespace DataMappingExperiments.DataMapping
     public override void ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
       Container container = new Container();
+      //All softypes must be aggregated before they are added to the container
       var containerSoftTypes = new List<SoftType>();
       var plattformar = new List<GeografiskPlaceringsreferensInstances>();
-      var FTPlattformar = new List<FTGeografiskPlaceringsreferensInstances>();
-
+      
+      //Does all the real mapping against ANDA resources
       foreach (BIS_Plattform bisPlattform in bisList)
       {
         var plattformsInstans = new GeografiskPlaceringsreferensEntrydefaultIn
@@ -129,18 +130,6 @@ namespace DataMappingExperiments.DataMapping
         plattformsInstans.data = plattform;
         plattformar.Add(plattformsInstans);
 
-        var ftPlattformsInstans = new FTGeografiskPlaceringsreferensEntrydefaultIn
-        {
-          Array = true,
-          id = "FTPlattform",
-          inputSchemaRef = "defaultIn",
-          data = new FTGeografiskPlaceringsreferensdefaultIn
-          {
-            id = "FTPlattform",
-            name = "FTPlattform"
-          }
-        };
-        FTPlattformar.Add(ftPlattformsInstans);
       }
       //Real Test
       //Add new softypes to containerSoftTypes
@@ -148,85 +137,60 @@ namespace DataMappingExperiments.DataMapping
       {
         instances = plattformar.ToArray()
       };
-      var geografiskFTSofttype = new SoftType_FTGeografiskPlaceringsreferens
-      {
-        instances = FTPlattformar.ToArray()
-      };
       containerSoftTypes.Add(geografiskSofttype);
-      containerSoftTypes.Add(geografiskFTSofttype);
-      List<SoftType> extraSofttypeList = createSoftypes();
+      containerSoftTypes.AddRange(CreateSupplementarySoftypes());
 
-
-      #region Pre-test
-      //Test data!
-      //ANDA plattform funkar inte än, solve it!
-      //var myTestPlattform = new GeografiskPlaceringsreferensEntrydefaultIn
-      //{
-      //  data = new Plattform
-      //  {
-      //    id = "plattformTest007",
-      //    notering = "Test",
-      //    versionId = "10001",
-      //    name = "TestPlattform1",
-      //    stringSet = new PlattformStringSet
-      //    {
-      //      Skyddsräcken = TestRäcken()
-      //    },
-      //    företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
-      //    {
-      //      @class = new FTGeografiskPlaceringsreferensReference
-      //      {
-      //        instanceRef = "Plattform",
-      //        softType = "FTGeografiskPlaceringsreferens"
-      //      }
-      //    }
-      //  }
-      //};
-
-      ////Correct object structure
-      //var testGeografiskSofttype = new SoftType_GeografiskPlaceringsreferens();
-      //var testInstanceList = new List<GeografiskPlaceringsreferensInstances> {myTestPlattform};
-      //testGeografiskSofttype.instances = testInstanceList.ToArray();
-      //containerSoftTypes.Add(testGeografiskSofttype);
-      //container.softTypes = containerSoftTypes.ToArray();
-      #endregion
-
+      //Last step is to prepare the container for serialization
       container.softTypes = containerSoftTypes.ToArray();
       serialization(container);
     }
 
-    private List<SoftType> createSoftypes()
+    private List<SoftType> CreateSupplementarySoftypes()
     {
+      //TODO: Make the extraList complete
       var softtypeList = new List<SoftType>();
+      var geografiskFTSofttype = new SoftType_FTGeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "FTGeografiskPlaceringsreferens"
+      };
+      var FTPlattformar = new List<FTGeografiskPlaceringsreferensInstances>();
       //Vilka softtypes behövs
+      var ftPlattformsInstans = new FTGeografiskPlaceringsreferensEntrydefaultIn
+      {
+        Array = true,
+        id = "FTPlattform",
+        inputSchemaRef = "defaultIn",
+        data = new FTGeografiskPlaceringsreferensdefaultIn
+        {
+          id = "FTPlattform",
+          name = "FTPlattform"
+        }
+      };
+      FTPlattformar.Add(ftPlattformsInstans);
+      geografiskFTSofttype.instances = FTPlattformar.ToArray();
 
+      //TODO: Make Real Properties
+      var softtypeProperty = new SoftType_Property
+      {
+        Array = true,
+        id = "Property",
+        instances = CreateSoftTypePropertyInstances().ToArray()
+      };
+      //softtypeList.Add(softtypeProperty);
+      var softtypeUnit = new SoftType_Unit
+      {
+        Array = true,
+        id = "Unit",
+        instances = CreateSoftTypeUnitsInstances().ToArray()
+      };
 
+      //Add them all to the list
+      softtypeList.Add(geografiskFTSofttype);
+      softtypeList.Add(softtypeProperty);
+      softtypeList.Add(softtypeUnit);
 
       return softtypeList;
-    }
-
-    private void serialization(Container container)
-    {
-      XmlSerializer serializer = new XmlSerializer(typeof(Container));
-      TextWriter tw = new StreamWriter(@"C:\Users\fresan\Documents\Mappning ANDA\plattform.xml");
-      serializer.Serialize(tw, container);
-    }
-
-
-    private Plattform_Skyddsräcken TestRäcken()
-
-    {
-      var testRäcke = new Plattform_Skyddsräcken();
-      Skyddsräcken räcke = new Skyddsräcken
-      {
-        instanceRef = "Skyddsräcken",
-        softType = "Property"
-      };
-      testRäcke.generalProperty = räcke;
-      testRäcke.value = "Okänt";
-      testRäcke.JSonMapToPropertyName = "value";
-
-      return testRäcke;
     }
 
     private Plattform_Längdm SkapaPlattformLängd(BIS_Plattform bisPlattform, Plattform_Längdm plattformLängdm)
