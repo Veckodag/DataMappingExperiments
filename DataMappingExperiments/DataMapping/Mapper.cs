@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
+using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
@@ -21,6 +24,25 @@ namespace DataMappingExperiments.DataMapping
       XmlSerializer serializer = new XmlSerializer(typeof(Container));
       TextWriter tw = new StreamWriter(@"C:\Users\fresan\Documents\Mappning ANDA\plattform.xml");
       serializer.Serialize(tw, container);
+      tw.Close();
+      ValidateXML();
+    }
+
+    private void ValidateXML()
+    {
+      var textReader = new StreamReader(@"C:\Users\fresan\Documents\Mappning ANDA\plattform.xml");
+      var xmlDocument = new XmlDocument {Schemas = new XmlSchemaSet()};
+      xmlDocument.Schemas.Add(null, new XmlTextReader(ConfigurationManager.AppSettings["XsdFile"]));
+
+      xmlDocument.Load(textReader);
+      List<string> errors = new List<string>();
+      xmlDocument.Validate((sender, EventArgs) => errors.Add(EventArgs.Message));
+      foreach (var error in errors)
+      {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(error);
+        Console.WriteLine();
+      }
     }
 
     public List<UnitInstances> CreateSoftTypeUnitsInstances()
@@ -51,13 +73,24 @@ namespace DataMappingExperiments.DataMapping
     public List<PropertyInstances> CreateSoftTypePropertyInstances()
     {
       var propertyList = new List<PropertyInstances>();
-      //TODO: Map the properties
 
+      //TODO: Map the properties
+      //Kodrad: 4480 i XSD
+      string[] properties = {};
       var instance = new PropertyEntrydefaultIn
       {
         Array = true,
-        inputSchemaRef = "defaultIn"
+        inputSchemaRef = "defaultIn",
+        id = "propertyName"
       };
+
+      var property = new PropertydefaultIn
+      {
+        id = "PropertyInstance",
+        name = "PropertyName"
+      };
+      instance.data = property;
+      propertyList.Add(instance);
 
       return propertyList;
     }

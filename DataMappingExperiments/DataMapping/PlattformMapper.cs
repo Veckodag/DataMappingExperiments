@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Xml.Serialization;
-using DataMappingExperiments.AndaObjekt;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
 
@@ -97,8 +94,8 @@ namespace DataMappingExperiments.DataMapping
         {
           id = Guid.NewGuid().ToString(),
           notering = bisPlattform.Notering,
-          name = "Plattform-Namn",
-          versionId = "Alpha",
+          name = "",
+          versionId = "",
           företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
           {
             @class = new FTGeografiskPlaceringsreferensReference
@@ -109,6 +106,10 @@ namespace DataMappingExperiments.DataMapping
           },
           stringSet = new PlattformStringSet
           {
+            start = "",
+            end = "",
+            Kmtalti = SkapaKmTali(bisPlattform, new Plattform_Kmtalti()),
+            Kmtal = SkapaKmTal(bisPlattform, new Plattform_Kmtal()),
             Väderskydd = SkapaPlattformVäderskydd(bisPlattform, new Plattform_Väderskydd()),
             Beläggning = SkapaPlattformBeläggning(bisPlattform, new Plattform_Beläggning()),
             Brunnolock = SkapaPlattformBrunnOLock(bisPlattform, new Plattform_Brunnolock()),
@@ -118,10 +119,16 @@ namespace DataMappingExperiments.DataMapping
             Skylt = SkapaPlattformSkylt(bisPlattform, new Plattform_Skylt()),
             Plattformsutrustning = SkapaPlattformsUtrustning(bisPlattform, new Plattform_Plattformsutrustning()),
             Plattformskantmtrl = SkapaPlattformsKantMaterial(bisPlattform, new Plattform_Plattformskantmtrl()),
-            Skyddszonochledstråk = SkapaPlattformSkyddszonOchLedstråk(bisPlattform, new Plattform_Skyddszonochledstråk())
+            Skyddszonochledstråk = SkapaPlattformSkyddszonOchLedstråk(bisPlattform, new Plattform_Skyddszonochledstråk()),
+            ObjektText = SkapaObjektText(bisPlattform, new Plattform_ObjektText()),
+            Höjd_beskr = SkapaHöjdBeskrivning(bisPlattform, new Plattform_Höjd_beskr())
           },
           numericSet = new PlattformNumericSet
           {
+            start = "",
+            end = "",
+            BisObjektNr = SkapaBisObjektNr(bisPlattform, new Plattform_BisObjektNr()),
+            BisObjektTypNr = SkapaBisObjektTypNr(bisPlattform, new Plattform_BisObjektTypNr()),
             Breddm = SkapaPlattformBredd(bisPlattform, new Plattform_Breddm()),
             Längdm = SkapaPlattformLängd(bisPlattform, new Plattform_Längdm())
           }
@@ -129,10 +136,11 @@ namespace DataMappingExperiments.DataMapping
         //add to list!
         plattformsInstans.data = plattform;
         plattformar.Add(plattformsInstans);
-
+        
       }
       //Real Test
       //Add new softypes to containerSoftTypes
+      plattformar.RemoveRange(1, plattformar.Count - 1);
       var geografiskSofttype = new SoftType_GeografiskPlaceringsreferens
       {
         instances = plattformar.ToArray()
@@ -177,7 +185,6 @@ namespace DataMappingExperiments.DataMapping
         id = "Property",
         instances = CreateSoftTypePropertyInstances().ToArray()
       };
-      //softtypeList.Add(softtypeProperty);
       var softtypeUnit = new SoftType_Unit
       {
         Array = true,
@@ -192,6 +199,94 @@ namespace DataMappingExperiments.DataMapping
 
       return softtypeList;
     }
+
+    private Plattform_Höjd_beskr SkapaHöjdBeskrivning(BIS_Plattform bisPlattform, Plattform_Höjd_beskr plattformHöjdBeskr)
+    {
+      Höjd_beskr höjdBeskr = new Höjd_beskr
+      {
+        instanceRef = "Höjd_beskr",
+        softType = "Property"
+      };
+      plattformHöjdBeskr.generalProperty = höjdBeskr;
+      plattformHöjdBeskr.value = "600";
+      plattformHöjdBeskr.JSonMapToPropertyName = "value";
+
+      return plattformHöjdBeskr;
+    }
+
+    private Plattform_ObjektText SkapaObjektText(BIS_Plattform bisPlattform, Plattform_ObjektText plattformObjektText)
+    {
+      ObjektText objektText = new ObjektText
+      {
+        instanceRef = "ObjektText",
+        softType = "Property"
+      };
+      plattformObjektText.generalProperty = objektText;
+      plattformObjektText.value = "500";
+      plattformObjektText.JSonMapToPropertyName = "value";
+
+      return plattformObjektText;
+    }
+
+    private Plattform_BisObjektTypNr SkapaBisObjektTypNr(BIS_Plattform bisPlattform, Plattform_BisObjektTypNr plattformBisObjektTypNr)
+    {
+      BisObjektTypNr bisObjektTypNr = new BisObjektTypNr
+      {
+        instanceRef = "BisObjektTypNr",
+        softType = "Property"
+      };
+      plattformBisObjektTypNr.generalProperty = bisObjektTypNr;
+      plattformBisObjektTypNr.value = "400";
+      plattformBisObjektTypNr.JSonMapToPropertyName = "value";
+      plattformBisObjektTypNr.Unit = new EmptyUnit();
+
+      return plattformBisObjektTypNr;
+    }
+
+    private Plattform_BisObjektNr SkapaBisObjektNr(BIS_Plattform bisPlattform, Plattform_BisObjektNr plattformBisObjektNr)
+    {
+      BisObjektNr bisObjektNr = new BisObjektNr
+      {
+        instanceRef = "BisObjektNr",
+        softType = "Property"
+      };
+      plattformBisObjektNr.generalProperty = bisObjektNr;
+      plattformBisObjektNr.value = "300";
+      plattformBisObjektNr.JSonMapToPropertyName = "value";
+      plattformBisObjektNr.Unit = new EmptyUnit();
+
+      return plattformBisObjektNr;
+    }
+
+    private Plattform_Kmtalti SkapaKmTali(BIS_Plattform bisPlattform, Plattform_Kmtalti plattformKmtalti)
+    {
+      Kmtalti kmtalti = new Kmtalti
+      {
+        instanceRef = "Kmtalti",
+        softType = "Property"
+      };
+      plattformKmtalti.generalProperty = kmtalti;
+      plattformKmtalti.value = "200";
+      plattformKmtalti.JSonMapToPropertyName = "value";
+
+      return plattformKmtalti;
+    }
+
+    private Plattform_Kmtal SkapaKmTal(BIS_Plattform bisPlattform, Plattform_Kmtal plattformKmtal)
+    {
+      Kmtal kmtal = new Kmtal
+      {
+        instanceRef = "Kmtal",
+        softType = "Property"
+      };
+      plattformKmtal.generalProperty = kmtal;
+      //Fix this in bisplattform
+      plattformKmtal.value = "100";
+      plattformKmtal.JSonMapToPropertyName = "value";
+
+      return plattformKmtal;
+    }
+
 
     private Plattform_Längdm SkapaPlattformLängd(BIS_Plattform bisPlattform, Plattform_Längdm plattformLängdm)
     {

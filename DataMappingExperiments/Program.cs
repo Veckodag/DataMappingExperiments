@@ -13,7 +13,7 @@ namespace DataMappingExperiments
       string xsdFilePath = ConfigurationManager.AppSettings["XsdFile"];
 
       StartExcelManager(excelFilePath, xsdFilePath);
-      
+
       Console.ReadLine();
     }
 
@@ -37,11 +37,14 @@ namespace DataMappingExperiments
         {
           Console.WriteLine("The content of the Excel file is empty!");
         }
-        Console.WriteLine(xmlString);
+        //Console.WriteLine(xmlString);
         #endregion
+        
         //Create the XML
         //string xmlName = excelManager.CreateXMLFile(xmlString);
 
     }
+
+
   }
 }
