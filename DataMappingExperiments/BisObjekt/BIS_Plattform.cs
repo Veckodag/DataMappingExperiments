@@ -10,7 +10,6 @@
     public decimal Bredd { get; set; }
     public string Plattformskant_mtrl { get; set; }
     public string Beläggning { get; set; }
-    //I anda är de 2 booleans: harSkyddszon, harLedstråk
     public string Skyddszon_Och_Ledstråk{ get; set; }
     public string Väderskydd { get; set; }
     public string Skylt { get; set; }
@@ -20,5 +19,9 @@
     public string PlattformsUtrustning { get; set; }
     public string BesiktningsKlass { get; set; }
     public string Notering { get; set; }
+    public string ObjektNummer { get; set; }
+    public string Kmtal { get; set; }
+    public string Kmtalti { get; set; }
+
   }
 }

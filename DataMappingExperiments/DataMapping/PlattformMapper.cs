@@ -23,6 +23,15 @@ namespace DataMappingExperiments.DataMapping
       var myPlattform = (BIS_Plattform) plattform;
       switch (index)
       {
+        case 1:
+          myPlattform.Kmtal = attributeValue;
+          break;
+        case 3:
+          myPlattform.Kmtalti = attributeValue;
+          break;
+        case 10:
+          myPlattform.ObjektNummer = attributeValue;
+          break;
         case 11:
           myPlattform.Höjd = attributeValue;
           break;
@@ -208,7 +217,7 @@ namespace DataMappingExperiments.DataMapping
         softType = "Property"
       };
       plattformHöjdBeskr.generalProperty = höjdBeskr;
-      plattformHöjdBeskr.value = "600";
+      plattformHöjdBeskr.value = "";
       plattformHöjdBeskr.JSonMapToPropertyName = "value";
 
       return plattformHöjdBeskr;
@@ -222,7 +231,7 @@ namespace DataMappingExperiments.DataMapping
         softType = "Property"
       };
       plattformObjektText.generalProperty = objektText;
-      plattformObjektText.value = "500";
+      plattformObjektText.value = "";
       plattformObjektText.JSonMapToPropertyName = "value";
 
       return plattformObjektText;
@@ -236,7 +245,7 @@ namespace DataMappingExperiments.DataMapping
         softType = "Property"
       };
       plattformBisObjektTypNr.generalProperty = bisObjektTypNr;
-      plattformBisObjektTypNr.value = "400";
+      plattformBisObjektTypNr.value = "10004"; 
       plattformBisObjektTypNr.JSonMapToPropertyName = "value";
       plattformBisObjektTypNr.Unit = new EmptyUnit();
 
@@ -251,7 +260,7 @@ namespace DataMappingExperiments.DataMapping
         softType = "Property"
       };
       plattformBisObjektNr.generalProperty = bisObjektNr;
-      plattformBisObjektNr.value = "300";
+      plattformBisObjektNr.value = bisPlattform.ObjektNummer;
       plattformBisObjektNr.JSonMapToPropertyName = "value";
       plattformBisObjektNr.Unit = new EmptyUnit();
 
@@ -266,7 +275,7 @@ namespace DataMappingExperiments.DataMapping
         softType = "Property"
       };
       plattformKmtalti.generalProperty = kmtalti;
-      plattformKmtalti.value = "200";
+      plattformKmtalti.value = bisPlattform.Kmtalti;
       plattformKmtalti.JSonMapToPropertyName = "value";
 
       return plattformKmtalti;
@@ -281,7 +290,7 @@ namespace DataMappingExperiments.DataMapping
       };
       plattformKmtal.generalProperty = kmtal;
       //Fix this in bisplattform
-      plattformKmtal.value = "100";
+      plattformKmtal.value = bisPlattform.Kmtal;
       plattformKmtal.JSonMapToPropertyName = "value";
 
       return plattformKmtal;
@@ -292,7 +301,7 @@ namespace DataMappingExperiments.DataMapping
     {
       Längdm1 längd = new Längdm1
       {
-        instanceRef = "Längdm",
+        instanceRef = "Längd_x0020__x0028_m_x0029_",
         softType = "Property"
       };
       
@@ -308,7 +317,7 @@ namespace DataMappingExperiments.DataMapping
     {
       Breddm bredd = new Breddm
       {
-        instanceRef = "Breddm",
+        instanceRef = "Bredd_x0020__x0028_m_x0029_",
         softType = "Property"
       };
       
@@ -324,7 +333,7 @@ namespace DataMappingExperiments.DataMapping
     {
       Skyddszonochledstråk skyddszonochledstråk = new Skyddszonochledstråk
       {
-        instanceRef = "Skyddszonochledstråk",
+        instanceRef = "Skyddszon_x0020_och_x0020_ledstråk",
         softType = "Property"
       };
 
@@ -342,7 +351,7 @@ namespace DataMappingExperiments.DataMapping
     {
       Plattformskantmtrl plattformskantmtrl = new Plattformskantmtrl
       {
-        instanceRef = "Plattformskantmtrl",
+        instanceRef = "Plattformskant_x0020_mtrl",
         softType = "Property"
       };
 
@@ -445,7 +454,7 @@ namespace DataMappingExperiments.DataMapping
       //Kanalisation
       Brunnolock brunnolock = new Brunnolock
       {
-        instanceRef = "Brunnolock",
+        instanceRef = "Brunn_x0020_o_x0020_lock",
         softType = "Property"
       };
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -43,6 +44,12 @@ namespace DataMappingExperiments.DataMapping
         Console.WriteLine(error);
         Console.WriteLine();
       }
+      if (!errors.Any())
+      {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("No Valaidation Errors Found");
+      }
+      Console.ForegroundColor = ConsoleColor.White;
     }
 
     public List<UnitInstances> CreateSoftTypeUnitsInstances()
