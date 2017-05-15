@@ -20,13 +20,20 @@ namespace DataMappingExperiments.DataMapping
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt BisObject);
     public abstract void ObjectStructure(List<BIS_GrundObjekt> bisList);
 
-    public void serialization(Container container)
+    public BIS_GrundObjekt CreateRealObject(BIS_GrundObjekt objekt, string property)
     {
+      return objekt;
+    }
+
+    public void Serialization(Container container)
+    {
+      Console.WriteLine("Generating XML...");
       XmlSerializer serializer = new XmlSerializer(typeof(Container));
       TextWriter tw = new StreamWriter(@"C:\Users\fresan\Documents\Mappning ANDA\plattform.xml");
       serializer.Serialize(tw, container);
       tw.Close();
       ValidateXML();
+      Console.WriteLine("XML file complete");
     }
 
     private void ValidateXML()
@@ -81,23 +88,25 @@ namespace DataMappingExperiments.DataMapping
     {
       var propertyList = new List<PropertyInstances>();
 
-      //TODO: Map the properties
-      //Kodrad: 4480 i XSD
-      string[] properties = {};
-      var instance = new PropertyEntrydefaultIn
-      {
-        Array = true,
-        inputSchemaRef = "defaultIn",
-        id = "propertyName"
-      };
+      //TODO: Map against proper properties
+      string[] properties = {"Hello World!", "THIS_IS_A_TEST_PROPERTY"};
 
-      var property = new PropertydefaultIn
+      foreach (var propertyName in properties)
       {
-        id = "PropertyInstance",
-        name = "PropertyName"
-      };
-      instance.data = property;
-      propertyList.Add(instance);
+        var instance = new PropertyEntrydefaultIn
+        {
+          Array = true,
+          id = propertyName,
+          inputSchemaRef = "defaultIn"
+        };
+        var property = new PropertydefaultIn
+        {
+          id = propertyName,
+          name = propertyName
+        };
+        instance.data = property;
+        propertyList.Add(instance);
+      }
 
       return propertyList;
     }

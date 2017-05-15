@@ -159,7 +159,7 @@ namespace DataMappingExperiments.DataMapping
 
       //Last step is to prepare the container for serialization
       container.softTypes = containerSoftTypes.ToArray();
-      serialization(container);
+      Serialization(container);
     }
 
     private List<SoftType> CreateSupplementarySoftypes()
@@ -289,7 +289,6 @@ namespace DataMappingExperiments.DataMapping
         softType = "Property"
       };
       plattformKmtal.generalProperty = kmtal;
-      //Fix this in bisplattform
       plattformKmtal.value = bisPlattform.Kmtal;
       plattformKmtal.JSonMapToPropertyName = "value";
 
@@ -378,7 +377,6 @@ namespace DataMappingExperiments.DataMapping
       plattformPlattformsutrustning.JSonMapToPropertyName = "value";
 
       return plattformPlattformsutrustning;
-
     }
 
     private Plattform_Skylt SkapaPlattformSkylt(BIS_Plattform bisPlattform, Plattform_Skylt plattformSkylt)
@@ -414,7 +412,6 @@ namespace DataMappingExperiments.DataMapping
       plattformSkyddsräcken.JSonMapToPropertyName = "value";
 
       return plattformSkyddsräcken;
-
     }
     private Plattform_Höjd SkapaPlattformHöjd(BIS_Plattform bisPlattform, Plattform_Höjd plattformHöjd)
     {

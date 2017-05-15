@@ -5,10 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.DataMapping;
 using DataMappingExperiments.Helpers;
@@ -24,7 +21,7 @@ namespace DataMappingExperiments
     private Mapper _mapper;
     private BIS_GrundObjekt _BisObjekt;
     private List<BIS_GrundObjekt> _BisList;
-    public string GetXML(string fileName)
+    public void GetXML(string fileName, string detailsFile = "")
     {
       //Get the name of the Dataset from config
       using (DataSet dataSet = new DataSet("Container"))
@@ -33,21 +30,8 @@ namespace DataMappingExperiments
         _mapper = GetMappingType(MapperType.Plattform);
         _BisList = new List<BIS_GrundObjekt>();
 
-        //Dataset
-        dataSet.Tables.Add(ReadExcelFile(fileName));
-        dataSet.Namespace = @"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316";
-        dataSet.Prefix = "anda";
-        //Set table name
-        dataSet.Tables[0].TableName = _mapper.Name;
-        dataSet.Tables[0].Prefix = "anda";
-        dataSet.Tables[0].Namespace = "";
-
-        var set = dataSet.GetXml();
-
-        //Return set; gives an unformatted version of the excel properties
+        ReadExcelFile(fileName);
         CreateObjects();
-        //return XmlDocumentFormatting(set);
-        return set;
       }
     }
     /// <summary>
@@ -57,87 +41,6 @@ namespace DataMappingExperiments
     {
       _mapper.ObjectStructure(_BisList);
     }
-
-    #region STRINGDANCER
-    //Rebuilds the xmlformatting
-    private string XmlDocumentFormatting(string set)
-    {
-      //Main stringbuilder
-      var stringBuilder = new StringBuilder();
-      //Seperates the sets and adds them under the correct nodes
-      var numericSet = new StringBuilder();
-      var stringSet = new StringBuilder();
-      //Document based on the dataset
-      XDocument document = new XDocument();
-      document = XDocument.Parse(set);
-
-      stringBuilder.Append("<anda:container xmlns:anda=\"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316\">" + Environment.NewLine);
-
-      //Get the data in each node. Nodes are 4 for plattform.
-      var nodes = document.Descendants(_mapper.Name).Select(node => node);
-      //Counter to manages position for values in the node.
-      int counter = 0;
-
-      foreach (var node in nodes)
-      {
-        stringBuilder.Append($"  <anda:{_mapper.Name} xmlns:anda=\"http://trafikverket.se/anda/inputschemasföreteelsetyperDx/20170316\">" + Environment.NewLine);
-
-        //xElement: Name and value
-        foreach (var xElement in node.Elements())
-        {
-          //The first positions are related to nätanknytningar
-          if (counter < 11)
-            counter++;
-          else if (counter == 12 || counter == 13)
-          {
-            string elementString = ElementFormatting(xElement);
-            numericSet.Append(elementString);
-            counter++;
-          }
-          else
-          {
-            string elementString = ElementFormatting(xElement);
-            stringSet.Append(elementString);
-            counter++;
-          }
-        }
-        //The stringbuilding and clean at the end
-        stringSet.Insert(0, "    <anda:stringSet>" + Environment.NewLine 
-                          + "    <anda:start> </anda:start>" + Environment.NewLine
-                          + "    <anda:end> </anda:end>" + Environment.NewLine);
-        stringBuilder.Append(stringSet);
-        stringBuilder.Append("    </anda:stringSet>" + Environment.NewLine);
-
-        numericSet.Insert(0, "    <anda:numericSet>" + Environment.NewLine
-                          + "    <anda:start> </anda:start>" + Environment.NewLine
-                          + "    <anda:end> </anda:end>" + Environment.NewLine);
-        
-        stringBuilder.Append(numericSet);
-        stringBuilder.Append("    </anda:numericSet>" + Environment.NewLine);
-
-        stringBuilder.Append("  </anda:Plattform>" + Environment.NewLine);
-        stringSet.Clear();
-        numericSet.Clear();
-        counter = 0;
-      }
-      stringBuilder.Append("</anda:container>");
-
-      //Return document for unformatted string
-      return stringBuilder.ToString();
-    }
-    //Arranges the string in the correct format
-    private string ElementFormatting(XElement xElement)
-    {
-      string nodeStart =  $"      <anda:{xElement.Name} JSonMapToPropertyName=\"value\">{Environment.NewLine}";
-      string nodeValue = $"        <anda:value>{xElement.Value}</anda:value>{Environment.NewLine}";
-      string nodeInstance = $"        <anda:generalProperty softType=\"Property\" instanceRef=\"{xElement.Name}\"/>{Environment.NewLine}";
-      string nodeEnd = $"      </anda:{xElement.Name}>{Environment.NewLine}";
-
-      return nodeStart + nodeValue + nodeInstance + nodeEnd;
-
-    }
-
-    #endregion
 
     private BIS_GrundObjekt GetBisObjectType(MapperType mapperType)
     {
@@ -165,7 +68,7 @@ namespace DataMappingExperiments
       }
     }
 
-    private DataTable ReadExcelFile(string fileName)
+    private void ReadExcelFile(string fileName)
     {
       DataTable dataTable = new DataTable();
 
@@ -186,7 +89,7 @@ namespace DataMappingExperiments
           //When there is no data left to process
           if (!rowCollection.Any())
           {
-            return dataTable;
+            return;
           }
 
           //Adds the columns
@@ -202,7 +105,6 @@ namespace DataMappingExperiments
             //dataTable.Columns.Add(bisAttribute);
 
           }
-
           //Adds the rows into the dataTable
           foreach (Row row in rowCollection)
           {
@@ -213,7 +115,7 @@ namespace DataMappingExperiments
             int colIndex = 0;
 
             //A object to use for mapping values
-            _BisObjekt = GetBisObjectType(MapperType.Plattform);
+            _BisObjekt = GetBisObjectType(_mapper.MapperType);
 
             //Every cell in selected row
             foreach (Cell cell in row.Descendants<Cell>())
@@ -238,7 +140,6 @@ namespace DataMappingExperiments
             dataTable.Rows.Add(tempRow);
           }
         }
-        return dataTable;
       }
       catch (IOException exception)
       {
@@ -291,17 +192,6 @@ namespace DataMappingExperiments
       return cellValue;
     }
 
-    #endregion
-
-    #region XMLFileCreation
-
-    public string CreateXMLFile(string xmlString)
-    {
-      string xmlName = "test.xml";
-      //Writes a new XML file, unicode to keep swedish characters
-      File.WriteAllText(xmlName, xmlString, Encoding.Unicode);
-      return xmlName;
-    }
     #endregion
   }
 }

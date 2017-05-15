@@ -19,9 +19,9 @@
     public string PlattformsUtrustning { get; set; }
     public string BesiktningsKlass { get; set; }
     public string Notering { get; set; }
-    public string ObjektNummer { get; set; }
     public string Kmtal { get; set; }
     public string Kmtalti { get; set; }
+    public string ObjektNummer { get; set; }
 
   }
 }

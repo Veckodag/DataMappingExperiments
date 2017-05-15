@@ -10,41 +10,28 @@ namespace DataMappingExperiments
     static void Main(string[] args)
     {
       string excelFilePath = ConfigurationManager.AppSettings["ExcelFile"];
+      string extraExcelFile = ConfigurationManager.AppSettings["SecondaryFile"];
       string xsdFilePath = ConfigurationManager.AppSettings["XsdFile"];
 
-      StartExcelManager(excelFilePath, xsdFilePath);
+      StartExcelManager(excelFilePath, xsdFilePath, excelFilePath);
 
       Console.ReadLine();
     }
 
-    static void StartExcelManager(string fileName, string xsdFile)
+    static void StartExcelManager(string fileName, string xsdFile, string optional = "")
     {
       if (string.IsNullOrEmpty(fileName) || !File.Exists(fileName))
       {
-        Console.WriteLine("The file is invalid. Select a valid file.");  
+        Console.WriteLine("The file is invalid. Select a valid file.");
         return;
       }
 
-        #region ExcelInput
+      #region ExcelInput&Output
 
-        var excelManager = new ExcelManager();
-        // Massive string with all the good stuff
-        string xmlString = excelManager.GetXML(fileName);
-       
-        xmlString = StringManager.FormattingXmlString(xmlString);
-
-        if (string.IsNullOrEmpty(xmlString))
-        {
-          Console.WriteLine("The content of the Excel file is empty!");
-        }
-        //Console.WriteLine(xmlString);
-        #endregion
-        
-        //Create the XML
-        //string xmlName = excelManager.CreateXMLFile(xmlString);
-
+      var excelManager = new ExcelManager();
+      // Massive string with all the good stuff
+      excelManager.GetXML(fileName, optional);
+      #endregion
     }
-
-
   }
 }
