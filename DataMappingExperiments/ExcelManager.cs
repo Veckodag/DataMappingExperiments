@@ -31,6 +31,10 @@ namespace DataMappingExperiments
         _BisList = new List<BIS_GrundObjekt>();
 
         ReadExcelFile(fileName);
+        if (detailsFile.Length != 0)
+        {
+          Console.WriteLine("Details file detected...");
+        }
         CreateObjects();
       }
     }
@@ -42,6 +46,7 @@ namespace DataMappingExperiments
       _mapper.ObjectStructure(_BisList);
     }
 
+    //Instantiates a new object of right type
     private BIS_GrundObjekt GetBisObjectType(MapperType mapperType)
     {
       switch (mapperType)
@@ -54,7 +59,7 @@ namespace DataMappingExperiments
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }
     }
-
+    //Sets and instatiates the mappingtype property on the Mapper
     private Mapper GetMappingType(MapperType mapperType)
     {
       switch (mapperType)
@@ -91,19 +96,12 @@ namespace DataMappingExperiments
           {
             return;
           }
-
           //Adds the columns
           foreach (Cell cell in rowCollection.ElementAt(0))
           {
             //Value of the BIS attribute
-            //Här ställs XML attributet in
-            int cellColumnIndex = GetColumnIndex(GetColumnName(cell.CellReference));
-
             var bisAttribute = GetValueOfCell(spreadsheetDocument, cell);
-            var mappedValue = _mapper.MapXmlAttribute(cellColumnIndex, bisAttribute);
-            dataTable.Columns.Add(mappedValue);
-            //dataTable.Columns.Add(bisAttribute);
-
+            dataTable.Columns.Add(bisAttribute);
           }
           //Adds the rows into the dataTable
           foreach (Row row in rowCollection)

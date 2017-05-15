@@ -13,7 +13,7 @@ namespace DataMappingExperiments
       string extraExcelFile = ConfigurationManager.AppSettings["SecondaryFile"];
       string xsdFilePath = ConfigurationManager.AppSettings["XsdFile"];
 
-      StartExcelManager(excelFilePath, xsdFilePath, excelFilePath);
+      StartExcelManager(excelFilePath, xsdFilePath, extraExcelFile);
 
       Console.ReadLine();
     }

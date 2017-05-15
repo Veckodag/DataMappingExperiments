@@ -24,7 +24,7 @@ namespace DataMappingExperiments.DataMapping
     {
       return attributeValue;
     }
-    public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt BisObject)
+    public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject)
     {
       throw new NotImplementedException();
     }

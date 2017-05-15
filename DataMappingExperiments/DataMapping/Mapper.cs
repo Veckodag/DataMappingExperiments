@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Web.ModelBinding;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -17,14 +18,8 @@ namespace DataMappingExperiments.DataMapping
     public abstract MapperType MapperType { get; set; }
     public virtual string Name => "Mapper";
     public abstract string MapXmlAttribute(int index, string attributeValue);
-    public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt BisObject);
+    public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract void ObjectStructure(List<BIS_GrundObjekt> bisList);
-
-    public BIS_GrundObjekt CreateRealObject(BIS_GrundObjekt objekt, string property)
-    {
-      return objekt;
-    }
-
     public void Serialization(Container container)
     {
       Console.WriteLine("Generating XML...");
@@ -45,11 +40,21 @@ namespace DataMappingExperiments.DataMapping
       xmlDocument.Load(textReader);
       List<string> errors = new List<string>();
       xmlDocument.Validate((sender, EventArgs) => errors.Add(EventArgs.Message));
-      foreach (var error in errors)
+
+      ErrorMessage(errors);
+    }
+
+    private void ErrorMessage(List<string> errors)
+    {
+      if (errors.Any())
       {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(error);
-        Console.WriteLine();
+        Console.WriteLine("Validation Errors Found");
+        foreach (var error in errors)
+        {
+          Console.WriteLine(error);
+          Console.WriteLine();
+        }
       }
       if (!errors.Any())
       {

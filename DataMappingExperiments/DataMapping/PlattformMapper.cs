@@ -149,6 +149,7 @@ namespace DataMappingExperiments.DataMapping
       }
       //Real Test
       //Add new softypes to containerSoftTypes
+      //TODO: AT THE MOMENT USES ONLY THE FIRST PLATTFORM
       plattformar.RemoveRange(1, plattformar.Count - 1);
       var geografiskSofttype = new SoftType_GeografiskPlaceringsreferens
       {
