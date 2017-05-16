@@ -10,16 +10,11 @@ namespace DataMappingExperiments.DataMapping
 {
   public class RälMapper : Mapper
   {
-    private BIS_Räl _räl;
-
     public RälMapper()
     {
-      _räl = new BIS_Räl();
       MapperType = MapperType.Räl;
     }
     public override MapperType MapperType { get; set; }
-    public override string Name => "Räl";
-
     public override string MapXmlAttribute(int index, string attributeValue)
     {
       return attributeValue;
@@ -29,7 +24,7 @@ namespace DataMappingExperiments.DataMapping
       throw new NotImplementedException();
     }
 
-    public override void ObjectStructure(List<BIS_GrundObjekt> bisList)
+    public override Container ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
       throw new NotImplementedException();
     }

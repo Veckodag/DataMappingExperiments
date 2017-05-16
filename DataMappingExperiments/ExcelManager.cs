@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.DataMapping;
 using DataMappingExperiments.Helpers;
@@ -16,7 +14,7 @@ namespace DataMappingExperiments
 {
   public class ExcelManager
   {
-    #region ExcelToXmlString
+    
 
     private Mapper _mapper;
     private BIS_GrundObjekt _BisObjekt;
@@ -30,10 +28,13 @@ namespace DataMappingExperiments
         _mapper = GetMappingType(MapperType.Plattform);
         _BisList = new List<BIS_GrundObjekt>();
 
+        Console.WriteLine("Importing excel file...");
         ReadExcelFile(fileName);
         if (detailsFile.Length != 0)
         {
-          Console.WriteLine("Details file detected...");
+          //Console.WriteLine("Importing object details file...");
+          //_mapper = GetMappingType(MapperType.PlattformDetalj);
+          //ReadExcelFile(detailsFile);
         }
         CreateObjects();
       }
@@ -43,7 +44,8 @@ namespace DataMappingExperiments
     /// </summary>
     void CreateObjects()
     {
-      _mapper.ObjectStructure(_BisList);
+      var container = _mapper.ObjectStructure(_BisList);
+      _mapper.Serialization(container);
     }
 
     //Instantiates a new object of right type
@@ -55,6 +57,8 @@ namespace DataMappingExperiments
             return new BIS_Plattform();
           case MapperType.Räl:
             return new BIS_Räl();
+          case MapperType.PlattformDetalj:
+            return new BIS_Plattform_Detalj();
         default:
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }
@@ -68,10 +72,14 @@ namespace DataMappingExperiments
           return new PlattformMapper();
         case MapperType.Räl:
           return new RälMapper();
+        case MapperType.PlattformDetalj:
+          return new PlattformDetaljMapper();
         default:
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }
     }
+
+    #region ExcelInput
 
     private void ReadExcelFile(string fileName)
     {
@@ -144,7 +152,6 @@ namespace DataMappingExperiments
         throw new IOException(exception.Message);
       }
     }
-
     //Get index of column from given column name
     private int GetColumnIndex(string columnName)
     {
@@ -177,7 +184,6 @@ namespace DataMappingExperiments
       {
         return string.Empty;
       }
-
       //Makes sure we return the value (innerText) in the right format
       //as sharedstring or something else
       string cellValue = cell.CellValue.InnerText;
@@ -189,7 +195,6 @@ namespace DataMappingExperiments
       }
       return cellValue;
     }
-
     #endregion
   }
 }

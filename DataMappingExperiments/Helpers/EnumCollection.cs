@@ -3,6 +3,7 @@
   public enum MapperType
   {
     Plattform,
-    Räl
+    Räl,
+    PlattformDetalj
   }
 }

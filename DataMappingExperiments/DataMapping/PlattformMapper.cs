@@ -12,8 +12,7 @@ namespace DataMappingExperiments.DataMapping
     {
       MapperType = MapperType.Plattform;
     }
-    public override MapperType MapperType { get; set; }
-    public override string Name => "Plattform";
+    public sealed override MapperType MapperType { get; set; }
     public override string MapXmlAttribute(int index, string attributeValue)
     {
       return attributeValue;
@@ -83,7 +82,7 @@ namespace DataMappingExperiments.DataMapping
       }
       return myPlattform;
     }
-    public override void ObjectStructure(List<BIS_GrundObjekt> bisList)
+    public override Container ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
       Container container = new Container();
       //All softypes must be aggregated before they are added to the container
@@ -160,7 +159,7 @@ namespace DataMappingExperiments.DataMapping
 
       //Last step is to prepare the container for serialization
       container.softTypes = containerSoftTypes.ToArray();
-      Serialization(container);
+      return container;
     }
 
     private List<SoftType> CreateSupplementarySoftypes()
