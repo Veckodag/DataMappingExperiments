@@ -1,5 +1,8 @@
-﻿namespace DataMappingExperiments.Obsolete
+﻿using System;
+
+namespace DataMappingExperiments.Obsolete
 {
+  [Obsolete]
   class ProgramNotesToSelf
   {
     #region Pre-test

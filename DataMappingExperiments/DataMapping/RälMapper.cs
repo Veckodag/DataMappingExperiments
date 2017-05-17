@@ -14,7 +14,7 @@ namespace DataMappingExperiments.DataMapping
     {
       MapperType = MapperType.Räl;
     }
-    public override MapperType MapperType { get; set; }
+    public sealed override MapperType MapperType { get; set; }
     public override string MapXmlAttribute(int index, string attributeValue)
     {
       return attributeValue;

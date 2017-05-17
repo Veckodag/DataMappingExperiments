@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
 
@@ -36,6 +37,21 @@ namespace DataMappingExperiments.DataMapping
 
     public override Container ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
+      //Experiment 1
+      //Listformatting
+      List<BIS_Plattform_Detalj> myList = new List<BIS_Plattform_Detalj>();
+      foreach (var objekt in bisList)
+        myList.Add(objekt as BIS_Plattform_Detalj);
+
+      myList =
+        myList.GroupBy(plattformDetalj => plattformDetalj.ObjektNummer)
+          .Select(values => values.FirstOrDefault())
+          .ToList();
+
+
+      //Experiment 2
+      //Find plattforms other mapping values or something
+
       Console.WriteLine("Not Yet Implemented");
       return null;
     }

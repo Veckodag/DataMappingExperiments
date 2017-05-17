@@ -14,30 +14,25 @@ namespace DataMappingExperiments
 {
   public class ExcelManager
   {
-    
-
     private Mapper _mapper;
     private BIS_GrundObjekt _BisObjekt;
     private List<BIS_GrundObjekt> _BisList;
     public void GetXML(string fileName, string detailsFile = "")
     {
-      //Get the name of the Dataset from config
-      using (DataSet dataSet = new DataSet("Container"))
-      {
-        //TODO: Get the mappingtype from a config file
-        _mapper = GetMappingType(MapperType.Plattform);
-        _BisList = new List<BIS_GrundObjekt>();
+      //TODO: Get the mappingtype from a config file
+      _mapper = GetMappingType(MapperType.Plattform);
+      _BisList = new List<BIS_GrundObjekt>();
 
-        Console.WriteLine("Importing excel file...");
-        ReadExcelFile(fileName);
-        if (detailsFile.Length != 0)
-        {
-          //Console.WriteLine("Importing object details file...");
-          //_mapper = GetMappingType(MapperType.PlattformDetalj);
-          //ReadExcelFile(detailsFile);
-        }
-        CreateObjects();
+      Console.WriteLine("Importing excel file...");
+      //ReadExcelFile(fileName);
+      if (detailsFile.Length != 0)
+      {
+        Console.WriteLine("Importing object details file...");
+        _mapper = GetMappingType(MapperType.PlattformDetalj);
+        ReadExcelFile(detailsFile);
       }
+      CreateObjects();
+
     }
     /// <summary>
     /// The entry method for XML mapping and structuring
@@ -45,7 +40,9 @@ namespace DataMappingExperiments
     void CreateObjects()
     {
       var container = _mapper.ObjectStructure(_BisList);
-      _mapper.Serialization(container);
+      //Make sure the container is loaded
+      if (container != null)
+        _mapper.Serialization(container);
     }
 
     //Instantiates a new object of right type
@@ -53,12 +50,12 @@ namespace DataMappingExperiments
     {
       switch (mapperType)
       {
-          case MapperType.Plattform:
-            return new BIS_Plattform();
-          case MapperType.Räl:
-            return new BIS_Räl();
-          case MapperType.PlattformDetalj:
-            return new BIS_Plattform_Detalj();
+        case MapperType.Plattform:
+          return new BIS_Plattform();
+        case MapperType.Räl:
+          return new BIS_Räl();
+        case MapperType.PlattformDetalj:
+          return new BIS_Plattform_Detalj();
         default:
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }
