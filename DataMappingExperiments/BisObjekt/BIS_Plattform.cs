@@ -1,6 +1,6 @@
 ﻿namespace DataMappingExperiments.BisObjekt
 {
-  
+
   public class BIS_Plattform : BIS_GrundObjekt
   {
     public string Senast_Ändrad { get; set; }
@@ -10,7 +10,7 @@
     public decimal Bredd { get; set; }
     public string Plattformskant_mtrl { get; set; }
     public string Beläggning { get; set; }
-    public string Skyddszon_Och_Ledstråk{ get; set; }
+    public string Skyddszon_Och_Ledstråk { get; set; }
     public string Väderskydd { get; set; }
     public string Skylt { get; set; }
     public string Fotsteg { get; set; }
@@ -21,6 +21,7 @@
     public string Notering { get; set; }
     public string Kmtal { get; set; }
     public string Kmtalti { get; set; }
+    public string ObjektTypNummer { get; set; }
     public string ObjektNummer { get; set; }
 
   }

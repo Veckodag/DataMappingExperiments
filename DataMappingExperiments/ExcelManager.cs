@@ -24,13 +24,13 @@ namespace DataMappingExperiments
       _BisList = new List<BIS_GrundObjekt>();
 
       Console.WriteLine("Importing excel file...");
-      //ReadExcelFile(fileName);
-      if (detailsFile.Length != 0)
-      {
-        Console.WriteLine("Importing object details file...");
-        _mapper = GetMappingType(MapperType.PlattformDetalj);
-        ReadExcelFile(detailsFile);
-      }
+      ReadExcelFile(fileName);
+      //if (detailsFile.Length != 0)
+      //{
+      //  Console.WriteLine("Importing object details file...");
+      //  _mapper = GetMappingType(MapperType.PlattformDetalj);
+      //  ReadExcelFile(detailsFile);
+      //}
       CreateObjects();
 
     }

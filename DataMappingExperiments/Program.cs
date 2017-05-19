@@ -9,11 +9,11 @@ namespace DataMappingExperiments
   {
     static void Main(string[] args)
     {
-      string excelFilePath = ConfigurationManager.AppSettings["ExcelFile"];
-      string extraExcelFile = ConfigurationManager.AppSettings["SecondaryFile"];
+      //string excelFilePath = ConfigurationManager.AppSettings["SimpleFile"];
+      string detailsFile = ConfigurationManager.AppSettings["DetailsFile"];
       string xsdFilePath = ConfigurationManager.AppSettings["XsdFile"];
 
-      StartExcelManager(excelFilePath, xsdFilePath, extraExcelFile);
+      StartExcelManager(detailsFile, xsdFilePath);
 
       Console.ReadLine();
     }
@@ -26,12 +26,10 @@ namespace DataMappingExperiments
         return;
       }
 
-      #region ExcelInput&Output
-
       var excelManager = new ExcelManager();
       // Massive string with all the good stuff
       excelManager.GetXML(fileName, optional);
-      #endregion
+
     }
   }
 }

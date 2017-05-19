@@ -39,14 +39,14 @@ namespace DataMappingExperiments.DataMapping
     {
       //Experiment 1
       //Listformatting
-      List<BIS_Plattform_Detalj> myList = new List<BIS_Plattform_Detalj>();
-      foreach (var objekt in bisList)
-        myList.Add(objekt as BIS_Plattform_Detalj);
+      //List<BIS_Plattform_Detalj> myList = new List<BIS_Plattform_Detalj>();
+      //foreach (var objekt in bisList)
+      //  myList.Add(objekt as BIS_Plattform_Detalj);
 
-      myList =
-        myList.GroupBy(plattformDetalj => plattformDetalj.ObjektNummer)
-          .Select(values => values.FirstOrDefault())
-          .ToList();
+      //myList =
+      //  myList.GroupBy(plattformDetalj => plattformDetalj.ObjektNummer)
+      //    .Select(values => values.FirstOrDefault())
+      //    .ToList();
 
 
       //Experiment 2

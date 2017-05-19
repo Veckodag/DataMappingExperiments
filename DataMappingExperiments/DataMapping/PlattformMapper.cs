@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
 
@@ -19,64 +20,68 @@ namespace DataMappingExperiments.DataMapping
     }
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt plattform)
     {
-      var myPlattform = (BIS_Plattform) plattform;
+      var myPlattform = (BIS_Plattform)plattform;
+      //IT IS ZERO BASED
       switch (index)
       {
+        case 0:
+          myPlattform.ObjektTypNummer = attributeValue;
+          break;
         case 1:
-          myPlattform.Kmtal = attributeValue;
-          break;
-        case 3:
-          myPlattform.Kmtalti = attributeValue;
-          break;
-        case 10:
           myPlattform.ObjektNummer = attributeValue;
           break;
-        case 11:
-          myPlattform.Höjd = attributeValue;
-          break;
-        case 12:
-          myPlattform.Längd = decimal.Parse(attributeValue, CultureInfo.InvariantCulture);
-          break;
-        case 13:
-          myPlattform.Bredd = decimal.Parse(attributeValue, CultureInfo.InvariantCulture);
-          break;
-        case 14:
-          myPlattform.Plattformskant_mtrl = attributeValue;
-          break;
-        case 15:
-          myPlattform.Beläggning = attributeValue;
-          break;
-        case 16:
-          myPlattform.Skyddszon_Och_Ledstråk = attributeValue;
-          break;
         case 17:
-          myPlattform.Väderskydd = attributeValue;
-          break;
-        case 18:
-          myPlattform.Skylt = attributeValue;
-          break;
-        case 19:
-          myPlattform.Fotsteg = attributeValue;
+          myPlattform.Kmtal = attributeValue;
           break;
         case 20:
+          myPlattform.Kmtalti = attributeValue;
+          break;
+        case 28:
+          myPlattform.Höjd = attributeValue;
+          break;
+        case 29:
+          myPlattform.Längd = decimal.Parse(attributeValue, CultureInfo.InvariantCulture);
+          break;
+        case 30:
+          myPlattform.Bredd = decimal.Parse(attributeValue, CultureInfo.InvariantCulture);
+          break;
+        case 31:
+          myPlattform.Plattformskant_mtrl = attributeValue;
+          break;
+        case 32:
+          myPlattform.Beläggning = attributeValue;
+          break;
+        case 33:
+          myPlattform.Skyddszon_Och_Ledstråk = attributeValue;
+          break;
+        case 34:
+          myPlattform.Väderskydd = attributeValue;
+          break;
+        case 35:
+          myPlattform.Skylt = attributeValue;
+          break;
+        case 36:
+          myPlattform.Fotsteg = attributeValue;
+          break;
+        case 37:
           myPlattform.Brunn_Och_Lock = attributeValue;
           break;
-        case 21:
+        case 38:
           myPlattform.Skyddsräcken = attributeValue;
           break;
-        case 22:
+        case 39:
           myPlattform.PlattformsUtrustning = attributeValue;
           break;
-        case 23:
+        case 40:
           myPlattform.BesiktningsKlass = attributeValue;
           break;
-        case 24:
+        case 41:
           myPlattform.Senast_Ändrad = attributeValue;
           break;
-        case 25:
+        case 42:
           myPlattform.Senast_Ändrad_Av = attributeValue;
           break;
-        case 26:
+        case 43:
           myPlattform.Notering = attributeValue;
           break;
       }
@@ -84,13 +89,15 @@ namespace DataMappingExperiments.DataMapping
     }
     public override Container ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
+      //TODO: Squash the list temporary
+      var formattedBisList = SquashTheList(bisList);
       Container container = new Container();
       //All softypes must be aggregated before they are added to the container
       var containerSoftTypes = new List<SoftType>();
       var plattformar = new List<GeografiskPlaceringsreferensInstances>();
-      
+
       //Does all the real mapping against ANDA resources
-      foreach (BIS_Plattform bisPlattform in bisList)
+      foreach (BIS_Plattform bisPlattform in formattedBisList)
       {
         var plattformsInstans = new GeografiskPlaceringsreferensEntrydefaultIn
         {
@@ -98,6 +105,7 @@ namespace DataMappingExperiments.DataMapping
           id = "Plattform",
 
         };
+
         Plattform plattform = new Plattform
         {
           id = Guid.NewGuid().ToString(),
@@ -144,7 +152,6 @@ namespace DataMappingExperiments.DataMapping
         //add to list!
         plattformsInstans.data = plattform;
         plattformar.Add(plattformsInstans);
-        
       }
       //Real Test
       //Add new softypes to containerSoftTypes
@@ -160,6 +167,21 @@ namespace DataMappingExperiments.DataMapping
       //Last step is to prepare the container for serialization
       container.softTypes = containerSoftTypes.ToArray();
       return container;
+    }
+    /// <summary>
+    /// Temporary squashing of the list
+    /// </summary>
+    /// <param name="bisList"></param>
+    /// <returns></returns>
+    private List<BIS_Plattform> SquashTheList(List<BIS_GrundObjekt> bisList)
+    {
+      var myList = new List<BIS_Plattform>();
+
+      foreach (var objekt in bisList)
+        myList.Add(objekt as BIS_Plattform);
+
+      return myList.GroupBy(plattformDetalj => plattformDetalj.ObjektNummer)
+        .Select(values => values.FirstOrDefault()).ToList();
     }
 
     private List<SoftType> CreateSupplementarySoftypes()
@@ -209,6 +231,8 @@ namespace DataMappingExperiments.DataMapping
       return softtypeList;
     }
 
+    #region PropertyCreationMethods
+
     private Plattform_Höjd_beskr SkapaHöjdBeskrivning(BIS_Plattform bisPlattform, Plattform_Höjd_beskr plattformHöjdBeskr)
     {
       Höjd_beskr höjdBeskr = new Höjd_beskr
@@ -245,7 +269,7 @@ namespace DataMappingExperiments.DataMapping
         softType = "Property"
       };
       plattformBisObjektTypNr.generalProperty = bisObjektTypNr;
-      plattformBisObjektTypNr.value = "10004"; 
+      plattformBisObjektTypNr.value = "10004";
       plattformBisObjektTypNr.JSonMapToPropertyName = "value";
       plattformBisObjektTypNr.Unit = new EmptyUnit();
 
@@ -295,7 +319,6 @@ namespace DataMappingExperiments.DataMapping
       return plattformKmtal;
     }
 
-
     private Plattform_Längdm SkapaPlattformLängd(BIS_Plattform bisPlattform, Plattform_Längdm plattformLängdm)
     {
       Längdm1 längd = new Längdm1
@@ -303,7 +326,7 @@ namespace DataMappingExperiments.DataMapping
         instanceRef = "Längd_x0020__x0028_m_x0029_",
         softType = "Property"
       };
-      
+
       plattformLängdm.generalProperty = längd;
       plattformLängdm.value = bisPlattform.Längd;
       plattformLängdm.JSonMapToPropertyName = "value";
@@ -319,12 +342,12 @@ namespace DataMappingExperiments.DataMapping
         instanceRef = "Bredd_x0020__x0028_m_x0029_",
         softType = "Property"
       };
-      
+
       plattformBreddm.generalProperty = bredd;
       plattformBreddm.value = bisPlattform.Bredd;
       plattformBreddm.JSonMapToPropertyName = "value";
       plattformBreddm.Unit = new EmptyUnit();
-      
+
       return plattformBreddm;
     }
 
@@ -386,8 +409,6 @@ namespace DataMappingExperiments.DataMapping
         instanceRef = "Skylt",
         softType = "Property"
       };
-
-      //Skylt objekt
 
       plattformSkylt.generalProperty = skylt;
       plattformSkylt.value = bisPlattform.Skylt;
@@ -495,5 +516,6 @@ namespace DataMappingExperiments.DataMapping
 
       return plattformVäderskydd;
     }
+    #endregion
   }
 }
