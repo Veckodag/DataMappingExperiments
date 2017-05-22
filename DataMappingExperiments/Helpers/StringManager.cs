@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Configuration;
 using System.Web;
 
 namespace DataMappingExperiments.Helpers
 {
   public static class StringManager
   {
+    public static string XmlOutputFile = ConfigurationManager.AppSettings["XMLOutputFile"];
+    public static string XsdFile = ConfigurationManager.AppSettings["XsdFile"];
     public static string FormattingXmlString(string xmlString)
     {
       //Decode the string because of special characters

@@ -18,22 +18,29 @@ namespace DataMappingExperiments.DataMapping
     public abstract string MapXmlAttribute(int index, string attributeValue);
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);
+
+    /// <summary>
+    /// Writes out the XML file
+    /// </summary>
+    /// <param name="container"></param>
     public void Serialization(Container container)
     {
       Console.WriteLine("Generating XML...");
       XmlSerializer serializer = new XmlSerializer(typeof(Container));
-      TextWriter tw = new StreamWriter(@"C:\Users\fresan\Documents\Mappning ANDA\plattform.xml");
+      TextWriter tw = new StreamWriter(StringManager.XmlOutputFile);
       serializer.Serialize(tw, container);
       tw.Close();
       ValidateXML();
       Console.WriteLine("XML file complete");
     }
-
+    /// <summary>
+    /// Validates the XML file against a matching XSD. Reads errors if there are any.
+    /// </summary>
     private void ValidateXML()
     {
-      var textReader = new StreamReader(@"C:\Users\fresan\Documents\Mappning ANDA\plattform.xml");
+      var textReader = new StreamReader(StringManager.XmlOutputFile);
       var xmlDocument = new XmlDocument {Schemas = new XmlSchemaSet()};
-      xmlDocument.Schemas.Add(null, new XmlTextReader(ConfigurationManager.AppSettings["XsdFile"]));
+      xmlDocument.Schemas.Add(null, new XmlTextReader(StringManager.XsdFile));
 
       xmlDocument.Load(textReader);
       List<string> errors = new List<string>();
@@ -42,6 +49,10 @@ namespace DataMappingExperiments.DataMapping
       ErrorMessage(errors);
     }
 
+    /// <summary>
+    /// Console Magic for printing out validation errors.
+    /// </summary>
+    /// <param name="errors"></param>
     private void ErrorMessage(List<string> errors)
     {
       if (errors.Any())

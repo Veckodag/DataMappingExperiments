@@ -10,14 +10,13 @@ namespace DataMappingExperiments
     static void Main(string[] args)
     {
       string detailsFile = ConfigurationManager.AppSettings["DetailsFile"];
-      string xsdFilePath = ConfigurationManager.AppSettings["XsdFile"];
 
-      StartExcelManager(detailsFile, xsdFilePath);
+      StartExcelManager(detailsFile);
 
       Console.ReadLine();
     }
 
-    static void StartExcelManager(string fileName, string xsdFile)
+    static void StartExcelManager(string fileName)
     {
       if (string.IsNullOrEmpty(fileName) || !File.Exists(fileName))
       {
