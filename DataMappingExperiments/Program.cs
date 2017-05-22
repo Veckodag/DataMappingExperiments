@@ -9,7 +9,6 @@ namespace DataMappingExperiments
   {
     static void Main(string[] args)
     {
-      //string excelFilePath = ConfigurationManager.AppSettings["SimpleFile"];
       string detailsFile = ConfigurationManager.AppSettings["DetailsFile"];
       string xsdFilePath = ConfigurationManager.AppSettings["XsdFile"];
 
@@ -18,7 +17,7 @@ namespace DataMappingExperiments
       Console.ReadLine();
     }
 
-    static void StartExcelManager(string fileName, string xsdFile, string optional = "")
+    static void StartExcelManager(string fileName, string xsdFile)
     {
       if (string.IsNullOrEmpty(fileName) || !File.Exists(fileName))
       {
@@ -28,7 +27,7 @@ namespace DataMappingExperiments
 
       var excelManager = new ExcelManager();
       // Massive string with all the good stuff
-      excelManager.GetXML(fileName, optional);
+      excelManager.GetXML(fileName);
 
     }
   }

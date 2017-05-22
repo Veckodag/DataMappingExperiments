@@ -25,12 +25,6 @@ namespace DataMappingExperiments
 
       Console.WriteLine("Importing excel file...");
       ReadExcelFile(fileName);
-      //if (detailsFile.Length != 0)
-      //{
-      //  Console.WriteLine("Importing object details file...");
-      //  _mapper = GetMappingType(MapperType.PlattformDetalj);
-      //  ReadExcelFile(detailsFile);
-      //}
       CreateObjects();
 
     }
@@ -54,8 +48,6 @@ namespace DataMappingExperiments
           return new BIS_Plattform();
         case MapperType.Räl:
           return new BIS_Räl();
-        case MapperType.PlattformDetalj:
-          return new BIS_Plattform_Detalj();
         default:
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }
@@ -69,8 +61,6 @@ namespace DataMappingExperiments
           return new PlattformMapper();
         case MapperType.Räl:
           return new RälMapper();
-        case MapperType.PlattformDetalj:
-          return new PlattformDetaljMapper();
         default:
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }

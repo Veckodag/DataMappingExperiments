@@ -56,15 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndaObjekt\ANDA_Plattform.cs" />
-    <Compile Include="BisObjekt\BIS_Plattform_Detalj.cs" />
-    <Compile Include="DataMapping\PlattformDetaljMapper.cs" />
+    <Compile Include="DataMapping\PlattformMapper.cs" />
     <Compile Include="Obsolete\Plattform.cs" />
     <Compile Include="AndaResurserMedDatakatalogFörImport.cs" />
     <Compile Include="BisObjekt\BIS_GrundObjekt.cs" />
     <Compile Include="BisObjekt\BIS_Plattform.cs" />
     <Compile Include="BisObjekt\BIS_Räl.cs" />
     <Compile Include="DataMapping\IMapper.cs" />
-    <Compile Include="DataMapping\PlattformMapper.cs" />
     <Compile Include="DataMapping\RälMapper.cs" />
     <Compile Include="ExcelManager.cs" />
     <Compile Include="Helpers\EnumCollection.cs" />
