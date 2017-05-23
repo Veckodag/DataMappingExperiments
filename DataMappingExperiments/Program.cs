@@ -7,23 +7,22 @@ namespace DataMappingExperiments
 {
   class Program
   {
+
+    internal const string SourceFile = "SourceFile";
+    internal const string XmlOutputFile = "XMLOutputFile";
+    internal const string XsdFile = "XsdFile";
+
     static void Main(string[] args)
     {
-      string detailsFile = ConfigurationManager.AppSettings["DetailsFile"];
+      string sourceFile = StringManager.GetFilePathSetting(SourceFile);
 
-      StartExcelManager(detailsFile);
+      StartExcelManager(sourceFile);
 
       Console.ReadLine();
     }
 
     static void StartExcelManager(string fileName)
     {
-      if (string.IsNullOrEmpty(fileName) || !File.Exists(fileName))
-      {
-        Console.WriteLine("The file is invalid. Select a valid file.");
-        return;
-      }
-
       var excelManager = new ExcelManager();
       // Massive string with all the good stuff
       excelManager.GetXML(fileName);
