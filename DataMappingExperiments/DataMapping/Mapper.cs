@@ -31,7 +31,7 @@ namespace DataMappingExperiments.DataMapping
       serializer.Serialize(tw, container);
       tw.Close();
       ValidateXML();
-      Console.WriteLine("XML file complete");
+      
     }
     /// <summary>
     /// Validates the XML file against a matching XSD. Reads errors if there are any.
@@ -40,13 +40,14 @@ namespace DataMappingExperiments.DataMapping
     {
       var textReader = new StreamReader(Program.XmlOutputFile);
       var xmlDocument = new XmlDocument {Schemas = new XmlSchemaSet()};
-      xmlDocument.Schemas.Add(null, new XmlTextReader(Program.XsdFile));
+      xmlDocument.Schemas.Add(null, new XmlTextReader(StringManager.GetFilePathSetting(Program.XsdFile)));
 
       xmlDocument.Load(textReader);
       List<string> errors = new List<string>();
       xmlDocument.Validate((sender, EventArgs) => errors.Add(EventArgs.Message));
 
       ErrorMessage(errors);
+      textReader.Close();
     }
 
     /// <summary>
@@ -64,13 +65,17 @@ namespace DataMappingExperiments.DataMapping
           Console.WriteLine(error);
           Console.WriteLine();
         }
+
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("Please resolve the validation error(s) and try again");
       }
       if (!errors.Any())
       {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("No Valaidation Errors Found");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("XML file complete!");
       }
-      Console.ForegroundColor = ConsoleColor.White;
     }
 
     public List<UnitInstances> CreateSoftTypeUnitsInstances()

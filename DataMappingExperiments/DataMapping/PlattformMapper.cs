@@ -102,12 +102,12 @@ namespace DataMappingExperiments.DataMapping
         var plattformsInstans = new GeografiskPlaceringsreferensEntrydefaultIn
         {
           Array = true,
-          id = "Plattform",
-
+          id = "Plattform"
         };
 
         Plattform plattform = new Plattform
         {
+          //TODO: Fixa de extraordinära properties
           id = Guid.NewGuid().ToString(),
           notering = bisPlattform.Notering,
           name = "",
@@ -149,6 +149,7 @@ namespace DataMappingExperiments.DataMapping
             Längdm = SkapaPlattformLängd(bisPlattform, new Plattform_Längdm())
           }
         };
+        //plattform = RealizationOfProperties(plattform);
         //add to list!
         plattformsInstans.data = plattform;
         plattformar.Add(plattformsInstans);
@@ -168,8 +169,173 @@ namespace DataMappingExperiments.DataMapping
       container.softTypes = containerSoftTypes.ToArray();
       return container;
     }
+
+    private Plattform RealizationOfProperties(Plattform plattform)
+    {
+      plattform.arbetsnamn = "Arbetsnamn";
+
+      //Anläggningsprodukt
+      //Validation Problems for instanceRef in the references
+      var anläggningsProdukt = new BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsprodukt
+      {
+        value = new AnläggningsproduktReference
+        {
+          softType = "Anläggningsprodukt",
+          instanceRef = "Anläggningsprodukt"
+        },
+        Array = true,
+        startSpecified = false,
+        endSpecified = false
+      };
+      var anläggningsProduktLista =
+        new List<BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsprodukt> { anläggningsProdukt };
+      plattform.anläggningsprodukt = anläggningsProduktLista.ToArray();
+
+      //Anläggningsspecifikation
+      //Validation problems
+      var anläggningsSpec = new BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsspecifikation
+      {
+        value = new AnläggningsspecifikationReference
+        {
+          softType = "Anläggningsspecifikation",
+          instanceRef = "Anläggningsspecifikation"
+        },
+        Array = true,
+        startSpecified = false,
+        endSpecified = false
+      };
+      var anläggningsSpecLista =
+        new List<BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsspecifikation> { anläggningsSpec };
+      plattform.anläggningsspecifikation = anläggningsSpecLista.ToArray();
+
+      //Bulkvara
+      //Validation Problem
+      var bulkvara = new BreakdownElementRealization_GeografiskPlaceringsreferens_bulkvara
+      {
+        value = new BulkvaraReference
+        {
+          softType = "Bulkvara",
+          instanceRef = "Bulkvara"
+        },
+        Array = true,
+        startSpecified = false,
+        endSpecified = false
+      };
+      var bulkvaraLista = new List<BreakdownElementRealization_GeografiskPlaceringsreferens_bulkvara> { bulkvara };
+      plattform.bulkvara = bulkvaraLista.ToArray();
+
+      //Dokument
+      //Validation Problems
+      var dokument = new DocumentReference_GeografiskPlaceringsreferens_dokument
+      {
+        value = new DokumentReference
+        {
+          softType = "Dokument",
+          instanceRef = "Dokument"
+        },
+        Array = true,
+        startSpecified = false,
+        endSpecified = false
+      };
+      var dokumentLista = new List<DocumentReference_GeografiskPlaceringsreferens_dokument> { dokument };
+      plattform.dokument = dokumentLista.ToArray();
+
+      //Företeelsetyp
+      //Validation Problems
+      var företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
+      {
+        startSpecified = false,
+        endSpecified = false,
+        @class = new FTGeografiskPlaceringsreferensReference
+        {
+          softType = "FTGeografiskPlaceringsreferens",
+          instanceRef = "FTGeografiskPlaceringsreferens"
+        }
+      };
+      plattform.företeelsetyp = företeelsetyp;
+
+      //Konstaterad Tillståndsindivid
+      //Validation Problems
+      var tillståndsIndivid = new BreakdownElementRealization_GeografiskPlaceringsreferens_konstateradTillståndsindivid
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = new KonstateradTillståndsindividReference
+        {
+          softType = "KonstateradTillståndsindivid",
+          instanceRef = "KonstateradTillståndsindivid"
+        }
+      };
+      var tillståndsindividLista =
+        new List<BreakdownElementRealization_GeografiskPlaceringsreferens_konstateradTillståndsindivid> { tillståndsIndivid };
+      plattform.konstateradTillståndsindivid = tillståndsindividLista.ToArray();
+
+      //Styckevara
+      //Validation Problems
+      var styckevara = new BreakdownElementRealization_GeografiskPlaceringsreferens_styckevara
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = new StyckevaraReference
+        {
+          softType = "Styckevara",
+          instanceRef = "Styckevara"
+        }
+      };
+
+      var styckevaraLista = new List<BreakdownElementRealization_GeografiskPlaceringsreferens_styckevara> { styckevara };
+      plattform.styckevara = styckevaraLista.ToArray();
+
+      //Projekt
+      //Validation problem
+      var projekt = new ProjectReference_GeografiskPlaceringsreferens_projekt
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = new ProjektReference
+        {
+          softType = "Projekt",
+          instanceRef = "Projekt"
+        }
+      };
+
+      var projektLista = new List<ProjectReference_GeografiskPlaceringsreferens_projekt> { projekt };
+      plattform.projekt = projektLista.ToArray();
+
+      //Ursprung
+      plattform.ursprung = new PropertyValueAssignment_GeografiskPlaceringsreferens_ursprung
+      {
+        startSpecified = false,
+        endSpecified = false,
+        value = ""
+      };
+
+      //FöreteelseTillkomst
+      var företeelsetillkomst = new PropertyValueAssignment_GeografiskPlaceringsreferens_företeelsetillkomst
+      {
+        value = "Företeelsetillkomst",
+        startSpecified = false,
+        endSpecified = false
+      };
+      plattform.företeelsetillkomst = företeelsetillkomst;
+
+      //Datainsamling
+      var datainsamling = new PropertyValueAssignment_GeografiskPlaceringsreferens_datainsamling
+      {
+        value = "Datainsamling",
+        startSpecified = false,
+        endSpecified = false
+      };
+      plattform.datainsamling = datainsamling;
+
+      return plattform;
+    }
+
     /// <summary>
-    /// Temporary squashing of the list
+    /// Temporary squashing of the list. Unika plattformar utan versioner med olika nätanknytningar.
     /// </summary>
     /// <param name="bisList"></param>
     /// <returns></returns>

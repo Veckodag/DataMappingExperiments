@@ -17,7 +17,7 @@ namespace DataMappingExperiments
     private Mapper _mapper;
     private BIS_GrundObjekt _BisObjekt;
     private List<BIS_GrundObjekt> _BisList;
-    public void GetXML(string fileName, string detailsFile = "")
+    public void GetXML(string fileName)
     {
       //TODO: Get the mappingtype from a config file
       _mapper = GetMappingType(MapperType.Plattform);
