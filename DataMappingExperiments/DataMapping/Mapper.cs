@@ -31,7 +31,6 @@ namespace DataMappingExperiments.DataMapping
       serializer.Serialize(tw, container);
       tw.Close();
       ValidateXML();
-
     }
     /// <summary>
     /// Validates the XML file against a matching XSD. Reads errors if there are any.
@@ -256,6 +255,18 @@ namespace DataMappingExperiments.DataMapping
         }
       };
 
+      var projektReference = new ProjectReference_Bulkvara_projekt
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = new ProjektReference
+        {
+          softType = "Projekt",
+          instanceRef = "Projekt"
+        }
+      };
+
       var bulkvaraInstance = new BulkvaraEntrydefaultIn
       {
         Array = true,
@@ -289,7 +300,76 @@ namespace DataMappingExperiments.DataMapping
               instanceRef = "Anläggningsprodukt"
             }
           },
-          dokument = new[] { dokumentReference }
+          dokument = new[] { dokumentReference },
+          projekt = new[] { projektReference },
+          företeelsetyp = new ClassificationReference_Bulkvara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTBulkvaraReference
+            {
+              instanceRef = "FTBulkvara",
+              softType = "FTBulkvara"
+            }
+          },
+          datainsamling = new PropertyValueAssignment_Bulkvara_datainsamling
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = "Bulkvara"
+          },
+          ursprung = new PropertyValueAssignment_Bulkvara_ursprung
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = "Bulkvara"
+          },
+          företeelsetillkomst = new PropertyValueAssignment_Bulkvara_företeelsetillkomst
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = "Bulkvara"
+          },
+          konstateratTillstånd = new StateAssignment_Bulkvara_konstateratTillstånd
+          {
+            startSpecified = false,
+            endSpecified = false,
+            bedömning = new StateAssessmentReference
+            {
+              startSpecified = false,
+              endSpecified = false,
+              tillstånd = new TillståndsstatusReference
+              {
+                softType = "Tillståndsstatus",
+                instanceRef = "Tillståndsstatus"
+              }
+            }
+          },
+          planeradIndivid = new ItemVersionReference_Bulkvara_planeradIndivid
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new PlaneradIndividReference
+            {
+              softType = "PlaneradIndivid",
+              instanceRef = "PlaneradIndivid"
+            }
+          },
+          prognostiseratTillstånd = new StateAssignment_Bulkvara_prognostiseratTillstånd
+          {
+            endSpecified = false,
+            startSpecified = false,
+            bedömning = new StateAssessmentReference
+            {
+              startSpecified = false,
+              endSpecified = false,
+              tillstånd = new TillståndsstatusReference
+              {
+                softType = "Tillståndsstatus",
+                instanceRef = "Tillståndsstatus"
+              }
+            }
+          }
         }
       };
       var bulkvaraInstanceLista = new List<BulkvaraInstances> { bulkvaraInstance };
@@ -300,6 +380,15 @@ namespace DataMappingExperiments.DataMapping
         id = "Bulkvara"
       };
       softtypeList.Add(bulkvara);
+      //Bulkvara end
+
+      var projektInstanceLista = new List<ProjektInstances>();
+      var projektSoftype = new SoftType_Projekt
+      {
+        Array = true,
+        id = "Projekt",
+        instances = projektInstanceLista.ToArray()
+      };
 
       return softtypeList;
     }

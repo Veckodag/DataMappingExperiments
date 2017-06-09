@@ -167,7 +167,7 @@ namespace DataMappingExperiments.DataMapping
       //Adds the extra softypes needed for GPR references
       //TODO: Check and complete them
       containerSoftTypes.AddRange(CreateSupplementarySoftypes());
-      //containerSoftTypes.AddRange(CreateKeyReferences());
+      containerSoftTypes.AddRange(CreateKeyReferences());
 
       //Last step is to prepare the container for serialization
       container.softTypes = containerSoftTypes.ToArray();
