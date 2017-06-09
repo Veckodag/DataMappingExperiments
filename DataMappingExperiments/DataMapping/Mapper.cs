@@ -31,7 +31,7 @@ namespace DataMappingExperiments.DataMapping
       serializer.Serialize(tw, container);
       tw.Close();
       ValidateXML();
-      
+
     }
     /// <summary>
     /// Validates the XML file against a matching XSD. Reads errors if there are any.
@@ -39,7 +39,7 @@ namespace DataMappingExperiments.DataMapping
     private void ValidateXML()
     {
       var textReader = new StreamReader(Program.XmlOutputFile);
-      var xmlDocument = new XmlDocument {Schemas = new XmlSchemaSet()};
+      var xmlDocument = new XmlDocument { Schemas = new XmlSchemaSet() };
       xmlDocument.Schemas.Add(null, new XmlTextReader(StringManager.GetFilePathSetting(Program.XsdFile)));
 
       xmlDocument.Load(textReader);
@@ -82,7 +82,7 @@ namespace DataMappingExperiments.DataMapping
     {
       var unitlist = new List<UnitInstances>();
       //The actual values could come from a config file.
-      string[] unitNameString = {"mm", "Procent", "Grader", "st"};
+      string[] unitNameString = { "mm", "Procent", "Grader", "st" };
 
       foreach (var unitName in unitNameString)
       {
@@ -108,7 +108,7 @@ namespace DataMappingExperiments.DataMapping
       var propertyList = new List<PropertyInstances>();
 
       //TODO: Map against proper properties
-      string[] properties = {"Hello World!", "THIS_IS_A_TEST_PROPERTY"};
+      string[] properties = { "Hello World!", "THIS_IS_A_TEST_PROPERTY" };
 
       foreach (var propertyName in properties)
       {
@@ -128,6 +128,230 @@ namespace DataMappingExperiments.DataMapping
       }
 
       return propertyList;
+    }
+
+    /// <summary>
+    /// Returns a collection of Softtypes that are used as reference keys to other softypes
+    /// </summary>
+    /// <returns></returns>
+    internal List<SoftType> CreateKeyReferences()
+    {
+      //TODO: Creating softypes instances for keyref
+      var softtypeList = new List<SoftType>();
+
+      //Setup
+      //Dokument
+      var dokument = new DocumentReference_Anläggningsprodukt_dokument
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = new DokumentReference
+        {
+          softType = "Dokument",
+          instanceRef = "Dokument"
+        }
+      };
+      var dokumentLista = new List<DocumentReference_Anläggningsprodukt_dokument> { dokument };
+
+      //Projekt
+      var projekt = new ProjectReference_Anläggningsprodukt_projekt
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = new ProjektReference
+        {
+          softType = "Projekt",
+          instanceRef = "Projekt"
+        }
+      };
+      var projektLista = new List<ProjectReference_Anläggningsprodukt_projekt> { projekt };
+
+      //Keyrefs
+      //Anläggningsprodukt
+      var produktInstance = new AnläggningsproduktEntrydefaultIn
+      {
+        Array = true,
+        id = "Anläggningsprodukt",
+        inputSchemaRef = "defaultIn",
+        data = new AnläggningsproduktdefaultIn
+        {
+          id = "Anläggningsprodukt",
+          versionId = "Anläggningsprodukt",
+          name = "Anläggningsprodukt",
+          notering = "Anläggningsprodukt",
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "FTAnläggningsprodukt"
+            },
+            startSpecified = false,
+            endSpecified = false
+          },
+          datainsamling = new PropertyValueAssignment_Anläggningsprodukt_datainsamling
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetillkomst = new PropertyValueAssignment_Anläggningsprodukt_företeelsetillkomst
+          {
+            value = "Anläggningsprodukt",
+            startSpecified = false,
+            endSpecified = false
+          },
+          ursprung = new PropertyValueAssignment_Anläggningsprodukt_ursprung
+          {
+            value = "Anläggningsprodukt",
+            startSpecified = false,
+            endSpecified = false
+          },
+          dokument = dokumentLista.ToArray(),
+          projekt = projektLista.ToArray()
+        }
+      };
+      var produktInstanceLista = new List<AnläggningsproduktInstances> { produktInstance };
+      var produkt = new SoftType_Anläggningsprodukt
+      {
+        instances = produktInstanceLista.ToArray(),
+        Array = true,
+        id = "Anläggningsprodukt"
+      };
+      softtypeList.Add(produkt);
+
+      //Bulkvara
+      var propertyStringValue = new PropertyValueString
+      {
+        Array = true,
+        value = "Bulkvara",
+        generalProperty = new PropertyReference
+        {
+          softType = "PropertyReference",
+          instanceRef = "Property"
+        }
+      };
+
+      var propertyNumericValue = new PropertyValueNumeric
+      {
+        Array = true,
+        value = 10,
+        generalProperty = new PropertyReference
+        {
+          softType = "PropertyReference",
+          instanceRef = "Property"
+        }
+      };
+
+      var dokumentReference = new DocumentReference_Bulkvara_dokument
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = new DokumentReference
+        {
+          softType = "Dokument",
+          instanceRef = "Dokument"
+        }
+      };
+
+      var bulkvaraInstance = new BulkvaraEntrydefaultIn
+      {
+        Array = true,
+        id = "Bulkvara",
+        inputSchemaRef = "defaultIn",
+        data = new BulkvaradefaultIn
+        {
+          id = "Bulkvara",
+          name = "Bulkvara",
+          notering = "Bulkvara",
+          versionId = "Bulkvara",
+          stringSet = new PropertyValueSetAssignment_Bulkvara_stringSet
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new[] { propertyStringValue }
+          },
+          numericSet = new PropertyValueSetAssignment_Bulkvara_numericSet
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new[] { propertyNumericValue }
+          },
+          anläggningsprodukt = new ProductDesignVersionToIndividual_Bulkvara_anläggningsprodukt
+          {
+            startSpecified = false,
+            endSpecified = false,
+            product = new AnläggningsproduktReference
+            {
+              softType = "Anläggningsprodukt",
+              instanceRef = "Anläggningsprodukt"
+            }
+          },
+          dokument = new[] { dokumentReference }
+        }
+      };
+      var bulkvaraInstanceLista = new List<BulkvaraInstances> { bulkvaraInstance };
+      var bulkvara = new SoftType_Bulkvara
+      {
+        instances = bulkvaraInstanceLista.ToArray(),
+        Array = true,
+        id = "Bulkvara"
+      };
+      softtypeList.Add(bulkvara);
+
+      return softtypeList;
+    }
+
+    /// <summary>
+    /// Entry point for property key references
+    /// </summary>
+    /// <returns></returns>
+    internal List<SoftType> CreateSupplementarySoftypes()
+    {
+      var softtypeList = new List<SoftType>();
+      var geografiskFTSofttype = new SoftType_FTGeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "FTGeografiskPlaceringsreferens"
+      };
+      var FTPlattformar = new List<FTGeografiskPlaceringsreferensInstances>();
+      //Vilka softtypes behövs
+      var ftPlattformsInstans = new FTGeografiskPlaceringsreferensEntrydefaultIn
+      {
+        Array = true,
+        id = "FTPlattform",
+        inputSchemaRef = "defaultIn",
+        data = new FTGeografiskPlaceringsreferensdefaultIn
+        {
+          id = "FTPlattform",
+          name = "FTPlattform"
+        }
+      };
+      FTPlattformar.Add(ftPlattformsInstans);
+      geografiskFTSofttype.instances = FTPlattformar.ToArray();
+
+      //TODO: Make Real Properties
+      var softtypeProperty = new SoftType_Property
+      {
+        Array = true,
+        id = "Property",
+        instances = CreateSoftTypePropertyInstances().ToArray()
+      };
+      var softtypeUnit = new SoftType_Unit
+      {
+        Array = true,
+        id = "Unit",
+        instances = CreateSoftTypeUnitsInstances().ToArray()
+      };
+
+      //Add them all to the list
+      softtypeList.Add(geografiskFTSofttype);
+      softtypeList.Add(softtypeProperty);
+      softtypeList.Add(softtypeUnit);
+
+      return softtypeList;
     }
   }
 }

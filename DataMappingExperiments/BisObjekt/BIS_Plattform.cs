@@ -24,5 +24,13 @@
     public string ObjektTypNummer { get; set; }
     public string ObjektNummer { get; set; }
 
+    //Properties not currently used but might be!
+
+    public string Plnfr { get; set; }
+    public string Nodnrfr { get; set; }
+    public string Plnrti { get; set; }
+    public string Nodnrti { get; set; }
+    public string Lnknr { get; set; }
+
   }
 }

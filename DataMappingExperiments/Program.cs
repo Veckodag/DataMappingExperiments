@@ -24,9 +24,8 @@ namespace DataMappingExperiments
     static void StartExcelManager(string fileName)
     {
       var excelManager = new ExcelManager();
-      // Massive string with all the good stuff
+      //Massive string with all the good stuff
       excelManager.GetXML(fileName);
-
     }
   }
 }
