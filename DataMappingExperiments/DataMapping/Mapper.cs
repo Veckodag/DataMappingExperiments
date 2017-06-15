@@ -139,31 +139,68 @@ namespace DataMappingExperiments.DataMapping
       var softtypeList = new List<SoftType>();
 
       //Setup
-      //Dokument
+
+      //Generic Properties
+      var propertyStringValue = new PropertyValueString
+      {
+        Array = true,
+        generalProperty = new PropertyReference
+        {
+          softType = "Property",
+          instanceRef = "Property"
+        }
+      };
+
+      var propertyNumericValue = new PropertyValueNumeric
+      {
+        Array = true,
+        generalProperty = new PropertyReference
+        {
+          softType = "Property",
+          instanceRef = "Property"
+        }
+      };
+
+      var stateAssesmentReference = new StateAssessmentReference
+      {
+        startSpecified = false,
+        endSpecified = false,
+        tillstånd = new TillståndsstatusReference
+        {
+          softType = "Tillståndsstatus",
+          instanceRef = "Tillståndsstatus"
+        }
+      };
+
+      var genericDocumentReference = new DokumentReference
+      {
+        softType = "Dokument",
+        instanceRef = "Dokument"
+      };
+
+      var genericProjectReference = new ProjektReference
+      {
+        softType = "Projekt",
+        instanceRef = "Projekt"
+      };
+
+      //Dokument - NOT SOFTTYPE
       var dokument = new DocumentReference_Anläggningsprodukt_dokument
       {
         Array = true,
         startSpecified = false,
         endSpecified = false,
-        value = new DokumentReference
-        {
-          softType = "Dokument",
-          instanceRef = "Dokument"
-        }
+        value = genericDocumentReference
       };
       var dokumentLista = new List<DocumentReference_Anläggningsprodukt_dokument> { dokument };
 
-      //Projekt
+      //Projekt - NOT SOFTTYPE
       var projekt = new ProjectReference_Anläggningsprodukt_projekt
       {
         Array = true,
         startSpecified = false,
         endSpecified = false,
-        value = new ProjektReference
-        {
-          softType = "Projekt",
-          instanceRef = "Projekt"
-        }
+        value = genericProjectReference
       };
       var projektLista = new List<ProjectReference_Anläggningsprodukt_projekt> { projekt };
 
@@ -221,38 +258,13 @@ namespace DataMappingExperiments.DataMapping
       softtypeList.Add(produkt);
 
       //Bulkvara
-      var propertyStringValue = new PropertyValueString
-      {
-        Array = true,
-        value = "Bulkvara",
-        generalProperty = new PropertyReference
-        {
-          softType = "PropertyReference",
-          instanceRef = "Property"
-        }
-      };
-
-      var propertyNumericValue = new PropertyValueNumeric
-      {
-        Array = true,
-        value = 10,
-        generalProperty = new PropertyReference
-        {
-          softType = "PropertyReference",
-          instanceRef = "Property"
-        }
-      };
 
       var dokumentReference = new DocumentReference_Bulkvara_dokument
       {
         Array = true,
         startSpecified = false,
         endSpecified = false,
-        value = new DokumentReference
-        {
-          softType = "Dokument",
-          instanceRef = "Dokument"
-        }
+        value = genericDocumentReference
       };
 
       var projektReference = new ProjectReference_Bulkvara_projekt
@@ -260,11 +272,7 @@ namespace DataMappingExperiments.DataMapping
         Array = true,
         startSpecified = false,
         endSpecified = false,
-        value = new ProjektReference
-        {
-          softType = "Projekt",
-          instanceRef = "Projekt"
-        }
+        value = genericProjectReference
       };
 
       var bulkvaraInstance = new BulkvaraEntrydefaultIn
@@ -334,16 +342,7 @@ namespace DataMappingExperiments.DataMapping
           {
             startSpecified = false,
             endSpecified = false,
-            bedömning = new StateAssessmentReference
-            {
-              startSpecified = false,
-              endSpecified = false,
-              tillstånd = new TillståndsstatusReference
-              {
-                softType = "Tillståndsstatus",
-                instanceRef = "Tillståndsstatus"
-              }
-            }
+            bedömning = stateAssesmentReference
           },
           planeradIndivid = new ItemVersionReference_Bulkvara_planeradIndivid
           {
@@ -359,16 +358,7 @@ namespace DataMappingExperiments.DataMapping
           {
             endSpecified = false,
             startSpecified = false,
-            bedömning = new StateAssessmentReference
-            {
-              startSpecified = false,
-              endSpecified = false,
-              tillstånd = new TillståndsstatusReference
-              {
-                softType = "Tillståndsstatus",
-                instanceRef = "Tillståndsstatus"
-              }
-            }
+            bedömning = stateAssesmentReference
           }
         }
       };
@@ -382,13 +372,230 @@ namespace DataMappingExperiments.DataMapping
       softtypeList.Add(bulkvara);
       //Bulkvara end
 
-      var projektInstanceLista = new List<ProjektInstances>();
+      //Projekt
+      var projektInstance = new ProjektEntrydefaultIn
+      {
+        Array = true,
+        id = "Projekt",
+        inputSchemaRef = "defaultIn",
+        data = new ProjektdefaultIn
+        {
+          id = "Projekt",
+          name = "Projekt",
+          notering = "Projekt"
+        }
+      };
+
+      var projektInstanceLista = new List<ProjektInstances> { projektInstance };
       var projektSoftype = new SoftType_Projekt
       {
         Array = true,
         id = "Projekt",
         instances = projektInstanceLista.ToArray()
       };
+      softtypeList.Add(projektSoftype);
+      //Projekt end
+
+      //Dokument
+      var projektDokumentReference = new ProjectReference_Dokument_projekt
+      {
+        Array = true,
+        endSpecified = false,
+        startSpecified = false,
+        value = genericProjectReference
+      };
+
+      var dokumentDokumentReference = new DocumentReference_Dokument_dokument
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericDocumentReference
+      };
+
+      var dokumentExternReference = new DocumentReference_Dokument_externReferens
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = new ExternReferensReference
+        {
+          instanceRef = "ExternReferens",
+          softType = "ExternReferens"
+        }
+      };
+
+      var dokumentInstace = new DokumentEntrydefaultIn
+      {
+        Array = true,
+        id = "Dokument",
+        inputSchemaRef = "defaultIn",
+        data = new DokumentdefaultIn
+        {
+          id = "Dokument",
+          name = "Dokument",
+          notering = "Dokument",
+          versionId = "Dokument",
+          stringSet = new PropertyValueSetAssignment_Dokument_stringSet
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new[] { propertyStringValue }
+          },
+          numericSet = new PropertyValueSetAssignment_Dokument_numericSet
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new[] { propertyNumericValue }
+          },
+          företeelsetyp = new ClassificationReference_Dokument_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTDokumentReference
+            {
+              softType = "FTDokument",
+              instanceRef = "FTDokument"
+            }
+          },
+          datainsamling = new PropertyValueAssignment_Dokument_datainsamling
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          ursprung = new PropertyValueAssignment_Dokument_ursprung
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetillkomst = new PropertyValueAssignment_Dokument_företeelsetillkomst
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          projekt = new[] { projektDokumentReference },
+          dokument = new[] { dokumentDokumentReference },
+          externReferens = new[] { dokumentExternReference }
+        }
+      };
+
+      var dokumentInstanceLista = new List<DokumentInstances> { dokumentInstace };
+      var dokumentSoftType = new SoftType_Dokument
+      {
+        Array = true,
+        id = "Dokument",
+        instances = dokumentInstanceLista.ToArray()
+      };
+      softtypeList.Add(dokumentSoftType);
+      //Dokument end
+
+      var styckevaraDokumentReference = new DocumentReference_Styckevara_dokument
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericDocumentReference
+      };
+
+      var styckevaraProjektReference = new ProjectReference_Styckevara_projekt
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericProjectReference
+      };
+
+      var styckevaraInstance = new StyckevaraEntrydefaultIn
+      {
+        Array = true,
+        id = "Styckevara",
+        inputSchemaRef = "defaultIn",
+        data = new StyckevaradefaultIn
+        {
+          id = "Styckevara",
+          name = "Styckevara",
+          notering = "Styckevara",
+          versionId = "Styckevara",
+          anläggningsprodukt = new ProductDesignVersionToIndividual_Styckevara_anläggningsprodukt
+          {
+            startSpecified = false,
+            endSpecified = false,
+            product = new AnläggningsproduktReference
+            {
+              softType = "Anläggningsprodukt",
+              instanceRef = "Anläggningsprodukt"
+            }
+          },
+          datainsamling = new PropertyValueAssignment_Styckevara_datainsamling
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetillkomst = new PropertyValueAssignment_Styckevara_företeelsetillkomst
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "FTStyckevara"
+            }
+          },
+          konstateratTillstånd = new StateAssignment_Styckevara_konstateratTillstånd
+          {
+            startSpecified = false,
+            endSpecified = false,
+            bedömning = stateAssesmentReference
+          },
+          planeradIndivid = new ItemVersionReference_Styckevara_planeradIndivid
+          {
+            startSpecified = false,
+            endSpecified = false,
+
+          },
+          prognostiseratTillstånd = new StateAssignment_Styckevara_prognostiseratTillstånd
+          {
+            startSpecified = false,
+            endSpecified = false,
+            bedömning = stateAssesmentReference
+          },
+          ursprung = new PropertyValueAssignment_Styckevara_ursprung
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          dokument = new[] { styckevaraDokumentReference },
+          projekt = new[] { styckevaraProjektReference }
+        }
+      };
+
+      var styckevaraInstances = new List<StyckevaraInstances> { styckevaraInstance };
+      var styckevaraSoftType = new SoftType_Styckevara
+      {
+        Array = true,
+        id = "Styckevara",
+        instances = styckevaraInstances.ToArray()
+      };
+      softtypeList.Add(styckevaraSoftType);
+      //Styckevara END
+
+      //Anläggningsspecifikation
+      var anläggningsspecifikationInstance = new AnläggningsspecifikationEntrydefaultIn();
+
+      var anläggningsspecifikationInstances = new List<AnläggningsspecifikationInstances> { anläggningsspecifikationInstance };
+      var anläggningsspecifikationSoftType = new SoftType_Anläggningsspecifikation
+      {
+        Array = true,
+        id = "Anläggningsspecifikation",
+        instances = anläggningsspecifikationInstances.ToArray()
+      };
+      //softtypeList.Add(anläggningsspecifikationSoftType);
+      //Anläggningsspecifikation END
 
       return softtypeList;
     }
