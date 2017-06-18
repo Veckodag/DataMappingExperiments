@@ -161,15 +161,17 @@ namespace DataMappingExperiments.DataMapping
         }
       };
 
+      var genericTillståndsstatusReference = new TillståndsstatusReference
+      {
+        softType = "Tillståndsstatus",
+        instanceRef = "Tillståndsstatus"
+      };
+
       var stateAssesmentReference = new StateAssessmentReference
       {
         startSpecified = false,
         endSpecified = false,
-        tillstånd = new TillståndsstatusReference
-        {
-          softType = "Tillståndsstatus",
-          instanceRef = "Tillståndsstatus"
-        }
+        tillstånd = genericTillståndsstatusReference
       };
 
       var genericDocumentReference = new DokumentReference
@@ -182,6 +184,18 @@ namespace DataMappingExperiments.DataMapping
       {
         softType = "Projekt",
         instanceRef = "Projekt"
+      };
+
+      var genericAnläggningsproduktReference = new AnläggningsproduktReference
+      {
+        softType = "Anläggningsprodukt",
+        instanceRef = "Anläggningsprodukt"
+      };
+
+      var genericAnläggningsUtrymmeReference = new AnläggningsutrymmeReference
+      {
+        softType = "Anläggningsutrymme",
+        instanceRef = "Anläggningsutrymme"
       };
 
       //Dokument - NOT SOFTTYPE
@@ -302,11 +316,7 @@ namespace DataMappingExperiments.DataMapping
           {
             startSpecified = false,
             endSpecified = false,
-            product = new AnläggningsproduktReference
-            {
-              softType = "Anläggningsprodukt",
-              instanceRef = "Anläggningsprodukt"
-            }
+            product = genericAnläggningsproduktReference
           },
           dokument = new[] { dokumentReference },
           projekt = new[] { projektReference },
@@ -489,6 +499,7 @@ namespace DataMappingExperiments.DataMapping
       softtypeList.Add(dokumentSoftType);
       //Dokument end
 
+      //Styckevara
       var styckevaraDokumentReference = new DocumentReference_Styckevara_dokument
       {
         Array = true,
@@ -520,11 +531,7 @@ namespace DataMappingExperiments.DataMapping
           {
             startSpecified = false,
             endSpecified = false,
-            product = new AnläggningsproduktReference
-            {
-              softType = "Anläggningsprodukt",
-              instanceRef = "Anläggningsprodukt"
-            }
+            product = genericAnläggningsproduktReference
           },
           datainsamling = new PropertyValueAssignment_Styckevara_datainsamling
           {
@@ -585,7 +592,81 @@ namespace DataMappingExperiments.DataMapping
       //Styckevara END
 
       //Anläggningsspecifikation
-      var anläggningsspecifikationInstance = new AnläggningsspecifikationEntrydefaultIn();
+
+      var anläggningsspecifikationDokumentReference = new DocumentReference_Anläggningsspecifikation_dokument
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericDocumentReference
+      };
+
+      var anläggningsspecifikationProjectReference = new ProjectReference_Anläggningsspecifikation_projekt
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericProjectReference
+      };
+
+      var anläggningsspecifikationAnläggningsprodukt = new BreakdownElementRealization_Anläggningsspecifikation_anläggningsprodukt
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericAnläggningsproduktReference
+      };
+
+      var anläggningsspecifikationAnläggningsutrymme = new BreakdownElementRealization_Anläggningsspecifikation_anläggningsutrymme
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericAnläggningsUtrymmeReference
+      };
+
+      var anläggningsspecifikationInstance = new AnläggningsspecifikationEntrydefaultIn
+      {
+        Array = true,
+        id = "Anläggningsspecifikation",
+        inputSchemaRef = "defaultIn",
+        data = new AnläggningsspecifikationdefaultIn
+        {
+          id = "Anläggningsspecifikation",
+          name = "Anläggningsspecifikation",
+          notering = "Anläggningsspecifikation",
+          versionId = "Anläggningsspecifikation",
+          datainsamling = new PropertyValueAssignment_Anläggningsspecifikation_datainsamling
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetillkomst = new PropertyValueAssignment_Anläggningsspecifikation_företeelsetillkomst
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetyp = new ClassificationReference_Anläggningsspecifikation_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsspecifikationReference
+            {
+              softType = "FTAnläggningsspecifikation",
+              instanceRef = "FTAnläggningsspecifikation"
+            }
+          },
+          ursprung = new PropertyValueAssignment_Anläggningsspecifikation_ursprung
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          dokument = new[] { anläggningsspecifikationDokumentReference },
+          projekt = new[] { anläggningsspecifikationProjectReference },
+          anläggningsprodukt = new[] { anläggningsspecifikationAnläggningsprodukt },
+          anläggningsutrymme = new[] { anläggningsspecifikationAnläggningsutrymme }
+        }
+      };
 
       var anläggningsspecifikationInstances = new List<AnläggningsspecifikationInstances> { anläggningsspecifikationInstance };
       var anläggningsspecifikationSoftType = new SoftType_Anläggningsspecifikation
@@ -594,9 +675,300 @@ namespace DataMappingExperiments.DataMapping
         id = "Anläggningsspecifikation",
         instances = anläggningsspecifikationInstances.ToArray()
       };
-      //softtypeList.Add(anläggningsspecifikationSoftType);
+      softtypeList.Add(anläggningsspecifikationSoftType);
       //Anläggningsspecifikation END
 
+      //KonstateradTillståndsIndivid
+
+      var konstateradTillståndsIndividDocumentReference = new DocumentReference_KonstateradTillståndsindivid_dokument
+      {
+        startSpecified = false,
+        endSpecified = false,
+        value = genericDocumentReference
+      };
+
+      var konstateradTillståndsIndividProjectReference = new ProjectReference_KonstateradTillståndsindivid_projekt
+      {
+        startSpecified = false,
+        endSpecified = false,
+        value = genericProjectReference
+      };
+
+      var konstateradTillståndsIndividInstance = new KonstateradTillståndsindividEntrydefaultIn
+      {
+        Array = true,
+        id = "KonstateradTillståndsindivid",
+        inputSchemaRef = "defaultIn",
+        data = new KonstateradTillståndsindividdefaultIn
+        {
+          id = "KonstateradTillståndsindivid",
+          name = "KonstateradTillståndsindivid",
+          notering = "KonstateradTillståndsindivid",
+          versionId = "KonstateradTillståndsindivid",
+          datainsamling = new PropertyValueAssignment_KonstateradTillståndsindivid_datainsamling
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetillkomst = new PropertyValueAssignment_KonstateradTillståndsindivid_företeelsetillkomst
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetyp = new ClassificationReference_KonstateradTillståndsindivid_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTKonstateradTillståndsindividReference
+            {
+              softType = "FTKonstateradTillståndsindivid",
+              instanceRef = "FTKonstateradTillståndsindivid"
+            }
+          },
+          konstateratTillstånd = new StateAssignment_KonstateradTillståndsindivid_konstateratTillstånd
+          {
+            startSpecified = false,
+            endSpecified = false,
+            bedömning = new StateAssessmentReference_KonstateradTillståndsindivid_bedömning
+            {
+              startSpecified = false,
+              endSpecified = false,
+              tillstånd = genericTillståndsstatusReference
+            }
+          },
+          ursprung = new PropertyValueAssignment_KonstateradTillståndsindivid_ursprung
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          stringSet = new PropertyValueSetAssignment_KonstateradTillståndsindivid_stringSet
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new[] { propertyStringValue }
+          },
+          numericSet = new PropertyValueSetAssignment_KonstateradTillståndsindivid_numericSet
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new[] { propertyNumericValue }
+          },
+          dokument = new[] { konstateradTillståndsIndividDocumentReference },
+          projekt = new[] { konstateradTillståndsIndividProjectReference }
+        }
+      };
+
+      var konstateradTillståndsIndividInstances = new List<KonstateradTillståndsindividInstances> { konstateradTillståndsIndividInstance };
+      var konstateradTillståndsIndividSoftType = new SoftType_KonstateradTillståndsindivid
+      {
+        Array = true,
+        id = "KonstateradTillståndsindivid",
+        instances = konstateradTillståndsIndividInstances.ToArray()
+      };
+      softtypeList.Add(konstateradTillståndsIndividSoftType);
+      //KonstateradTillståndsIndivid END
+
+      //FTGeografiskPlaceringsReferens
+
+      var FTGeografiskplaceringsreferensInstance = new FTGeografiskPlaceringsreferensEntrydefaultIn
+      {
+        Array = true,
+        id = "FTGeografiskPlaceringsreferens",
+        inputSchemaRef = "defaultIn",
+        data = new FTGeografiskPlaceringsreferensdefaultIn
+        {
+          id = "FTGeografiskPlaceringsreferens",
+          name = "FTGeografiskPlaceringsreferens"
+        }
+      };
+      var FTGeografiskPlaceringsreferensInstances = new List<FTGeografiskPlaceringsreferensInstances> { FTGeografiskplaceringsreferensInstance };
+      var FTGeografiskPlaceringsReferensSoftType = new SoftType_FTGeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "FTGeografiskPlaceringsreferens",
+        instances = FTGeografiskPlaceringsreferensInstances.ToArray()
+      };
+      softtypeList.Add(FTGeografiskPlaceringsReferensSoftType);
+
+      //FTGeografiskPlaceringsReferens END
+
+      //FTAnläggningsProdukt
+
+      var FTAnläggningsProdukt = new FTAnläggningsproduktEntrydefaultIn
+      {
+        Array = true,
+        id = "FTAnläggningsprodukt",
+        inputSchemaRef = "defaultIn",
+        data = new FTAnläggningsproduktdefaultIn
+        {
+          id = "FTAnläggningsprodukt",
+          name = "FTAnläggningsprodukt"
+        }
+      };
+      var FTAnläggningsproduktInstances = new List<FTAnläggningsproduktInstances> { FTAnläggningsProdukt };
+      var FTAnläggningsProduktSoftType = new SoftType_FTAnläggningsprodukt
+      {
+        Array = true,
+        id = "FTAnläggningsprodukt",
+        instances = FTAnläggningsproduktInstances.ToArray()
+      };
+      softtypeList.Add(FTAnläggningsProduktSoftType);
+
+      //FTAnläggningsProdukt END
+
+      //FTStyckevara
+      var FTStyckevaraInstance = new FTStyckevaraEntrydefaultIn
+      {
+        Array = true,
+        id = "FTStyckevara",
+        inputSchemaRef = "defaultIn",
+        data = new FTStyckevaradefaultIn
+        {
+          id = "FTStyckevaraInstances",
+          name = "FTStyckevaraInstances"
+        }
+      };
+
+      var FTStyckevaraInstances = new List<FTStyckevaraInstances> { FTStyckevaraInstance };
+      var FTStyckevaraSoftType = new SoftType_FTStyckevara
+      {
+        Array = true,
+        id = "FTStyckevara",
+        instances = FTStyckevaraInstances.ToArray()
+      };
+      softtypeList.Add(FTStyckevaraSoftType);
+      //FTStyckevara END
+
+      //FTDokument
+      var FTDokumentInstance = new FTDokumentEntrydefaultIn
+      {
+        Array = true,
+        id = "FTDokument",
+        inputSchemaRef = "defaultIn",
+        data = new FTDokumentdefaultIn
+        {
+          id = "FTDokument",
+          name = "FTDokument"
+        }
+      };
+      var FTDokumentInstances = new List<FTDokumentInstances> { FTDokumentInstance };
+      var FTDokumentSoftType = new SoftType_FTDokument
+      {
+        Array = true,
+        id = "FTDokument",
+        instances = FTDokumentInstances.ToArray()
+      };
+      softtypeList.Add(FTDokumentSoftType);
+      //FTDokument END
+
+      //FTKonstateradTillståndsindivid
+      var FTKonstateradTillståndsindividInstance = new FTKonstateradTillståndsindividEntrydefaultIn
+      {
+        Array = true,
+        id = "FTKonstateradTillståndsindivid",
+        inputSchemaRef = "defaultIn",
+        data = new FTKonstateradTillståndsindividdefaultIn
+        {
+          id = "FTKonstateradTillståndsindivid",
+          name = "FTKonstateradTillståndsindivid"
+        }
+      };
+      var FTKonstateradTillståndsindividInstances = new List<FTKonstateradTillståndsindividInstances> { FTKonstateradTillståndsindividInstance };
+      var FTKonstateradTillståndsindividSoftType = new SoftType_FTKonstateradTillståndsindivid
+      {
+        Array = true,
+        id = "FTKonstateradTillståndsindivid",
+        instances = FTKonstateradTillståndsindividInstances.ToArray()
+      };
+      softtypeList.Add(FTKonstateradTillståndsindividSoftType);
+
+      //FTKonstateradTillståndsindivid END
+
+      //FTBulkvara
+      var FTBulkvaraInstance = new FTBulkvaraEntrydefaultIn
+      {
+        Array = true,
+        id = "FTBulkvara",
+        inputSchemaRef = "defaultIn",
+        data = new FTBulkvaradefaultIn
+        {
+          id = "FTBulkvara",
+          name = "FTBulkvara"
+        }
+      };
+      var FTBulkvaraInstances = new List<FTBulkvaraInstances> { FTBulkvaraInstance };
+      var FTBulkvaraSoftType = new SoftType_FTBulkvara
+      {
+        Array = true,
+        id = "FTBulkvara",
+        instances = FTBulkvaraInstances.ToArray()
+      };
+      softtypeList.Add(FTBulkvaraSoftType);
+      //FTBulkvara END
+
+      //FTAnläggningsspecifikation
+      var FTAnläggningsspecifikationInstance = new FTAnläggningsspecifikationEntrydefaultIn
+      {
+        Array = true,
+        id = "FTAnläggningsspecifikation",
+        inputSchemaRef = "defaultIn",
+        data = new FTAnläggningsspecifikationdefaultIn
+        {
+          id = "FTAnläggningsspecifikation",
+          name = "FTAnläggningsspecifikation"
+        }
+      };
+      var FTAnläggningsspecifikationInstances = new List<FTAnläggningsspecifikationInstances> { FTAnläggningsspecifikationInstance };
+      var FTAnläggningsspecifikationSoftType = new SoftType_FTAnläggningsspecifikation
+      {
+        Array = true,
+        id = "FTAnläggningsspecifikation",
+        instances = FTAnläggningsspecifikationInstances.ToArray()
+      };
+      softtypeList.Add(FTAnläggningsspecifikationSoftType);
+      //FTAnläggningsspecifikation END
+
+      //Property
+      var propertyInstance = new PropertyEntrydefaultIn
+      {
+        Array = true,
+        id = "Property",
+        inputSchemaRef = "defaultIn",
+        data = new PropertydefaultIn
+        {
+          id = "Property",
+          name = "Property"
+        }
+      };
+      var propertyInstances = new List<PropertyInstances> { propertyInstance };
+      var propertySoftType = new SoftType_Property
+      {
+        Array = true,
+        id = "Property",
+        instances = propertyInstances.ToArray()
+      };
+      softtypeList.Add(propertySoftType);
+      //Property END
+
+      //Anläggningsutrymme
+      //var anläggningsutrymmeSoftType = new SoftType_Anläggningsutrymme();
+      //softtypeList.Add(anläggningsutrymmeSoftType);
+      //Anläggningsutrymme END
+
+      //ExternReferens
+      //var externReferensSoftType = new SoftType_ExternReferens();
+      //softtypeList.Add(externReferensSoftType);
+      //ExternReferens END
+
+      //Tillståndsstatus
+      //var tillståndStatusSoftType = new SoftType_Tillståndsstatus();
+      //softtypeList.Add(tillståndStatusSoftType);
+      //Tillståndsstatus END
+
+      //PlaneradIndivid
+      //var planeradIndivid = new SoftType_PlaneradIndivid();
+      //softtypeList.Add(planeradIndivid);
+      //PlaneradIndivid END
       return softtypeList;
     }
 
