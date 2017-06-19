@@ -165,7 +165,6 @@ namespace DataMappingExperiments.DataMapping
       };
       containerSoftTypes.Add(geografiskSofttype);
       //Adds the extra softypes needed for GPR references
-      //TODO: Check and complete them
       containerSoftTypes.AddRange(CreateSupplementarySoftypes());
       containerSoftTypes.AddRange(CreateKeyReferences());
 

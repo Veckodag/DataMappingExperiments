@@ -951,24 +951,263 @@ namespace DataMappingExperiments.DataMapping
       //Property END
 
       //Anläggningsutrymme
-      //var anläggningsutrymmeSoftType = new SoftType_Anläggningsutrymme();
-      //softtypeList.Add(anläggningsutrymmeSoftType);
+      var anläggningsutrymmeDocumentReference = new DocumentReference_Anläggningsutrymme_dokument
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericDocumentReference
+      };
+
+      var anläggningsutrymmeProjectReference = new ProjectReference_Anläggningsutrymme_projekt
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericProjectReference
+      };
+
+      var anläggningsutrymmeInstance = new AnläggningsutrymmeEntrydefaultIn
+      {
+        Array = true,
+        id = "Anläggningsutrymme",
+        inputSchemaRef = "defaultIn",
+        data = new AnläggningsutrymmedefaultIn
+        {
+          id = "Anläggningsutrymme",
+          name = "Anläggningsutrymme",
+          notering = "Anläggningsutrymme",
+          versionId = "Anläggningsutrymme",
+          datainsamling = new PropertyValueAssignment_Anläggningsutrymme_datainsamling
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetillkomst = new PropertyValueAssignment_Anläggningsutrymme_företeelsetillkomst
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetyp = new ClassificationReference_Anläggningsutrymme_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsutrymmeReference
+            {
+              softType = "FTAnläggningsutrymme",
+              instanceRef = "FTAnläggningsutrymme"
+            }
+          },
+          ursprung = new PropertyValueAssignment_Anläggningsutrymme_ursprung
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          stringSet = new PropertyValueSetAssignment_Anläggningsutrymme_stringSet
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new[] { propertyStringValue }
+          },
+          numericSet = new PropertyValueSetAssignment_Anläggningsutrymme_numericSet
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new[] { propertyNumericValue }
+          },
+          dokument = new[] { anläggningsutrymmeDocumentReference },
+          projekt = new[] { anläggningsutrymmeProjectReference }
+        }
+      };
+      var anläggningsutrymmeInstances = new List<AnläggningsutrymmeInstances> { anläggningsutrymmeInstance };
+      var anläggningsutrymmeSoftType = new SoftType_Anläggningsutrymme
+      {
+        Array = true,
+        id = "Anläggningsutrymme",
+        instances = anläggningsutrymmeInstances.ToArray()
+      };
+      softtypeList.Add(anläggningsutrymmeSoftType);
       //Anläggningsutrymme END
 
       //ExternReferens
-      //var externReferensSoftType = new SoftType_ExternReferens();
-      //softtypeList.Add(externReferensSoftType);
+      var externReferensInstance = new ExternReferensEntrydefaultIn
+      {
+        Array = true,
+        id = "ExternReferens",
+        inputSchemaRef = "defaultIn",
+        data = new ExternReferensdefaultIn
+        {
+          id = "ExternReferens",
+          name = "ExternReferens",
+          notering = "ExternReferens",
+          file = new ExternalFile_ExternReferens_file
+          {
+            name = "ExternReferens",
+            lokalisering = "ExternReferens"
+          }
+        }
+      };
+      var externReferensInstances = new List<ExternReferensInstances> { externReferensInstance };
+      var externReferensSoftType = new SoftType_ExternReferens
+      {
+        Array = true,
+        id = "ExternReferens",
+        instances = externReferensInstances.ToArray()
+      };
+      softtypeList.Add(externReferensSoftType);
       //ExternReferens END
 
       //Tillståndsstatus
-      //var tillståndStatusSoftType = new SoftType_Tillståndsstatus();
-      //softtypeList.Add(tillståndStatusSoftType);
+      var tillståndsstatusInstance = new TillståndsstatusEntrydefaultIn
+      {
+        Array = true,
+        id = "Tillståndsstatus",
+        inputSchemaRef = "defaultIn",
+        data = new TillståndsstatusdefaultIn
+        {
+          id = "Tillståndsstatus"
+        }
+      };
+      var tillståndsstatusInstances = new List<TillståndsstatusInstances> { tillståndsstatusInstance };
+      var tillståndStatusSoftType = new SoftType_Tillståndsstatus
+      {
+        Array = true,
+        id = "Tillståndsstatus",
+        instances = tillståndsstatusInstances.ToArray()
+      };
+      softtypeList.Add(tillståndStatusSoftType);
       //Tillståndsstatus END
 
       //PlaneradIndivid
-      //var planeradIndivid = new SoftType_PlaneradIndivid();
-      //softtypeList.Add(planeradIndivid);
+
+      var planeradIndividDokumentReference = new DocumentReference_PlaneradIndivid_dokument
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericDocumentReference
+      };
+
+      var planeradIndividProjectReference = new ProjectReference_PlaneradIndivid_projekt
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = genericProjectReference
+      };
+
+      var planeradIndividInstance = new PlaneradIndividEntrydefaultIn
+      {
+        Array = true,
+        id = "PlaneradIndivid",
+        inputSchemaRef = "defaultIn",
+        data = new PlaneradIndividdefaultIn
+        {
+          id = "PlaneradIndivid",
+          name = "PlaneradIndivid",
+          notering = "PlaneradIndivid",
+          versionId = "PlaneradIndivid",
+          anläggningsprodukt = new ProductDesignVersionToIndividual_PlaneradIndivid_anläggningsprodukt
+          {
+            startSpecified = false,
+            endSpecified = false,
+            product = genericAnläggningsproduktReference
+          },
+          datainsamling = new PropertyValueAssignment_PlaneradIndivid_datainsamling
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetillkomst = new PropertyValueAssignment_PlaneradIndivid_företeelsetillkomst
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          företeelsetyp = new ClassificationReference_PlaneradIndivid_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTPlaneradIndividReference
+            {
+              softType = "FTPlaneradIndivid",
+              instanceRef = "FTPlaneradIndivid"
+            }
+          },
+          ursprung = new PropertyValueAssignment_PlaneradIndivid_ursprung
+          {
+            startSpecified = false,
+            endSpecified = false
+          },
+          stringSet = new PropertyValueSetAssignment_PlaneradIndivid_stringSet
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new[] { propertyStringValue }
+          },
+          numericSet = new PropertyValueSetAssignment_PlaneradIndivid_numericSet
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new[] { propertyNumericValue }
+          },
+          dokument = new[] { planeradIndividDokumentReference },
+          projekt = new[] { planeradIndividProjectReference }
+        }
+      };
+      var planeradIndividInstances = new List<PlaneradIndividInstances> { planeradIndividInstance };
+      var planeradIndivid = new SoftType_PlaneradIndivid
+      {
+        Array = true,
+        id = "PlaneradIndivid",
+        instances = planeradIndividInstances.ToArray()
+      };
+      softtypeList.Add(planeradIndivid);
       //PlaneradIndivid END
+
+      //FTAnläggningsutrymme
+      var FTAnläggningsutrymmeInstance = new FTAnläggningsutrymmeEntrydefaultIn
+      {
+        Array = true,
+        id = "FTAnläggningsutrymme",
+        inputSchemaRef = "defaultIn",
+        data = new FTAnläggningsutrymmedefaultIn
+        {
+          id = "FTAnläggningsutrymme",
+          name = "FTAnläggningsutrymme"
+        }
+      };
+      var FTAnläggningsutrymmeInstances = new List<FTAnläggningsutrymmeInstances> { FTAnläggningsutrymmeInstance };
+      var FTAnläggningsUtrymmeSoftType = new SoftType_FTAnläggningsutrymme
+      {
+        Array = true,
+        id = "FTAnläggningsutrymme",
+        instances = FTAnläggningsutrymmeInstances.ToArray()
+      };
+      softtypeList.Add(FTAnläggningsUtrymmeSoftType);
+      //FTAnläggningsutrymme END
+
+      //FTPlaneradIndivid
+
+      var FTPlaneradIndividInstance = new FTPlaneradIndividEntrydefaultIn
+      {
+        Array = true,
+        id = "FTPlaneradIndivid",
+        inputSchemaRef = "defaultIn",
+        data = new FTPlaneradIndividdefaultIn
+        {
+          id = "FTPlaneradIndivid",
+          name = "FTPlaneradIndivid"
+        }
+      };
+      var FTPlaneradIndividInstances = new List<FTPlaneradIndividInstances> { FTPlaneradIndividInstance };
+      var FTPlaneradIndivid = new SoftType_FTPlaneradIndivid
+      {
+        Array = true,
+        id = "FTPlaneradIndivid",
+        instances = FTPlaneradIndividInstances.ToArray()
+      };
+      softtypeList.Add(FTPlaneradIndivid);
+      //FTPlaneradIndivid END
       return softtypeList;
     }
 
