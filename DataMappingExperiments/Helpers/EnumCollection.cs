@@ -4,6 +4,7 @@
   {
     Plattform,
     Räl,
-    PlattformDetalj
+    Spårspärr,
+    Teknikbyggnad
   }
 }

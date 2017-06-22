@@ -8,11 +8,11 @@ using DataMappingExperiments.Helpers;
 
 namespace DataMappingExperiments.DataMapping
 {
-  public class RälMapper : Mapper
+  public class TeknikbyggnadMapper : Mapper
   {
-    public RälMapper()
+    public TeknikbyggnadMapper()
     {
-      MapperType = MapperType.Räl;
+      MapperType = MapperType.Teknikbyggnad;
     }
     public sealed override MapperType MapperType { get; set; }
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject)

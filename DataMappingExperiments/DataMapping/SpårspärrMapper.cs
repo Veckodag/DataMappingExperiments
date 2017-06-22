@@ -8,11 +8,11 @@ using DataMappingExperiments.Helpers;
 
 namespace DataMappingExperiments.DataMapping
 {
-  public class RälMapper : Mapper
+  public class SpårspärrMapper : Mapper
   {
-    public RälMapper()
+    public SpårspärrMapper()
     {
-      MapperType = MapperType.Räl;
+      MapperType = MapperType.Spårspärr;
     }
     public sealed override MapperType MapperType { get; set; }
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject)

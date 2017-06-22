@@ -15,10 +15,8 @@ namespace DataMappingExperiments.DataMapping
   public abstract class Mapper : IMapper
   {
     public abstract MapperType MapperType { get; set; }
-    public abstract string MapXmlAttribute(int index, string attributeValue);
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);
-
     /// <summary>
     /// Writes out the XML file
     /// </summary>
@@ -217,7 +215,6 @@ namespace DataMappingExperiments.DataMapping
         value = genericProjectReference
       };
       var projektLista = new List<ProjectReference_Anläggningsprodukt_projekt> { projekt };
-
       //KEYREFS
 
       //Property

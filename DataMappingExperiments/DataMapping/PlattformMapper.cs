@@ -14,10 +14,7 @@ namespace DataMappingExperiments.DataMapping
       MapperType = MapperType.Plattform;
     }
     public sealed override MapperType MapperType { get; set; }
-    public override string MapXmlAttribute(int index, string attributeValue)
-    {
-      return attributeValue;
-    }
+
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt plattform)
     {
       var myPlattform = (BIS_Plattform)plattform;
@@ -150,7 +147,7 @@ namespace DataMappingExperiments.DataMapping
             Längdm = SkapaPlattformLängd(bisPlattform, new Plattform_Längdm())
           }
         };
-        plattform = RealizationOfProperties(plattform);
+        plattform = PropertyRealization(plattform);
         //add to list!
         plattformsInstans.data = plattform;
         plattformar.Add(plattformsInstans);
@@ -172,8 +169,7 @@ namespace DataMappingExperiments.DataMapping
       container.softTypes = containerSoftTypes.ToArray();
       return container;
     }
-
-    private Plattform RealizationOfProperties(Plattform plattform)
+    private Plattform PropertyRealization(Plattform plattform)
     {
       plattform.arbetsnamn = "Arbetsnamn";
 
