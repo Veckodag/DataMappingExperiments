@@ -7,7 +7,7 @@ namespace DataMappingExperiments
 {
   class Program
   {
-
+    
     internal const string SourceFile = "SourceFile";
     internal const string XmlOutputFile = "XMLOutputFile";
     internal const string XsdFile = "XsdFile";

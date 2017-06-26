@@ -8,8 +8,6 @@ namespace DataMappingExperiments.BisObjekt
 {
   public class BIS_Räl : BIS_GrundObjekt
   {
-    public string Senast_Ändrad { get; set; }
-    public string Senast_Ändrad_Av { get; set; }
     public string Rälmodell { get; set; }
     public int Vikt { get; set; }
     public string Längd { get; set; }
@@ -20,6 +18,5 @@ namespace DataMappingExperiments.BisObjekt
     public string Tillverkare { get; set; }
     public string Stålsort { get; set; }
     public string Tillv_Process { get; set; }
-    public string Notering { get; set; }
   }
 }

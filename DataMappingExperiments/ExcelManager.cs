@@ -48,6 +48,10 @@ namespace DataMappingExperiments
           return new BIS_Plattform();
         case MapperType.Räl:
           return new BIS_Räl();
+        case MapperType.Spårspärr:
+          return new BIS_SpårSpärr();
+        case MapperType.Teknikbyggnad:
+          return new BIS_Teknikbyggnad();
         default:
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }
@@ -61,6 +65,10 @@ namespace DataMappingExperiments
           return new PlattformMapper();
         case MapperType.Räl:
           return new RälMapper();
+        case MapperType.Spårspärr:
+          return new SpårspärrMapper();
+         case MapperType.Teknikbyggnad:
+           return new TeknikbyggnadMapper();
         default:
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }

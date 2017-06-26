@@ -56,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndaObjekt\ANDA_Plattform.cs" />
+    <Compile Include="BisObjekt\BIS_SpårSpärr.cs" />
+    <Compile Include="BisObjekt\BIS_Teknikbyggnad.cs" />
     <Compile Include="DataMapping\PlattformMapper.cs" />
     <Compile Include="DataMapping\SpårspärrMapper.cs" />
     <Compile Include="DataMapping\TeknikbyggnadMapper.cs" />
@@ -83,7 +85,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Testdata\Fln-Blg Plattformar Detaljlägen.xlsx" />
-    <None Include="Testdata\Fln-Blg Plattformar Enkel.xlsx" />
     <None Include="Testdata\Fln-Blg Räl Detaljlägen.xlsx" />
     <None Include="Testdata\Fln-Blg Spårspärrar Detaljlägen.xlsx" />
     <None Include="Testdata\Fln-Blg Teknikbyggnader Detaljlägen.xlsx" />
