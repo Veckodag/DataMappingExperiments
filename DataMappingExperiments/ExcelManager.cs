@@ -26,7 +26,6 @@ namespace DataMappingExperiments
       Console.WriteLine("Importing excel file...");
       ReadExcelFile(fileName);
       CreateObjects();
-
     }
     /// <summary>
     /// The entry method for XML mapping and structuring

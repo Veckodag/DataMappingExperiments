@@ -8,13 +8,15 @@ namespace DataMappingExperiments
   class Program
   {
     
-    internal const string SourceFile = "SourceFile";
-    internal const string XmlOutputFile = "XMLOutputFile";
+    internal const string PlattformInput = "PlattformInput";
+    internal const string PlattformOutput = "PlattformOutput";
+    internal const string RälOutputFile = "RälOutput";
     internal const string XsdFile = "XsdFile";
 
+    public static string xmlOutput = "";
     static void Main(string[] args)
     {
-      string sourceFile = StringManager.GetFilePathSetting(SourceFile);
+      string sourceFile = StringManager.GetFilePathSetting(PlattformInput);
 
       StartExcelManager(sourceFile);
 

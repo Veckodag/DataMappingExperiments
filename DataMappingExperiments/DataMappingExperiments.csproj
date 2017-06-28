@@ -55,7 +55,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AndaObjekt\ANDA_Plattform.cs" />
     <Compile Include="BisObjekt\BIS_SpårSpärr.cs" />
     <Compile Include="BisObjekt\BIS_Teknikbyggnad.cs" />
     <Compile Include="DataMapping\PlattformMapper.cs" />

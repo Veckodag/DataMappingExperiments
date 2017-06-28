@@ -15,9 +15,9 @@ namespace DataMappingExperiments.DataMapping
     }
     public sealed override MapperType MapperType { get; set; }
 
-    public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt plattform)
+    public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObjekt)
     {
-      var myPlattform = (BIS_Plattform)plattform;
+      var myPlattform = (BIS_Plattform)bisObjekt;
       //IT IS ZERO BASED
       switch (index)
       {
@@ -27,7 +27,6 @@ namespace DataMappingExperiments.DataMapping
         case 1:
           myPlattform.ObjektNummer = attributeValue;
           break;
-        //Maybe Capture the nodes 3-7 and map them
         case 17:
           myPlattform.Kmtal = attributeValue;
           break;

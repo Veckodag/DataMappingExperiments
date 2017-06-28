@@ -25,7 +25,7 @@ namespace DataMappingExperiments.DataMapping
     {
       Console.WriteLine("Generating XML...");
       XmlSerializer serializer = new XmlSerializer(typeof(Container));
-      TextWriter tw = new StreamWriter(StringManager.GetFilePathSetting(Program.XmlOutputFile));
+      TextWriter tw = new StreamWriter(StringManager.GetFilePathSetting(Program.xmlOutput));
       serializer.Serialize(tw, container);
       tw.Close();
       ValidateXML();
@@ -35,7 +35,7 @@ namespace DataMappingExperiments.DataMapping
     /// </summary>
     private void ValidateXML()
     {
-      var textReader = new StreamReader(Program.XmlOutputFile);
+      var textReader = new StreamReader(Program.xmlOutput);
       var xmlDocument = new XmlDocument { Schemas = new XmlSchemaSet() };
       xmlDocument.Schemas.Add(null, new XmlTextReader(StringManager.GetFilePathSetting(Program.XsdFile)));
 
