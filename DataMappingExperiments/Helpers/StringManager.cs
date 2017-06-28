@@ -17,7 +17,6 @@ namespace DataMappingExperiments.Helpers
 
     public static string GetFilePathSetting(string settingKey)
     {
-      Program.xmlOutput = settingKey;
       string filePath = ConfigurationManager.AppSettings[settingKey];
 
       if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))

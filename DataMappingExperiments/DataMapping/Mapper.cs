@@ -25,7 +25,7 @@ namespace DataMappingExperiments.DataMapping
     {
       Console.WriteLine("Generating XML...");
       XmlSerializer serializer = new XmlSerializer(typeof(Container));
-      TextWriter tw = new StreamWriter(StringManager.GetFilePathSetting(Program.xmlOutput));
+      TextWriter tw = new StreamWriter(Program.xmlOutput);
       serializer.Serialize(tw, container);
       tw.Close();
       ValidateXML();
@@ -105,7 +105,10 @@ namespace DataMappingExperiments.DataMapping
       var propertyList = new List<PropertyInstances>();
 
       //TODO: Map against proper properties
-      string[] properties = { "Hello World!", "THIS_IS_A_TEST_PROPERTY" };
+      string[] properties =
+      {
+        //"Hello World!", "THIS_IS_A_TEST_PROPERTY"
+      };
 
       foreach (var propertyName in properties)
       {

@@ -13,11 +13,13 @@ namespace DataMappingExperiments
     internal const string RälOutputFile = "RälOutput";
     internal const string XsdFile = "XsdFile";
 
+    public static string sourceFile = "";
     public static string xmlOutput = "";
     static void Main(string[] args)
     {
-      string sourceFile = StringManager.GetFilePathSetting(PlattformInput);
-
+      //Add a option to GetFilePath to create new if not existing
+      sourceFile = StringManager.GetFilePathSetting(PlattformInput);
+      xmlOutput = StringManager.GetFilePathSetting(PlattformOutput);
       StartExcelManager(sourceFile);
 
       Console.ReadLine();
