@@ -18,7 +18,7 @@ namespace DataMappingExperiments.DataMapping
     public sealed override MapperType MapperType { get; set; }
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject)
     {
-      var myRäl = (BIS_Räl) bisObject;
+      var myRäl = (BIS_Räl)bisObject;
 
       switch (index)
       {
@@ -28,11 +28,14 @@ namespace DataMappingExperiments.DataMapping
         case 1:
           myRäl.ObjektNummer = attributeValue;
           break;
+        case 29:
+          myRäl.SidaHVB = attributeValue;
+          break;
         case 30:
           myRäl.Rälmodell = attributeValue;
           break;
         case 31:
-          myRäl.Vikt = int.Parse(attributeValue, CultureInfo.InvariantCulture);
+          myRäl.Vikt = attributeValue;
           break;
         case 32:
           myRäl.Längd = attributeValue;
@@ -41,10 +44,10 @@ namespace DataMappingExperiments.DataMapping
           myRäl.Skarvtyp = attributeValue;
           break;
         case 34:
-          myRäl.Inläggningsår = int.Parse(attributeValue, CultureInfo.InvariantCulture);
+          myRäl.Inläggningsår = attributeValue;
           break;
         case 35:
-          myRäl.Tillverkngingsår = int.Parse(attributeValue, CultureInfo.InvariantCulture);
+          myRäl.Tillverkngingsår = attributeValue;
           break;
         case 36:
           myRäl.Rev_Klass = attributeValue;
@@ -73,10 +76,250 @@ namespace DataMappingExperiments.DataMapping
 
     public override Container ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
+      //TODO: Temporary list reform
+      var formattedBisList = SquashTheList(bisList);
       Container container = new Container();
       var containerSoftypes = new List<SoftType>();
+      var räls = new List<FunktionellAnläggningInstances>();
 
+      foreach (BIS_Räl bisRäl in formattedBisList)
+      {
+        var rälsInstans = new FunktionellAnläggningEntrydefaultIn
+        {
+          Array = true,
+          id = "Räl"
+        };
+
+        Räl räl = new Räl
+        {
+          id = Guid.NewGuid().ToString(),
+          notering = bisRäl.Notering,
+          name = "",
+          versionId = "",
+          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTFunktionellAnläggningReference
+            {
+              instanceRef = "Räl",
+              softType = "FTFunktionellAnläggningReference"
+            }
+          },
+          stringSet = new RälStringSet
+          {
+            Skarvtyp = SkapaSkarvTyp(bisRäl, new Räl_Skarvtyp()),
+            Stålsort = SkapaRälStålsort(bisRäl, new Räl_Stålsort()),
+            Tillvprocess = SkapaTillverkningsProcess(bisRäl, new Räl_Tillvprocess()),
+            Längdm = new Räl_Längdm
+            {
+              generalProperty = new Längdm
+              {
+                instanceRef = "Längd_x0028_m_x0029_",
+                softType = _property
+              },
+              value = bisRäl.Längd,
+              JSonMapToPropertyName = _value
+            },
+            Revklass = new Räl_Revklass
+            {
+              generalProperty = new Revklass
+              {
+                instanceRef = "Rev.klass",
+                softType = _property
+              },
+              value = bisRäl.Rev_Klass,
+              JSonMapToPropertyName = _value
+            },
+            Rälmodell = new Räl_Rälmodell
+            {
+              generalProperty = new Rälmodell
+              {
+                instanceRef = "Rälmodell",
+                softType = _property
+              },
+              value = bisRäl.Rälmodell,
+              JSonMapToPropertyName = _value
+            },
+            Tillverkare = new Räl_Tillverkare
+            {
+              generalProperty = new Tillverkare
+              {
+                instanceRef = "Tillverkare",
+                softType = _property
+              },
+              value = bisRäl.Tillverkare,
+              JSonMapToPropertyName = _value
+            },
+            sidahvb = new Räl_sidahvb
+            {
+              generalProperty = new sidahvb
+              {
+                instanceRef = "sida_x0020__x0028_h_x002C_v_x002C_b_x0029_",
+                softType = _property
+              },
+              value = bisRäl.SidaHVB,
+              JSonMapToPropertyName = _value
+            }
+          },
+          numericSet = new RälNumericSet
+          {
+            Inläggningsår = new Räl_Inläggningsår
+            {
+              generalProperty = new Inläggningsår
+              {
+                instanceRef = "Inläggningsår",
+                softType = _property
+              },
+              value = bisRäl.Inläggningsår,
+              JSonMapToPropertyName = _value
+            },
+            Tillverkningsår = new Räl_Tillverkningsår
+            {
+              generalProperty = new Tillverkningsår
+              {
+                instanceRef = "Tillverkningsår",
+                softType = _property
+              },
+              value = bisRäl.Tillverkngingsår,
+              JSonMapToPropertyName = _value
+            },
+            Viktkgm = new Räl_Viktkgm
+            {
+              generalProperty = new Viktkgm
+              {
+                instanceRef = "Vikt_x0028_kg_x002F_m_x0029_",
+                softType = _property
+              },
+              value = bisRäl.Vikt,
+              JSonMapToPropertyName = _value
+            }
+          }
+        };
+      }
       return container;
+    }
+
+    #region PropertyCreationMethods
+
+    private Räl_Tillvprocess SkapaTillverkningsProcess(BIS_Räl bisRäl, Räl_Tillvprocess rälTillvprocess)
+    {
+      Tillvprocess tillvprocess = new Tillvprocess
+      {
+        instanceRef = "Tillv.process",
+        softType = _property
+      };
+      rälTillvprocess.generalProperty = tillvprocess;
+      rälTillvprocess.JSonMapToPropertyName = _value;
+
+      switch (bisRäl.Tillv_Process)
+      {
+        case "E":
+          rälTillvprocess.value = "Elektro";
+          break;
+        case "M":
+          rälTillvprocess.value = "Martin";
+          break;
+        case "S":
+          rälTillvprocess.value = "Syrgasprocess";
+          break;
+        case "T":
+          rälTillvprocess.value = "Thomas";
+          break;
+        default:
+          rälTillvprocess.value = bisRäl.Tillv_Process;
+          break;
+      }
+      return rälTillvprocess;
+    }
+
+    private Räl_Skarvtyp SkapaSkarvTyp(BIS_Räl bisRäl, Räl_Skarvtyp rälSkarvtyp)
+    {
+      Skarvtyp skarvtyp = new Skarvtyp
+      {
+        instanceRef = "Skarvtyp",
+        softType = _property
+      };
+      rälSkarvtyp.generalProperty = skarvtyp;
+      rälSkarvtyp.JSonMapToPropertyName = _value;
+
+      switch (bisRäl.Skarvtyp)
+      {
+        case "D":
+          rälSkarvtyp.value = "Dubbelsliper(Skarvspår)";
+          break;
+        case "L":
+          rälSkarvtyp.value = "Långräl (Helsvetsat)";
+          break;
+        case "S":
+          rälSkarvtyp.value = "Svävande (Skarvspår)";
+          break;
+        case "T":
+          rälSkarvtyp.value = "Treslipers (Skarvspår)";
+          break;
+        default:
+          rälSkarvtyp.value = bisRäl.Skarvtyp;
+          break;
+      }
+      return rälSkarvtyp;
+    }
+
+    private Räl_Stålsort SkapaRälStålsort(BIS_Räl bisRäl, Räl_Stålsort rälStålsort)
+    {
+      Stålsort stålsort = new Stålsort
+      {
+        instanceRef = "Stålsort",
+        softType = _property
+      };
+      rälStålsort.generalProperty = stålsort;
+      rälStålsort.JSonMapToPropertyName = _value;
+
+      switch (bisRäl.Stålsort)
+      {
+        case "1100":
+          rälStålsort.value = "R320Cr";
+          break;
+        case "800":
+          rälStålsort.value = "R220";
+          break;
+        case "900A":
+          rälStålsort.value = "R260";
+          break;
+        case "900B":
+          rälStålsort.value = "900B";
+          break;
+        case "Cr":
+          rälStålsort.value = "R320Cr";
+          break;
+        case "HT":
+          rälStålsort.value = "R350HT";
+          break;
+        case "LHT":
+          rälStålsort.value = "R350LHT";
+          break;
+        default:
+          rälStålsort.value = bisRäl.Stålsort;
+          break;
+      }
+      return rälStålsort;
+    }
+
+    #endregion
+
+    /// <summary>
+    /// Temporary squashing of the list. Unika plattformar: utan versioner med olika nätanknytningar.
+    /// </summary>
+    /// <param name="bisList"></param>
+    /// <returns></returns>
+    private List<BIS_Räl> SquashTheList(List<BIS_GrundObjekt> bisList)
+    {
+      var myList = new List<BIS_Räl>();
+
+      foreach (var objekt in bisList)
+        myList.Add(objekt as BIS_Räl);
+
+      return myList.GroupBy(objektDetalj => objektDetalj.ObjektNummer)
+        .Select(values => values.FirstOrDefault()).ToList();
     }
   }
 }

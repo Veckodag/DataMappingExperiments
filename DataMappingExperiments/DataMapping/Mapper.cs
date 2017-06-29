@@ -14,6 +14,8 @@ namespace DataMappingExperiments.DataMapping
   [Serializable]
   public abstract class Mapper : IMapper
   {
+    internal string _property = "Property";
+    internal string _value = "value";
     public abstract MapperType MapperType { get; set; }
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);

@@ -111,6 +111,8 @@ namespace DataMappingExperiments.DataMapping
           versionId = "",
           företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
           {
+            startSpecified = false,
+            endSpecified = false,
             @class = new FTGeografiskPlaceringsreferensReference
             {
               instanceRef = "Plattform",
@@ -119,8 +121,6 @@ namespace DataMappingExperiments.DataMapping
           },
           stringSet = new PlattformStringSet
           {
-            start = "",
-            end = "",
             Kmtalti = SkapaKmTali(bisPlattform, new Plattform_Kmtalti()),
             Kmtal = SkapaKmTal(bisPlattform, new Plattform_Kmtal()),
             Väderskydd = SkapaPlattformVäderskydd(bisPlattform, new Plattform_Väderskydd()),
@@ -138,8 +138,6 @@ namespace DataMappingExperiments.DataMapping
           },
           numericSet = new PlattformNumericSet
           {
-            start = "",
-            end = "",
             BisObjektNr = SkapaBisObjektNr(bisPlattform, new Plattform_BisObjektNr()),
             BisObjektTypNr = SkapaBisObjektTypNr(bisPlattform, new Plattform_BisObjektTypNr()),
             Breddm = SkapaPlattformBredd(bisPlattform, new Plattform_Breddm()),
@@ -385,7 +383,7 @@ namespace DataMappingExperiments.DataMapping
         softType = "Property"
       };
       plattformBisObjektTypNr.generalProperty = bisObjektTypNr;
-      plattformBisObjektTypNr.value = "10004";
+      plattformBisObjektTypNr.value = bisPlattform.ObjektTypNummer;
       plattformBisObjektTypNr.JSonMapToPropertyName = "value";
       plattformBisObjektTypNr.Unit = new EmptyUnit();
 
