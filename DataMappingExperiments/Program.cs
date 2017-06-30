@@ -12,15 +12,18 @@ namespace DataMappingExperiments
     internal const string PlattformOutput = "PlattformOutput";
     internal const string RälOutputFile = "RälOutput";
     internal const string XsdFile = "XsdFile";
+    internal const string JsonFile = "JsonOutput";
 
     public static string sourceFile = "";
     public static string xmlOutput = "";
     static void Main(string[] args)
     {
       //Add a option to GetFilePath to create new if not existing
-      sourceFile = StringManager.GetFilePathSetting(PlattformInput);
-      xmlOutput = StringManager.GetFilePathSetting(PlattformOutput);
-      StartExcelManager(sourceFile);
+      //sourceFile = StringManager.GetFilePathSetting(PlattformInput);
+      //xmlOutput = StringManager.GetFilePathSetting(PlattformOutput);
+      //StartExcelManager(sourceFile);
+      
+      XmlToJsonManager.XmlToJson();
 
       Console.ReadLine();
     }
