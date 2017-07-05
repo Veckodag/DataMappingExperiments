@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -30,6 +29,8 @@ namespace DataMappingExperiments.DataMapping
       TextWriter tw = new StreamWriter(Program.xmlOutput);
       serializer.Serialize(tw, container);
       tw.Close();
+      //TODO: SHOULD BE ENTRY POINT FOR JSON CONVERSION
+      //XmlToJsonManager.XmlToJson(container);
       ValidateXML();
     }
     /// <summary>

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
 
@@ -92,7 +88,6 @@ namespace DataMappingExperiments.DataMapping
 
         Räl räl = new Räl
         {
-          id = Guid.NewGuid().ToString(),
           notering = bisRäl.Notering,
           name = "",
           versionId = "",
@@ -196,11 +191,119 @@ namespace DataMappingExperiments.DataMapping
             }
           }
         };
+        räl.id = räl.företeelsetyp.@class.instanceRef + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer;
+        räl = PropertyRealization(räl);
+        rälsInstans.data = räl;
+        räls.Add(rälsInstans);
       }
+
+      //TODO: Uses only the first räl
+      räls.RemoveRange(1, räls.Count - 1);
+
+      var funktionellAnläggningsSofttype = new SoftType_FunktionellAnläggning
+      {
+        Array = true,
+        id = "FunktionellAnläggning",
+        instances = räls.ToArray()
+      };
+
+      containerSoftypes.Add(funktionellAnläggningsSofttype);
+      containerSoftypes.AddRange(CreateSupplementarySoftypes());
+      containerSoftypes.AddRange(CreateKeyReferences());
+
+      container.softTypes = containerSoftypes.ToArray();
       return container;
     }
 
     #region PropertyCreationMethods
+
+    private Räl PropertyRealization(Räl räl)
+    {
+      räl.företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+      {
+        @class = new FTFunktionellAnläggningReference
+        {
+          softType = "FTFunktionellAnläggning",
+          instanceRef = "FTFunktionellAnläggning"
+        },
+        startSpecified = false,
+        endSpecified = false
+      };
+
+      var anläggningsSpec = new BreakdownElementRealization_FunktionellAnläggning_anläggningsspecifikation
+      {
+        value = new AnläggningsspecifikationReference
+        {
+          softType = "Anläggningsspecifikation",
+          instanceRef = "Anläggningsspecifikation"
+        },
+        Array = true,
+        startSpecified = false,
+        endSpecified = false
+      };
+      räl.anläggningsspecifikation = new[] { anläggningsSpec };
+
+      var anläggningsUtrymme = new BreakdownElementRealization_FunktionellAnläggning_anläggningsutrymme
+      {
+        value = new AnläggningsutrymmeReference
+        {
+          softType = "Anläggningsutrymme",
+          instanceRef = "Anläggningsutrymme"
+        },
+        Array = true,
+        startSpecified = false,
+        endSpecified = false
+      };
+      räl.anläggningsutrymme = new[] { anläggningsUtrymme };
+
+      räl.datainsamling = new PropertyValueAssignment_FunktionellAnläggning_datainsamling
+      {
+        startSpecified = false,
+        endSpecified = false,
+        value = "Datainsamling"
+      };
+
+      var dokument = new DocumentReference_FunktionellAnläggning_dokument
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = new DokumentReference
+        {
+          softType = "Dokument",
+          instanceRef = "Dokument"
+        }
+      };
+      räl.dokument = new[] { dokument };
+
+      räl.företeelsetillkomst = new PropertyValueAssignment_FunktionellAnläggning_företeelsetillkomst
+      {
+        startSpecified = false,
+        endSpecified = false,
+        value = "Företeelsetillkomst"
+      };
+
+      räl.ursprung = new PropertyValueAssignment_FunktionellAnläggning_ursprung
+      {
+        startSpecified = false,
+        endSpecified = false,
+        value = ""
+      };
+
+      var projekt = new ProjectReference_FunktionellAnläggning_projekt
+      {
+        Array = true,
+        startSpecified = false,
+        endSpecified = false,
+        value = new ProjektReference
+        {
+          softType = "Projekt",
+          instanceRef = "Projekt"
+        }
+      };
+      räl.projekt = new[] { projekt };
+      return räl;
+    }
 
     private Räl_Tillvprocess SkapaTillverkningsProcess(BIS_Räl bisRäl, Räl_Tillvprocess rälTillvprocess)
     {
@@ -311,15 +414,21 @@ namespace DataMappingExperiments.DataMapping
     /// </summary>
     /// <param name="bisList"></param>
     /// <returns></returns>
-    private List<BIS_Räl> SquashTheList(List<BIS_GrundObjekt> bisList)
+    private IEnumerable<BIS_Räl> SquashTheList(List<BIS_GrundObjekt> bisList)
     {
       var myList = new List<BIS_Räl>();
 
       foreach (var objekt in bisList)
         myList.Add(objekt as BIS_Räl);
 
-      return myList.GroupBy(objektDetalj => objektDetalj.ObjektNummer)
-        .Select(values => values.FirstOrDefault()).ToList();
+      var query = myList.GroupBy(objekt => objekt.ObjektTypNummer, (typNummer, notering) => new BIS_Räl
+      {
+        ObjektTypNummer = typNummer,
+        Notering = string.Join(" ", notering.Select(x => x.Notering).OrderBy(x => x))
+      });
+
+      return query.GroupBy(objektDetalj => objektDetalj.ObjektNummer)
+        .Select(values => values.FirstOrDefault());
     }
   }
 }

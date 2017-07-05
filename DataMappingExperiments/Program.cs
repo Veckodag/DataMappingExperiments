@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Configuration;
-using System.IO;
 using DataMappingExperiments.Helpers;
 
 namespace DataMappingExperiments
@@ -19,11 +17,9 @@ namespace DataMappingExperiments
     static void Main(string[] args)
     {
       //Add a option to GetFilePath to create new if not existing
-      //sourceFile = StringManager.GetFilePathSetting(PlattformInput);
-      //xmlOutput = StringManager.GetFilePathSetting(PlattformOutput);
-      //StartExcelManager(sourceFile);
-      
-      XmlToJsonManager.XmlToJson();
+      sourceFile = StringManager.GetFilePathSetting(PlattformInput);
+      xmlOutput = StringManager.GetFilePathSetting(PlattformOutput);
+      StartExcelManager(sourceFile);
 
       Console.ReadLine();
     }

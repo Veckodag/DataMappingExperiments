@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using DataMappingExperiments.BisObjekt;
@@ -105,10 +104,9 @@ namespace DataMappingExperiments.DataMapping
         Plattform plattform = new Plattform
         {
           //TODO: Fixa de extraordinära properties
-          id = Guid.NewGuid().ToString(),
           notering = bisPlattform.Notering,
-          name = "",
-          versionId = "",
+          name = "Plattform",
+          versionId = "001",
           företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
           {
             startSpecified = false,
@@ -144,6 +142,9 @@ namespace DataMappingExperiments.DataMapping
             Längdm = SkapaPlattformLängd(bisPlattform, new Plattform_Längdm())
           }
         };
+        plattform.id = plattform.företeelsetyp.@class.instanceRef + bisPlattform.ObjektTypNummer +
+                       bisPlattform.ObjektNummer;
+        //The Other Properties
         plattform = PropertyRealization(plattform);
         //add to list!
         plattformsInstans.data = plattform;
@@ -155,6 +156,8 @@ namespace DataMappingExperiments.DataMapping
       plattformar.RemoveRange(1, plattformar.Count - 1);
       var geografiskSofttype = new SoftType_GeografiskPlaceringsreferens
       {
+        Array = true,
+        id = "GeografiskPlaceringsreferens",
         instances = plattformar.ToArray()
       };
       containerSoftTypes.Add(geografiskSofttype);
@@ -166,12 +169,14 @@ namespace DataMappingExperiments.DataMapping
       container.softTypes = containerSoftTypes.ToArray();
       return container;
     }
+
+    #region PropertyCreationMethods
+
     private Plattform PropertyRealization(Plattform plattform)
     {
       plattform.arbetsnamn = "Arbetsnamn";
 
       //Anläggningsprodukt
-      //Validation Problems for instanceRef in the references
       var anläggningsProdukt = new BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsprodukt
       {
         value = new AnläggningsproduktReference
@@ -188,7 +193,6 @@ namespace DataMappingExperiments.DataMapping
       plattform.anläggningsprodukt = anläggningsProduktLista.ToArray();
 
       //Anläggningsspecifikation
-      //Validation problems
       var anläggningsSpec = new BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsspecifikation
       {
         value = new AnläggningsspecifikationReference
@@ -205,7 +209,6 @@ namespace DataMappingExperiments.DataMapping
       plattform.anläggningsspecifikation = anläggningsSpecLista.ToArray();
 
       //Bulkvara
-      //Validation Problem
       var bulkvara = new BreakdownElementRealization_GeografiskPlaceringsreferens_bulkvara
       {
         value = new BulkvaraReference
@@ -221,7 +224,6 @@ namespace DataMappingExperiments.DataMapping
       plattform.bulkvara = bulkvaraLista.ToArray();
 
       //Dokument
-      //Validation Problems
       var dokument = new DocumentReference_GeografiskPlaceringsreferens_dokument
       {
         value = new DokumentReference
@@ -237,7 +239,6 @@ namespace DataMappingExperiments.DataMapping
       plattform.dokument = dokumentLista.ToArray();
 
       //Företeelsetyp
-      //Validation Problems
       var företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
       {
         startSpecified = false,
@@ -251,7 +252,6 @@ namespace DataMappingExperiments.DataMapping
       plattform.företeelsetyp = företeelsetyp;
 
       //Konstaterad Tillståndsindivid
-      //Validation Problems
       var tillståndsIndivid = new BreakdownElementRealization_GeografiskPlaceringsreferens_konstateradTillståndsindivid
       {
         Array = true,
@@ -268,7 +268,6 @@ namespace DataMappingExperiments.DataMapping
       plattform.konstateradTillståndsindivid = tillståndsindividLista.ToArray();
 
       //Styckevara
-      //Validation Problems
       var styckevara = new BreakdownElementRealization_GeografiskPlaceringsreferens_styckevara
       {
         Array = true,
@@ -285,7 +284,6 @@ namespace DataMappingExperiments.DataMapping
       plattform.styckevara = styckevaraLista.ToArray();
 
       //Projekt
-      //Validation problem
       var projekt = new ProjectReference_GeografiskPlaceringsreferens_projekt
       {
         Array = true,
@@ -329,23 +327,6 @@ namespace DataMappingExperiments.DataMapping
 
       return plattform;
     }
-    /// <summary>
-    /// Temporary squashing of the list. Unika plattformar: utan versioner med olika nätanknytningar.
-    /// </summary>
-    /// <param name="bisList"></param>
-    /// <returns></returns>
-    private List<BIS_Plattform> SquashTheList(List<BIS_GrundObjekt> bisList)
-    {
-      var myList = new List<BIS_Plattform>();
-
-      foreach (var objekt in bisList)
-        myList.Add(objekt as BIS_Plattform);
-
-      return myList.GroupBy(plattformDetalj => plattformDetalj.ObjektNummer)
-        .Select(values => values.FirstOrDefault()).ToList();
-    }
-
-    #region PropertyCreationMethods
 
     private Plattform_Höjd_beskr SkapaHöjdBeskrivning(BIS_Plattform bisPlattform, Plattform_Höjd_beskr plattformHöjdBeskr)
     {
@@ -631,5 +612,21 @@ namespace DataMappingExperiments.DataMapping
       return plattformVäderskydd;
     }
     #endregion
+
+    /// <summary>
+    /// Temporary squashing of the list. Unika plattformar: utan versioner med olika nätanknytningar.
+    /// </summary>
+    /// <param name="bisList"></param>
+    /// <returns></returns>
+    private List<BIS_Plattform> SquashTheList(List<BIS_GrundObjekt> bisList)
+    {
+      var myList = new List<BIS_Plattform>();
+
+      foreach (var objekt in bisList)
+        myList.Add(objekt as BIS_Plattform);
+
+      return myList.GroupBy(plattformDetalj => plattformDetalj.ObjektNummer)
+        .Select(values => values.FirstOrDefault()).ToList();
+    }
   }
 }
