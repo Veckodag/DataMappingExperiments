@@ -28,7 +28,7 @@ namespace DataMappingExperiments
       Console.WriteLine("Json file complete!");
     }
 
-    public static void Serialize(Object instance, out XmlDocument xmlDocument, string nameSpace = "")
+    public static void Serialize(object instance, out XmlDocument xmlDocument, string nameSpace = "")
     {
       if (instance == null) throw new ArgumentNullException(nameof(instance));
       StringBuilder sb = new StringBuilder();
