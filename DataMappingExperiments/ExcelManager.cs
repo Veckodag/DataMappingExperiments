@@ -51,6 +51,14 @@ namespace DataMappingExperiments
           return new BIS_SpårSpärr();
         case MapperType.Teknikbyggnad:
           return new BIS_Teknikbyggnad();
+        case MapperType.Kanalisation:
+          return new BIS_Kanalisation();
+        case MapperType.Skarv:
+          return new BIS_Kanalisation();
+        case MapperType.Trumma:
+          return new BIS_Trumma();
+        case MapperType.TågOchLokVärmeanläggning:
+          return new BIS_TågOchLokvärmeanläggning();
         default:
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }
@@ -66,8 +74,13 @@ namespace DataMappingExperiments
           return new RälMapper();
         case MapperType.Spårspärr:
           return new SpårspärrMapper();
-         case MapperType.Teknikbyggnad:
-           return new TeknikbyggnadMapper();
+        case MapperType.Teknikbyggnad:
+          return new TeknikbyggnadMapper();
+        case MapperType.Kanalisation:
+        case MapperType.Skarv:
+        case MapperType.Trumma:
+        case MapperType.TågOchLokVärmeanläggning:
+          return null;
         default:
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }

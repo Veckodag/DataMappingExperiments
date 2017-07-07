@@ -5,6 +5,10 @@
     Plattform,
     Räl,
     Spårspärr,
-    Teknikbyggnad
+    Teknikbyggnad,
+    Skarv,
+    Kanalisation,
+    Trumma,
+    TågOchLokVärmeanläggning
   }
 }
