@@ -14,13 +14,16 @@ namespace DataMappingExperiments
 {
   public class ExcelManager
   {
-    private Mapper _mapper;
+    private readonly Mapper _mapper;
     private BIS_GrundObjekt _bisObjekt;
     private List<BIS_GrundObjekt> _bisList;
+
+    public ExcelManager(MapperType mapperType)
+    {
+      _mapper = GetMappingType(mapperType);
+    }
     public void GetXML(string fileName)
     {
-      //TODO: Get the mappingtype from a config file
-      _mapper = GetMappingType(MapperType.Plattform);
       _bisList = new List<BIS_GrundObjekt>();
 
       Console.WriteLine("Importing excel file...");

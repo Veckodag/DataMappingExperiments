@@ -20,7 +20,7 @@ namespace DataMappingExperiments
  
       string json = SerializeXmlNode.XmlToJson(document);
       
-      using (Stream stream = new FileStream(StringManager.GetFilePathSetting(Program.JsonFile), FileMode.Create))
+      using (Stream stream = new FileStream(StringManager.GetFilePathSetting(Program.SelectedDataContainer.Json), FileMode.Create))
       {
         using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
         {

@@ -32,6 +32,7 @@ namespace DataMappingExperiments.DataMapping
       tw.Close();
 
       //Could reset back to ignore validation
+      Console.WriteLine("Validating...");
       var isValid = ValidateXML();
       if (isValid)
       {
@@ -80,6 +81,7 @@ namespace DataMappingExperiments.DataMapping
 
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine("Please resolve the validation error(s) and try again");
+        Console.ReadLine();
       }
       if (!errors.Any())
       {

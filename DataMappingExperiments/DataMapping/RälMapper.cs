@@ -24,46 +24,46 @@ namespace DataMappingExperiments.DataMapping
         case 1:
           myRäl.ObjektNummer = attributeValue;
           break;
-        case 29:
+        case 28:
           myRäl.SidaHVB = attributeValue;
           break;
-        case 30:
+        case 29:
           myRäl.Rälmodell = attributeValue;
           break;
-        case 31:
+        case 30:
           myRäl.Vikt = attributeValue;
           break;
-        case 32:
+        case 31:
           myRäl.Längd = attributeValue;
           break;
-        case 33:
+        case 32:
           myRäl.Skarvtyp = attributeValue;
           break;
-        case 34:
+        case 33:
           myRäl.Inläggningsår = attributeValue;
           break;
-        case 35:
+        case 34:
           myRäl.Tillverkngingsår = attributeValue;
           break;
-        case 36:
+        case 35:
           myRäl.Rev_Klass = attributeValue;
           break;
-        case 37:
+        case 36:
           myRäl.Tillverkare = attributeValue;
           break;
-        case 38:
+        case 37:
           myRäl.Stålsort = attributeValue;
           break;
-        case 39:
+        case 38:
           myRäl.Tillv_Process = attributeValue;
           break;
-        case 40:
+        case 39:
           myRäl.Notering = attributeValue;
           break;
-        case 41:
+        case 40:
           myRäl.Senast_Ändrad = attributeValue;
           break;
-        case 42:
+        case 41:
           myRäl.Senast_Ändrad_Av = attributeValue;
           break;
       }
@@ -410,7 +410,7 @@ namespace DataMappingExperiments.DataMapping
     #endregion
 
     /// <summary>
-    /// Temporary squashing of the list. Unika plattformar: utan versioner med olika nätanknytningar.
+    /// Squashing of the list. Unika plattformar: utan versioner med olika nätanknytningar.
     /// </summary>
     /// <param name="bisList"></param>
     /// <returns></returns>
@@ -421,6 +421,7 @@ namespace DataMappingExperiments.DataMapping
       foreach (var objekt in bisList)
         myList.Add(objekt as BIS_Räl);
 
+      //Notering kan vara olika på rader även med samma typnummer, därför måste de konkateneras.
       var query = myList.GroupBy(objekt => objekt.ObjektTypNummer, (typNummer, notering) => new BIS_Räl
       {
         ObjektTypNummer = typNummer,
