@@ -3,6 +3,18 @@
   dslVersion="1.0.0.0"
   Id="dd741f4f-10cc-4757-8f26-d4409e02c55c"
   name="DataMapping" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <ownedCommentsInternal>
+    <comment
+      Id="c3f8186a-33c1-400d-9124-8b2daeec6329">
+      <body>App Entry Point.</body>
+      <annotatedElements>
+        <classMoniker
+          Id="3a9ea85e-c9c1-4843-a8ab-ee4c8364df8f"
+          LastKnownName="Program"
+          LastKnownLocation="DataMapping.uml" />
+      </annotatedElements>
+    </comment>
+  </ownedCommentsInternal>
   <profileInstances>
     <packageHasProfileInstances
       Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b">
@@ -183,6 +195,116 @@
             LastKnownLocation="DataMapping.uml" />
         </subjects>
       </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="3a9ea85e-c9c1-4843-a8ab-ee4c8364df8f"
+        name="Program"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="38ea8b48-f8db-4584-9046-60110e3618ce">
+            <classMoniker
+              Id="a5652f72-18a6-4048-bfeb-6ce367f0052c"
+              LastKnownName="ExcelManager"
+              LastKnownLocation="DataMapping.uml" />
+          </dependency>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="07678e50-b266-4b73-b975-3379ec232449"
+            name="StartManager"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="77b1b950-fd38-436e-8448-82a761080850"
+                  name="string fileName"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="9f5b0b9e-0112-4650-b37d-e0cebb0e47a5"
+            name="Main"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="a5652f72-18a6-4048-bfeb-6ce367f0052c"
+        name="ExcelManager"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="fbc4271a-b6a0-4f10-8702-d09c92f40c86"
+            name="_mapper"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="a18f0030-b547-4ab8-b21f-216ee655f644"
+            name="_bisList"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="91abe5f8-bbe7-4228-af8f-205749fc3ac3"
+            name="_bisObject"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="d04e32d2-9f95-464f-9f84-2bca10f84301"
+            name="GetXML"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="0389dc24-bf69-4bf3-81c2-4213ea526127"
+                  name="string"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType

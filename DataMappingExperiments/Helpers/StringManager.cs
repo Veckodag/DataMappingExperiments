@@ -19,11 +19,16 @@ namespace DataMappingExperiments.Helpers
     {
       string filePath = ConfigurationManager.AppSettings[settingKey];
 
-      if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+      if (!File.Exists(filePath))
+      {
+        File.Create(filePath).Dispose();
+      }
+      else if (string.IsNullOrEmpty(filePath))
       {
         Console.WriteLine("The file is invalid. Select a valid file.");
         return "";
       }
+
       return filePath;
     }
 

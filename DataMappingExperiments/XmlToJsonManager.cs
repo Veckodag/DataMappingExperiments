@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using DataMappingExperiments.Helpers;
 using TRV.ANDA.DataExchange.Toolbox.SasXml.Convert.JsonCustomCodeGenerators;
 
 namespace DataMappingExperiments
@@ -17,18 +19,20 @@ namespace DataMappingExperiments
       Serialize(container, out document, @"inputschemasföreteelsetyperDx");
  
       string json = SerializeXmlNode.XmlToJson(document);
-
-      //using (Stream stream = new FileStream(StringManager.GetFilePathSetting(Program.JsonFile), FileMode.Create))
-      //{
-      //  using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
-      //  {
-      //    writer.Write(json);
-      //  }
-      //}
+      
+      using (Stream stream = new FileStream(StringManager.GetFilePathSetting(Program.JsonFile), FileMode.Create))
+      {
+        using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+        {
+          writer.Write(json);
+        }
+      }
+      Console.ForegroundColor = ConsoleColor.White;
       Console.WriteLine("Json file complete!");
+      Console.ForegroundColor = ConsoleColor.Gray;
     }
 
-    public static void Serialize(object instance, out XmlDocument xmlDocument, string nameSpace = "")
+    public static void Serialize(object instance, out XmlDocument xmlDocument, string nameSpace = null)
     {
       if (instance == null) throw new ArgumentNullException(nameof(instance));
       StringBuilder sb = new StringBuilder();

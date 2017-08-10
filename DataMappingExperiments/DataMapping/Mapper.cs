@@ -18,8 +18,9 @@ namespace DataMappingExperiments.DataMapping
     public abstract MapperType MapperType { get; set; }
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);
+
     /// <summary>
-    /// Writes out the XML file
+    /// Writes out the XML file and entry point for JSON conversion
     /// </summary>
     /// <param name="container"></param>
     public void Serialization(Container container)
@@ -29,14 +30,20 @@ namespace DataMappingExperiments.DataMapping
       TextWriter tw = new StreamWriter(Program.xmlOutput);
       serializer.Serialize(tw, container);
       tw.Close();
-      //TODO: SHOULD BE ENTRY POINT FOR JSON CONVERSION
-      //XmlToJsonManager.XmlToJson(container);
-      ValidateXML();
+
+      //Could reset back to ignore validation
+      var isValid = ValidateXML();
+      if (isValid)
+      {
+        //TODO JSON ENTRY POINT
+        XmlToJsonManager.XmlToJson(container);
+      }
     }
+
     /// <summary>
     /// Validates the XML file against a matching XSD. Reads errors if there are any.
     /// </summary>
-    private void ValidateXML()
+    private bool ValidateXML()
     {
       var textReader = new StreamReader(Program.xmlOutput);
       var xmlDocument = new XmlDocument { Schemas = new XmlSchemaSet() };
@@ -48,10 +55,15 @@ namespace DataMappingExperiments.DataMapping
 
       ErrorMessage(errors);
       textReader.Close();
+
+      if (!errors.Any())
+        return true;
+
+      return false;
     }
 
     /// <summary>
-    /// Console Magic for printing out validation errors.
+    /// Console magic for printing out validation errors.
     /// </summary>
     /// <param name="errors"></param>
     private void ErrorMessage(List<string> errors)
@@ -76,6 +88,7 @@ namespace DataMappingExperiments.DataMapping
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine("XML file complete!");
       }
+      Console.ForegroundColor = ConsoleColor.Gray;
     }
 
     public List<UnitInstances> CreateSoftTypeUnitsInstances()
@@ -334,9 +347,9 @@ namespace DataMappingExperiments.DataMapping
           },
           numericSet = new PropertyValueSetAssignment_Bulkvara_numericSet
           {
-            startSpecified = false,
-            endSpecified = false,
-            value = new[] { propertyNumericValue }
+            //startSpecified = false,
+            //endSpecified = false,
+            //value = new[] { propertyNumericValue }
           },
           anläggningsprodukt = new ProductDesignVersionToIndividual_Bulkvara_anläggningsprodukt
           {
@@ -477,9 +490,9 @@ namespace DataMappingExperiments.DataMapping
           },
           numericSet = new PropertyValueSetAssignment_Dokument_numericSet
           {
-            startSpecified = false,
-            endSpecified = false,
-            value = new[] { propertyNumericValue }
+            //startSpecified = false,
+            //endSpecified = false,
+            //value = new[] { propertyNumericValue }
           },
           företeelsetyp = new ClassificationReference_Dokument_företeelsetyp
           {
@@ -772,9 +785,9 @@ namespace DataMappingExperiments.DataMapping
           },
           numericSet = new PropertyValueSetAssignment_KonstateradTillståndsindivid_numericSet
           {
-            startSpecified = false,
-            endSpecified = false,
-            value = new[] { propertyNumericValue }
+            //startSpecified = false,
+            //endSpecified = false,
+            //value = new[] { propertyNumericValue }
           },
           dokument = new[] { konstateradTillståndsIndividDocumentReference },
           projekt = new[] { konstateradTillståndsIndividProjectReference }
@@ -858,9 +871,9 @@ namespace DataMappingExperiments.DataMapping
           },
           numericSet = new PropertyValueSetAssignment_PlaneradIndivid_numericSet
           {
-            startSpecified = false,
-            endSpecified = false,
-            value = new[] { propertyNumericValue }
+            //startSpecified = false,
+            //endSpecified = false,
+            //value = new[] { propertyNumericValue }
           },
           dokument = new[] { planeradIndividDokumentReference },
           projekt = new[] { planeradIndividProjectReference }
@@ -937,9 +950,9 @@ namespace DataMappingExperiments.DataMapping
           },
           numericSet = new PropertyValueSetAssignment_Anläggningsutrymme_numericSet
           {
-            startSpecified = false,
-            endSpecified = false,
-            value = new[] { propertyNumericValue }
+            //startSpecified = false,
+            //endSpecified = false,
+            //value = new[] { propertyNumericValue }
           },
           dokument = new[] { anläggningsutrymmeDocumentReference },
           projekt = new[] { anläggningsutrymmeProjectReference }

@@ -19,12 +19,12 @@ namespace DataMappingExperiments
       //Add a option to GetFilePath to create new if not existing
       sourceFile = StringManager.GetFilePathSetting(PlattformInput);
       xmlOutput = StringManager.GetFilePathSetting(PlattformOutput);
-      StartExcelManager(sourceFile);
+      StartManager(sourceFile);
 
       Console.ReadLine();
     }
 
-    static void StartExcelManager(string fileName)
+    static void StartManager(string fileName)
     {
       var excelManager = new ExcelManager();
       //Massive string with all the good stuff

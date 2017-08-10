@@ -150,10 +150,13 @@ namespace DataMappingExperiments.DataMapping
         plattformsInstans.data = plattform;
         plattformar.Add(plattformsInstans);
       }
-      //Real Test
-      //Add new softypes to containerSoftTypes
+
       //TODO: USES ONLY THE FIRST PLATTFORM AT THE MOMENT
       plattformar.RemoveRange(1, plattformar.Count - 1);
+
+      //Real Test
+      //Add new softypes to containerSoftTypes
+
       var geografiskSofttype = new SoftType_GeografiskPlaceringsreferens
       {
         Array = true,

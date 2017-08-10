@@ -26,6 +26,13 @@
     <Content Include="AndaResurserMedDatakatalogFörImport.xsd">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="DataMappingClasses.classdiagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="DataMappingClasses.classdiagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>DataMappingClasses.classdiagram</DependentUpon>
+    </Content>
     <Content Include="DMComponent.componentdiagram">
       <SubType>Content</SubType>
     </Content>

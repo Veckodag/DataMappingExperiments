@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner" xmlns:dm10="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm11="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ActivityDesigner" xmlns:dm12="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner" xmlns:dm13="http://schemas.microsoft.com/dsltools/UseCaseModel" dslVersion="1.0.0.0" Id="7511295d-4b31-4761-a50b-6c20ddaecc14" name="DataMappingClasses" linkedPackageId="2827457f-66ff-44ff-8761-fe8afd9f3b6a" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <ownedCommentsInternal>
+    <comment Id="acb70ac7-8c3b-4f6d-8b23-81b1e850ac1c">
+      <elementDefinition Id="c3f8186a-33c1-400d-9124-8b2daeec6329" />
+      <body>App Entry Point.</body>
+      <annotatedElements>
+        <classMoniker Id="24afe794-a822-4376-9e02-c2619bec520d" LastKnownName="Program" />
+      </annotatedElements>
+    </comment>
+  </ownedCommentsInternal>
+  <profileInstances>
+    <packageHasProfileInstances Id="8caf4d95-69a2-42fc-ae99-3bf5b46f7eca">
+      <profileInstance Id="d71e93d8-de62-4911-acea-b31a3b2ef425" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="74c38896-1e65-4049-bc37-3b1b96300741">
+      <profileInstance Id="ff064797-28e7-453a-b5c0-d274979d3cdf" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="24afe794-a822-4376-9e02-c2619bec520d" name="Program" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="3a9ea85e-c9c1-4843-a8ab-ee4c8364df8f" />
+        <suppliersInternal>
+          <dependency Id="bf4cad9e-23b6-4780-8569-6f1018510aa3">
+            <classMoniker Id="e7bc1ce6-3450-4379-8463-39a40719f4d2" LastKnownName="ExcelManager" />
+            <elementDefinition Id="38ea8b48-f8db-4584-9046-60110e3618ce" />
+          </dependency>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="3002283e-e88e-4935-add0-954d8eb4ef97" name="StartManager" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="07678e50-b266-4b73-b975-3379ec232449" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="c24f19d2-72db-4236-8126-58670dbfe3e6" name="string fileName" direction="In" isUnique="false">
+                  <elementDefinition Id="77b1b950-fd38-436e-8448-82a761080850" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation Id="8965f463-0620-479d-a661-120642bdfb38" name="Main" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="9f5b0b9e-0112-4650-b37d-e0cebb0e47a5" />
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="e7bc1ce6-3450-4379-8463-39a40719f4d2" name="ExcelManager" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="a5652f72-18a6-4048-bfeb-6ce367f0052c" />
+        <ownedAttributesInternal>
+          <property Id="a4ced81e-8561-499c-b5cc-a2c78d0d8fdc" name="_mapper" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="fbc4271a-b6a0-4f10-8702-d09c92f40c86" />
+          </property>
+          <property Id="91890528-679a-4860-b32c-d2228b94a880" name="_bisList" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="a18f0030-b547-4ab8-b21f-216ee655f644" />
+          </property>
+          <property Id="4ce52ed9-e070-4e14-a43d-35d6030f969a" name="_bisObject" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="91abe5f8-bbe7-4228-af8f-205749fc3ac3" />
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="6388bb9c-d78f-492b-9f47-0fd92d746f83" name="GetXML" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="d04e32d2-9f95-464f-9f84-2bca10f84301" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="297ea710-134b-424d-b513-49f4bdbd1f41" name="string" direction="In" isUnique="false">
+                  <elementDefinition Id="0389dc24-bf69-4bf3-81c2-4213ea526127" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="2827457f-66ff-44ff-8761-fe8afd9f3b6a" name="DataMapping">
+    <elementDefinition Id="dd741f4f-10cc-4757-8f26-d4409e02c55c" />
+  </package>
+</logicalClassDesignerModel>

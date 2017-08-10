@@ -15,13 +15,13 @@ namespace DataMappingExperiments
   public class ExcelManager
   {
     private Mapper _mapper;
-    private BIS_GrundObjekt _BisObjekt;
-    private List<BIS_GrundObjekt> _BisList;
+    private BIS_GrundObjekt _bisObjekt;
+    private List<BIS_GrundObjekt> _bisList;
     public void GetXML(string fileName)
     {
       //TODO: Get the mappingtype from a config file
       _mapper = GetMappingType(MapperType.Plattform);
-      _BisList = new List<BIS_GrundObjekt>();
+      _bisList = new List<BIS_GrundObjekt>();
 
       Console.WriteLine("Importing excel file...");
       ReadExcelFile(fileName);
@@ -32,7 +32,7 @@ namespace DataMappingExperiments
     /// </summary>
     void CreateObjects()
     {
-      var container = _mapper.ObjectStructure(_BisList);
+      var container = _mapper.ObjectStructure(_bisList);
       //Make sure the container is loaded
       if (container != null)
         _mapper.Serialization(container);
@@ -128,7 +128,7 @@ namespace DataMappingExperiments
             int colIndex = 0;
 
             //A object to use for mapping values
-            _BisObjekt = GetBisObjectType(_mapper.MapperType);
+            _bisObjekt = GetBisObjectType(_mapper.MapperType);
 
             //Every cell in selected row
             foreach (Cell cell in row.Descendants<Cell>())
@@ -143,13 +143,13 @@ namespace DataMappingExperiments
               }
               //Then sets the cell value at the right index
               var attribute = GetValueOfCell(spreadsheetDocument, cell);
-              _BisObjekt = _mapper.MapXmlValue(cellColumnIndex, attribute, _BisObjekt);
+              _bisObjekt = _mapper.MapXmlValue(cellColumnIndex, attribute, _bisObjekt);
               tempRow[colIndex] = attribute;
 
               colIndex++;
             }
             //The row updates after each cell value
-            _BisList.Add(_BisObjekt);
+            _bisList.Add(_bisObjekt);
             dataTable.Rows.Add(tempRow);
           }
         }
