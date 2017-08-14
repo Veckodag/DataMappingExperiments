@@ -34,11 +34,8 @@ namespace DataMappingExperiments.DataMapping
       //Could reset back to ignore validation
       Console.WriteLine("Validating...");
       var isValid = ValidateXML();
-      if (isValid)
-      {
-        //TODO JSON ENTRY POINT
+      //if (isValid) Who cares about validation, dude!
         XmlToJsonManager.XmlToJson(container);
-      }
     }
 
     /// <summary>
@@ -72,16 +69,19 @@ namespace DataMappingExperiments.DataMapping
       if (errors.Any())
       {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Validation Errors Found");
-        foreach (var error in errors)
-        {
-          Console.WriteLine(error);
-          Console.WriteLine();
-        }
+        Console.WriteLine("Validation Errors Found. Check the error log for details");
 
-        Console.ForegroundColor = ConsoleColor.White;
+        using (var writer = new StreamWriter(StringManager.GetFilePathSetting(Program.ErrorLog)))
+        {
+          foreach (var error in errors)
+          {
+            writer.WriteLine(error);
+            writer.WriteLine();
+          }
+        }
         Console.WriteLine("Please resolve the validation error(s) and try again");
         Console.ReadLine();
+
       }
       if (!errors.Any())
       {
@@ -628,6 +628,31 @@ namespace DataMappingExperiments.DataMapping
       };
       softtypeList.Add(styckevaraSoftType);
       //Styckevara END
+
+      //FTFunktionellAnläggning 
+
+      var FTFunktionellAnläggningInstance = new FTFunktionellAnläggningEntrydefaultIn
+      {
+        Array = true,
+        id = "FTFunktionellAnläggning",
+        inputSchemaRef = "defaultIn",
+        data = new FTFunktionellAnläggningdefaultIn
+        {
+          id = "FTFunktionellAnläggning",
+          name = "FTFunktionellAnläggning"
+        }
+      };
+
+      var FTFunktionellAnläggningInstances = new List<FTFunktionellAnläggningInstances> { FTFunktionellAnläggningInstance };
+      var FTFunktionellAnläggningSoftType = new SoftType_FTFunktionellAnläggning
+      {
+        Array = true,
+        id = "FTFunktionellAnläggning",
+        instances = FTFunktionellAnläggningInstances.ToArray()
+      };
+      softtypeList.Add(FTFunktionellAnläggningSoftType);
+
+      //FTFunktionellAnläggning END
 
       //Anläggningsspecifikation
 

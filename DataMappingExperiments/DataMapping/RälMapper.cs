@@ -106,6 +106,66 @@ namespace DataMappingExperiments.DataMapping
             Skarvtyp = SkapaSkarvTyp(bisRäl, new Räl_Skarvtyp()),
             Stålsort = SkapaRälStålsort(bisRäl, new Räl_Stålsort()),
             Tillvprocess = SkapaTillverkningsProcess(bisRäl, new Räl_Tillvprocess()),
+            Viktkgm_beskr = new Räl_Viktkgm_beskr
+            {
+              generalProperty = new Viktkgm_beskr
+              {
+                instanceRef = "Vikt_x0028_kg_x002F_m_x0029__beskr",
+                softType = _property
+              },
+              value = "",
+              JSonMapToPropertyName = _value
+            },
+            Stålsort_beskr = new Räl_Stålsort_beskr
+            {
+              generalProperty = new Stålsort_beskr
+              {
+                instanceRef = "Stålsort_beskr",
+                softType = _property
+              },
+              value = "",
+              JSonMapToPropertyName = _value
+            },
+            Skarvtyp_beskr = new Räl_Skarvtyp_beskr
+            {
+              generalProperty = new Skarvtyp_beskr
+              {
+                instanceRef = "Skarvtyp_beskr",
+                softType = _property
+              },
+              value = "",
+              JSonMapToPropertyName = _value
+            },
+            Revklass_beskr = new Räl_Revklass_beskr
+            {
+              generalProperty = new Revklass_beskr
+              {
+                instanceRef = "Rev.klass_beskr",
+                softType = _property
+              },
+              value = "",
+              JSonMapToPropertyName = _value
+            },
+            Tillverkare_beskr = new Räl_Tillverkare_beskr
+            {
+              generalProperty = new Tillverkare_beskr
+              {
+                instanceRef = "Tillverkare_beskr",
+                softType = _property
+              },
+              value = "",
+              JSonMapToPropertyName = _value
+            },
+            Tillvprocess_beskr = new Räl_Tillvprocess_beskr
+            {
+              generalProperty = new Tillvprocess_beskr
+              {
+                instanceRef = "Tillv.process_beskr",
+                softType = _property
+              },
+              value = "",
+              JSonMapToPropertyName = _value
+            },
             Längdm = new Räl_Längdm
             {
               generalProperty = new Längdm

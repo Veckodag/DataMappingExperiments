@@ -8,6 +8,7 @@ namespace DataMappingExperiments
   public class Program
   {
     internal const string XsdFile = "XsdFile";
+    internal const string ErrorLog = "ErrorLog";
     public static string sourceFile = "";
     public static string xmlOutput = "";
     public static DataContainer SelectedDataContainer;
@@ -20,6 +21,7 @@ namespace DataMappingExperiments
       StartManager(sourceFile, SelectedDataContainer.MapperType);
 
       Console.WriteLine("Program Finished");
+      Console.ReadLine();
     }
 
     static void StartManager(string fileName, MapperType mapperType)
