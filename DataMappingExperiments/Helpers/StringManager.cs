@@ -18,7 +18,7 @@ namespace DataMappingExperiments.Helpers
     public static string GetFilePathSetting(string settingKey)
     {
       string filePath = ConfigurationManager.AppSettings[settingKey];
-      if (settingKey == "ErrorLog")
+      if (settingKey == "ErrorLog" && Program.PringLog)
       {
         var time = DateTime.Now.ToString("yy-MM-dd hhmmss");
         var errorFilePath = $@"C:\ANDA {time} ErrorLog.txt";

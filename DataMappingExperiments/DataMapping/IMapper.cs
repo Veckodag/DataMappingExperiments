@@ -9,5 +9,6 @@ namespace DataMappingExperiments.DataMapping
     MapperType MapperType { get; set; }
     BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     Container ObjectStructure(List<BIS_GrundObjekt> bisList);
+    IEnumerable<BIS_GrundObjekt> SquashTheList(List<BIS_GrundObjekt> bisList);
   }
 }

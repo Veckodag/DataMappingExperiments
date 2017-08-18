@@ -103,5 +103,11 @@ namespace DataMappingExperiments.DataMapping
     {
       throw new NotImplementedException();
     }
+
+    public override IEnumerable<BIS_GrundObjekt> SquashTheList(List<BIS_GrundObjekt> bisList)
+    {
+      //TODO: Concatenate
+      throw new NotImplementedException();
+    }
   }
 }

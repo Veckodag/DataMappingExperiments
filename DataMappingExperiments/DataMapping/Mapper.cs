@@ -18,6 +18,7 @@ namespace DataMappingExperiments.DataMapping
     public abstract MapperType MapperType { get; set; }
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);
+    public abstract IEnumerable<BIS_GrundObjekt> SquashTheList(List<BIS_GrundObjekt> bisList);
 
     /// <summary>
     /// Writes out the XML file and entry point for JSON conversion
@@ -34,7 +35,7 @@ namespace DataMappingExperiments.DataMapping
       //Could reset back to ignore validation
       Console.WriteLine("Validating...");
       var isValid = ValidateXML();
-      //if (isValid) Who cares about validation, dude!
+      if (isValid) //Who cares about validation, dude!
         XmlToJsonManager.XmlToJson(container);
     }
 
@@ -69,21 +70,31 @@ namespace DataMappingExperiments.DataMapping
       if (errors.Any())
       {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Validation Errors Found. Check the error log for details");
-
-        using (var writer = new StreamWriter(StringManager.GetFilePathSetting(Program.ErrorLog)))
+        Console.WriteLine("Validation Errors Found...");
+        if (Program.PringLog)
+        {
+          using (var writer = new StreamWriter(StringManager.GetFilePathSetting(Program.ErrorLog)))
+          {
+            writer.WriteLine("Validation errors: ");
+            foreach (var error in errors)
+            {
+              writer.WriteLine(error);
+              writer.WriteLine();
+            }
+          }
+          Console.WriteLine("Please resolve the validation error(s). For details check the error log.");
+        }
+        else
         {
           foreach (var error in errors)
           {
-            writer.WriteLine(error);
-            writer.WriteLine();
+            Console.WriteLine(error);
+            Console.WriteLine();
           }
+          Console.WriteLine("Please resolve the validation error(s).");
         }
-        Console.WriteLine("Please resolve the validation error(s) and try again");
-        Console.ReadLine();
-
       }
-      if (!errors.Any())
+      else if (!errors.Any())
       {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("No Valaidation Errors Found");

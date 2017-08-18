@@ -621,7 +621,7 @@ namespace DataMappingExperiments.DataMapping
     /// </summary>
     /// <param name="bisList"></param>
     /// <returns></returns>
-    private List<BIS_Plattform> SquashTheList(List<BIS_GrundObjekt> bisList)
+    public override IEnumerable<BIS_GrundObjekt> SquashTheList(List<BIS_GrundObjekt> bisList)
     {
       var myList = new List<BIS_Plattform>();
 
