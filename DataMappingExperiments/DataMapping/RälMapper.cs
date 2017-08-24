@@ -72,7 +72,6 @@ namespace DataMappingExperiments.DataMapping
 
     public override Container ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
-      //TODO: Temporary list reform
       var formattedBisList = SquashTheList(bisList);
       Container container = new Container();
       var containerSoftypes = new List<SoftType>();
@@ -80,185 +79,40 @@ namespace DataMappingExperiments.DataMapping
 
       foreach (BIS_Räl bisRäl in formattedBisList)
       {
-        var rälsInstans = new FunktionellAnläggningEntrydefaultIn
-        {
-          Array = true,
-          id = "Räl"
-        };
+        //Allt gammalt
+        //Räl räl = new Räl
+        //{
+        //  notering = bisRäl.Notering,
+        //  name = "Räl",
+        //  versionId = "",
+        //  företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
+        //  {
+        //    startSpecified = false,
+        //    endSpecified = false,
+        //    @class = new FTGeografiskPlaceringsreferensReference
+        //    {
+        //      instanceRef = "Räl",
+        //      softType = "FTGeografiskPlaceringsreferens"
+        //    }
+        //  }
+        //};
 
-        Räl räl = new Räl
+        //Allt nytt
+
+        var rälSpec = new Rälspecifikation
         {
-          notering = bisRäl.Notering,
-          name = "",
-          versionId = "",
-          företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
-          {
-            startSpecified = false,
-            endSpecified = false,
-            @class = new FTGeografiskPlaceringsreferensReference
-            {
-              instanceRef = "Räl",
-              softType = "FTGeografiskPlaceringsreferens"
-            }
-          },
-          //stringSet = new RälStringSet
-          //{
-          //  Skarvtyp = SkapaSkarvTyp(bisRäl, new Räl_Skarvtyp()),
-          //  Stålsort = SkapaRälStålsort(bisRäl, new Räl_Stålsort()),
-          //  Tillvprocess = SkapaTillverkningsProcess(bisRäl, new Räl_Tillvprocess()),
-          //  Viktkgm_beskr = new Räl_Viktkgm_beskr
-          //  {
-          //    generalProperty = new Viktkgm_beskr
-          //    {
-          //      instanceRef = "Vikt_x0028_kg_x002F_m_x0029__beskr",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = "",
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Stålsort_beskr = new Räl_Stålsort_beskr
-          //  {
-          //    generalProperty = new Stålsort_beskr
-          //    {
-          //      instanceRef = "Stålsort_beskr",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = "",
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Skarvtyp_beskr = new Räl_Skarvtyp_beskr
-          //  {
-          //    generalProperty = new Skarvtyp_beskr
-          //    {
-          //      instanceRef = "Skarvtyp_beskr",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = "",
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Revklass_beskr = new Räl_Revklass_beskr
-          //  {
-          //    generalProperty = new Revklass_beskr
-          //    {
-          //      instanceRef = "Rev.klass_beskr",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = "",
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Tillverkare_beskr = new Räl_Tillverkare_beskr
-          //  {
-          //    generalProperty = new Tillverkare_beskr
-          //    {
-          //      instanceRef = "Tillverkare_beskr",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = "",
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Tillvprocess_beskr = new Räl_Tillvprocess_beskr
-          //  {
-          //    generalProperty = new Tillvprocess_beskr
-          //    {
-          //      instanceRef = "Tillv.process_beskr",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = "",
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Längdm = new Räl_Längdm
-          //  {
-          //    generalProperty = new Längdm
-          //    {
-          //      instanceRef = "Längd_x0028_m_x0029_",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = bisRäl.Längd,
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Revklass = new Räl_Revklass
-          //  {
-          //    generalProperty = new Revklass
-          //    {
-          //      instanceRef = "Rev.klass",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = bisRäl.Rev_Klass,
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Rälmodell = new Räl_Rälmodell
-          //  {
-          //    generalProperty = new Rälmodell
-          //    {
-          //      instanceRef = "Rälmodell",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = bisRäl.Rälmodell,
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Tillverkare = new Räl_Tillverkare
-          //  {
-          //    generalProperty = new Tillverkare
-          //    {
-          //      instanceRef = "Tillverkare",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = bisRäl.Tillverkare,
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  sidahvb = new Räl_sidahvb
-          //  {
-          //    generalProperty = new sidahvb
-          //    {
-          //      instanceRef = "sida_x0020__x0028_h_x002C_v_x002C_b_x0029_",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = bisRäl.SidaHVB,
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  }
-          //},
-          //numericSet = new RälNumericSet
-          //{
-          //  Inläggningsår = new Räl_Inläggningsår
-          //  {
-          //    generalProperty = new Inläggningsår
-          //    {
-          //      instanceRef = "Inläggningsår",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = bisRäl.Inläggningsår,
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Tillverkningsår = new Räl_Tillverkningsår
-          //  {
-          //    generalProperty = new Tillverkningsår
-          //    {
-          //      instanceRef = "Tillverkningsår",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = bisRäl.Tillverkngingsår,
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  },
-          //  Viktkgm = new Räl_Viktkgm
-          //  {
-          //    generalProperty = new Viktkgm
-          //    {
-          //      instanceRef = "Vikt_x0028_kg_x002F_m_x0029_",
-          //      softType = _SoftTypeProperty
-          //    },
-          //    value = bisRäl.Vikt,
-          //    JSonMapToPropertyName = _JsonMapToValue
-          //  }
-          //}
+          name = "RälSpecifikation",
+          numericSet = new RälspecifikationNumericSet(),
+          stringSet = new RälspecifikationStringSet(),
+          notering = bisRäl.Notering
         };
-        räl.id = räl.företeelsetyp.@class.instanceRef + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer;
-        räl = PropertyRealization(räl);
-        //rälsInstans.data = räl;
-        räls.Add(rälsInstans);
+        rälSpec.id = rälSpec.name + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer;
+
+        var rälAnläggningsSpecifikation = new AnläggningsspecifikationEntrydefaultIn
+        {
+
+        };
       }
-
-      //TODO: Uses only the first räl
-      räls.RemoveRange(1, räls.Count - 1);
 
       var funktionellAnläggningsSofttype = new SoftType_FunktionellAnläggning
       {

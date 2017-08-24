@@ -103,13 +103,16 @@ namespace DataMappingExperiments.DataMapping
       foreach (BIS_Plattform bisPlattform in formattedBisList)
       {
         //TODO: Figure out what the plattform does
-        var masterPlattform = new Plattform();
+        var masterPlattform = new Plattform()
+        {
+
+        };
 
         var plattformsProduktInstans = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,
           id = "PlattformProdukt",
-          inputSchemaRef = "defaultIn"
+          inputSchemaRef = _InputSchemaRef
         };
 
         Plattformprodukt plattformprodukt = new Plattformprodukt
@@ -389,26 +392,6 @@ namespace DataMappingExperiments.DataMapping
 
         #endregion
       }
-
-      //TODO: USES ONLY THE FIRST PLATTFORM AT THE MOMENT
-      plattformsProdukter.RemoveRange(1, plattformsProdukter.Count - 1);
-      plattformsFunktioner.RemoveRange(1, plattformsFunktioner.Count - 1);
-      plattformVäderskydd.RemoveRange(1, plattformVäderskydd.Count - 1);
-      plattformStyckevaror.RemoveRange(1, plattformStyckevaror.Count - 1);
-      if (plattformSkylt.Any() && plattformSkyltIndivid.Any())
-      {
-        plattformSkylt.RemoveRange(1, plattformSkylt.Count - 1);
-        plattformSkyltIndivid.RemoveRange(1, plattformSkyltIndivid.Count - 1);
-      }
-      if (plattformKanalisation.Any() && plattformKanalisationIndivid.Any())
-      {
-        plattformKanalisation.RemoveRange(1, plattformKanalisation.Count - 1);
-        plattformKanalisationIndivid.RemoveRange(1, plattformKanalisationIndivid.Count - 1);
-      }
-      
-      plattformIndivider.RemoveRange(1, plattformIndivider.Count - 1);
-      //Remove the range control after test
-
       //Real Test
       //Add new softypes to containerSoftTypes
 
@@ -474,6 +457,7 @@ namespace DataMappingExperiments.DataMapping
       containerSoftTypes.Add(styckevaraProduktSTSkylt);
       containerSoftTypes.Add(anläggningsProduktKanalisation);
       containerSoftTypes.Add(styckevaraProduktKanalisation);
+      containerSoftTypes.Add(plattformIndivid);
 
       //Adds the extra softypes needed
       containerSoftTypes.AddRange(CreateSupplementarySoftypes());
