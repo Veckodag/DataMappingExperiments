@@ -67,6 +67,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ANDAResurserMedDatakatalogFörFilbaseradImport_modifiedSecondGeneration.cs" />
     <Compile Include="BisObjekt\BIS_Kanalisation.cs" />
     <Compile Include="BisObjekt\BIS_Skarv.cs" />
     <Compile Include="BisObjekt\BIS_SpårSpärr.cs" />
@@ -77,7 +78,6 @@
     <Compile Include="DataMapping\SpårspärrMapper.cs" />
     <Compile Include="DataMapping\TeknikbyggnadMapper.cs" />
     <Compile Include="Obsolete\Plattform.cs" />
-    <Compile Include="AndaResurserMedDatakatalogFörImport.cs" />
     <Compile Include="BisObjekt\BIS_GrundObjekt.cs" />
     <Compile Include="BisObjekt\BIS_Plattform.cs" />
     <Compile Include="BisObjekt\BIS_Räl.cs" />
@@ -100,6 +100,9 @@
     <None Include="Testdata\ANDAImport.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Testdata\ANDAImportAndraGenerationen.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Testdata\Fln-Blg Plattformar Detaljlägen.xlsx" />
     <None Include="Testdata\Fln-Blg Räl Detaljlägen.xlsx" />
     <None Include="Testdata\Fln-Blg Spårspärrar Detaljlägen.xlsx" />
@@ -107,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Testdata\ANDAImport.xml" />
+    <Content Include="Testdata\ANDAImportAndraGenerationen.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,8 +13,9 @@ namespace DataMappingExperiments.DataMapping
   [Serializable]
   public abstract class Mapper : IMapper
   {
-    internal string _property = "Property";
-    internal string _value = "value";
+    internal string _SoftTypeProperty = "Property";
+    internal string _JsonMapToValue = "value";
+    internal string _InputSchemaRef = "defaultIn";
     public abstract MapperType MapperType { get; set; }
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);
@@ -32,13 +33,21 @@ namespace DataMappingExperiments.DataMapping
       serializer.Serialize(tw, container);
       tw.Close();
 
+      XmlMessage();
+
       //Could reset back to ignore validation
-      Console.WriteLine("Validating...");
-      var isValid = ValidateXML();
-      if (isValid) //Who cares about validation, dude!
-        XmlToJsonManager.XmlToJson(container);
+      //Console.WriteLine("Validating...");
+      //var isValid = ValidateXML();
+      //if (isValid) //Who cares about validation, dude!
+      XmlToJsonManager.XmlToJson(container);
     }
 
+    private void XmlMessage()
+    {
+      Console.ForegroundColor = ConsoleColor.White;
+      Console.WriteLine("XML file complete!");
+      Console.ForegroundColor = ConsoleColor.Gray;
+    }
     /// <summary>
     /// Validates the XML file against a matching XSD. Reads errors if there are any.
     /// </summary>
@@ -98,10 +107,7 @@ namespace DataMappingExperiments.DataMapping
       {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("No Valaidation Errors Found");
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("XML file complete!");
       }
-      Console.ForegroundColor = ConsoleColor.Gray;
     }
 
     public List<UnitInstances> CreateSoftTypeUnitsInstances()
@@ -190,20 +196,6 @@ namespace DataMappingExperiments.DataMapping
           instanceRef = "Property"
         }
       };
-
-      var genericTillståndsstatusReference = new TillståndsstatusReference
-      {
-        softType = "Tillståndsstatus",
-        instanceRef = "Tillståndsstatus"
-      };
-
-      var stateAssesmentReference = new StateAssessmentReference
-      {
-        startSpecified = false,
-        endSpecified = false,
-        tillstånd = genericTillståndsstatusReference
-      };
-
       var genericDocumentReference = new DokumentReference
       {
         softType = "Dokument",
@@ -352,18 +344,6 @@ namespace DataMappingExperiments.DataMapping
           name = "Bulkvara",
           notering = "Bulkvara",
           versionId = "Bulkvara",
-          stringSet = new PropertyValueSetAssignment_Bulkvara_stringSet
-          {
-            startSpecified = false,
-            endSpecified = false,
-            value = new[] { propertyStringValue }
-          },
-          numericSet = new PropertyValueSetAssignment_Bulkvara_numericSet
-          {
-            //startSpecified = false,
-            //endSpecified = false,
-            //value = new[] { propertyNumericValue }
-          },
           anläggningsprodukt = new ProductDesignVersionToIndividual_Bulkvara_anläggningsprodukt
           {
             startSpecified = false,
@@ -397,12 +377,6 @@ namespace DataMappingExperiments.DataMapping
             startSpecified = false,
             endSpecified = false
           },
-          konstateratTillstånd = new StateAssignment_Bulkvara_konstateratTillstånd
-          {
-            startSpecified = false,
-            endSpecified = false,
-            bedömning = stateAssesmentReference
-          },
           planeradIndivid = new ItemVersionReference_Bulkvara_planeradIndivid
           {
             startSpecified = false,
@@ -413,12 +387,6 @@ namespace DataMappingExperiments.DataMapping
               instanceRef = "PlaneradIndivid"
             }
           },
-          prognostiseratTillstånd = new StateAssignment_Bulkvara_prognostiseratTillstånd
-          {
-            endSpecified = false,
-            startSpecified = false,
-            bedömning = stateAssesmentReference
-          }
         }
       };
       var bulkvaraInstanceLista = new List<BulkvaraInstances> { bulkvaraInstance };
@@ -501,12 +469,7 @@ namespace DataMappingExperiments.DataMapping
             endSpecified = false,
             value = new[] { propertyStringValue }
           },
-          numericSet = new PropertyValueSetAssignment_Dokument_numericSet
-          {
-            //startSpecified = false,
-            //endSpecified = false,
-            //value = new[] { propertyNumericValue }
-          },
+          numericSet = new PropertyValueSetAssignment_Dokument_numericSet(),
           företeelsetyp = new ClassificationReference_Dokument_företeelsetyp
           {
             startSpecified = false,
@@ -602,23 +565,11 @@ namespace DataMappingExperiments.DataMapping
               instanceRef = "FTStyckevara"
             }
           },
-          konstateratTillstånd = new StateAssignment_Styckevara_konstateratTillstånd
-          {
-            startSpecified = false,
-            endSpecified = false,
-            bedömning = stateAssesmentReference
-          },
           planeradIndivid = new ItemVersionReference_Styckevara_planeradIndivid
           {
             startSpecified = false,
             endSpecified = false,
 
-          },
-          prognostiseratTillstånd = new StateAssignment_Styckevara_prognostiseratTillstånd
-          {
-            startSpecified = false,
-            endSpecified = false,
-            bedömning = stateAssesmentReference
           },
           ursprung = new PropertyValueAssignment_Styckevara_ursprung
           {
@@ -799,17 +750,6 @@ namespace DataMappingExperiments.DataMapping
               instanceRef = "FTKonstateradTillståndsindivid"
             }
           },
-          konstateratTillstånd = new StateAssignment_KonstateradTillståndsindivid_konstateratTillstånd
-          {
-            startSpecified = false,
-            endSpecified = false,
-            bedömning = new StateAssessmentReference_KonstateradTillståndsindivid_bedömning
-            {
-              startSpecified = false,
-              endSpecified = false,
-              tillstånd = genericTillståndsstatusReference
-            }
-          },
           ursprung = new PropertyValueAssignment_KonstateradTillståndsindivid_ursprung
           {
             startSpecified = false,
@@ -821,12 +761,7 @@ namespace DataMappingExperiments.DataMapping
             endSpecified = false,
             value = new[] { propertyStringValue }
           },
-          numericSet = new PropertyValueSetAssignment_KonstateradTillståndsindivid_numericSet
-          {
-            //startSpecified = false,
-            //endSpecified = false,
-            //value = new[] { propertyNumericValue }
-          },
+          numericSet = new PropertyValueSetAssignment_KonstateradTillståndsindivid_numericSet(),
           dokument = new[] { konstateradTillståndsIndividDocumentReference },
           projekt = new[] { konstateradTillståndsIndividProjectReference }
         }
@@ -907,12 +842,7 @@ namespace DataMappingExperiments.DataMapping
             endSpecified = false,
             value = new[] { propertyStringValue }
           },
-          numericSet = new PropertyValueSetAssignment_PlaneradIndivid_numericSet
-          {
-            //startSpecified = false,
-            //endSpecified = false,
-            //value = new[] { propertyNumericValue }
-          },
+          numericSet = new PropertyValueSetAssignment_PlaneradIndivid_numericSet(),
           dokument = new[] { planeradIndividDokumentReference },
           projekt = new[] { planeradIndividProjectReference }
         }
@@ -986,12 +916,7 @@ namespace DataMappingExperiments.DataMapping
             endSpecified = false,
             value = new[] { propertyStringValue }
           },
-          numericSet = new PropertyValueSetAssignment_Anläggningsutrymme_numericSet
-          {
-            //startSpecified = false,
-            //endSpecified = false,
-            //value = new[] { propertyNumericValue }
-          },
+          numericSet = new PropertyValueSetAssignment_Anläggningsutrymme_numericSet(),
           dokument = new[] { anläggningsutrymmeDocumentReference },
           projekt = new[] { anläggningsutrymmeProjectReference }
         }
@@ -1188,27 +1113,6 @@ namespace DataMappingExperiments.DataMapping
       };
       softtypeList.Add(externReferensSoftType);
       //ExternReferens END
-
-      //Tillståndsstatus
-      var tillståndsstatusInstance = new TillståndsstatusEntrydefaultIn
-      {
-        Array = true,
-        id = "Tillståndsstatus",
-        inputSchemaRef = "defaultIn",
-        data = new TillståndsstatusdefaultIn
-        {
-          id = "Tillståndsstatus"
-        }
-      };
-      var tillståndsstatusInstances = new List<TillståndsstatusInstances> { tillståndsstatusInstance };
-      var tillståndStatusSoftType = new SoftType_Tillståndsstatus
-      {
-        Array = true,
-        id = "Tillståndsstatus",
-        instances = tillståndsstatusInstances.ToArray()
-      };
-      softtypeList.Add(tillståndStatusSoftType);
-      //Tillståndsstatus END
 
       //FTAnläggningsutrymme
       var FTAnläggningsutrymmeInstance = new FTAnläggningsutrymmeEntrydefaultIn

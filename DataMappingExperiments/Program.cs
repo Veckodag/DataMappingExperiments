@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using DataMappingExperiments.Helpers;
 
 namespace DataMappingExperiments
 {
   public class Program
   {
-    internal const string XsdFile = "XsdFile";
+    internal const string XsdFile = "XsdFileSecondGen";
     internal const string ErrorLog = "ErrorLog";
     public static string sourceFile = "";
     public static string xmlOutput = "";
@@ -16,7 +14,7 @@ namespace DataMappingExperiments
     static void Main(string[] args)
     {
       //Set the datatype once here
-      SelectedDataContainer = DataContainerType("räl");
+      SelectedDataContainer = DataContainerType("plattform");
       sourceFile = StringManager.GetFilePathSetting(SelectedDataContainer.Input);
       xmlOutput = StringManager.GetFilePathSetting(SelectedDataContainer.Output);
       StartManager(sourceFile, SelectedDataContainer.MapperType);
@@ -52,7 +50,7 @@ namespace DataMappingExperiments
         case "teknikbyggnad":
           return new DataContainer { Input = "TeknikbyggnadInput", Output = "TeknikbyggnadOutput", Json = "TeknikbyggnadJson", MapperType = MapperType.Teknikbyggnad };
         default:
-          throw new ArgumentNullException("Please set a datatype and try again!");
+          throw new ArgumentNullException();
       }
     }
 

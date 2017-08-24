@@ -28,7 +28,15 @@ namespace DataMappingExperiments
 
       Console.WriteLine("Importing excel file...");
       ReadExcelFile(fileName);
+      ExcelMessage();
       CreateObjects();
+    }
+
+    private void ExcelMessage()
+    {
+      Console.ForegroundColor = ConsoleColor.White;
+      Console.WriteLine("Excel import complete!");
+      Console.ForegroundColor = ConsoleColor.Gray;
     }
     /// <summary>
     /// The entry method for XML mapping and structuring
