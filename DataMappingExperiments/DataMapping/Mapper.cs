@@ -131,7 +131,6 @@ namespace DataMappingExperiments.DataMapping
         instance.data = unit;
         unitlist.Add(instance);
       }
-
       return unitlist;
     }
 
@@ -151,7 +150,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           id = propertyName,
-          inputSchemaRef = "defaultIn"
+          inputSchemaRef = _InputSchemaRef
         };
         var property = new PropertydefaultIn
         {
@@ -173,9 +172,7 @@ namespace DataMappingExperiments.DataMapping
     {
       //TODO: Creating softypes instances for keyref
       var softtypeList = new List<SoftType>();
-
       //Setup
-
       //Generic Properties
       var propertyStringValue = new PropertyValueString
       {
@@ -1158,6 +1155,27 @@ namespace DataMappingExperiments.DataMapping
       };
       softtypeList.Add(FTPlaneradIndivid);
       //FTPlaneradIndivid END
+      var geografiskFTSofttype = new SoftType_FTGeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "FTGeografiskPlaceringsreferens"
+      };
+      var FTPlattformar = new List<FTGeografiskPlaceringsreferensInstances>();
+      var ftPlattformsInstans = new FTGeografiskPlaceringsreferensEntrydefaultIn
+      {
+        Array = true,
+        id = "FTGeografiskPlaceringsreferens",
+        inputSchemaRef = "defaultIn",
+        data = new FTGeografiskPlaceringsreferensdefaultIn
+        {
+          id = "FTGeografiskPlaceringsreferens",
+          name = "FTGeografiskPlaceringsreferens"
+        }
+      };
+      FTPlattformar.Add(ftPlattformsInstans);
+      geografiskFTSofttype.instances = FTPlattformar.ToArray();
+      softtypeList.Add(geografiskFTSofttype);
+
       return softtypeList;
     }
 
@@ -1168,26 +1186,6 @@ namespace DataMappingExperiments.DataMapping
     internal List<SoftType> CreateSupplementarySoftypes()
     {
       var softtypeList = new List<SoftType>();
-      var geografiskFTSofttype = new SoftType_FTGeografiskPlaceringsreferens
-      {
-        Array = true,
-        id = "FTGeografiskPlaceringsreferens"
-      };
-      var FTPlattformar = new List<FTGeografiskPlaceringsreferensInstances>();
-      //Vilka softtypes behövs
-      var ftPlattformsInstans = new FTGeografiskPlaceringsreferensEntrydefaultIn
-      {
-        Array = true,
-        id = "FTPlattform",
-        inputSchemaRef = "defaultIn",
-        data = new FTGeografiskPlaceringsreferensdefaultIn
-        {
-          id = "FTPlattform",
-          name = "FTPlattform"
-        }
-      };
-      FTPlattformar.Add(ftPlattformsInstans);
-      geografiskFTSofttype.instances = FTPlattformar.ToArray();
 
       //TODO: Make Real Properties
       var softtypeProperty = new SoftType_Property
@@ -1202,9 +1200,7 @@ namespace DataMappingExperiments.DataMapping
         id = "Unit",
         instances = CreateSoftTypeUnitsInstances().ToArray()
       };
-
       //Add them all to the list
-      softtypeList.Add(geografiskFTSofttype);
       softtypeList.Add(softtypeProperty);
       softtypeList.Add(softtypeUnit);
 

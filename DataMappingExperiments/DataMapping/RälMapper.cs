@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
@@ -75,53 +76,151 @@ namespace DataMappingExperiments.DataMapping
       var formattedBisList = SquashTheList(bisList);
       Container container = new Container();
       var containerSoftypes = new List<SoftType>();
-      var räls = new List<FunktionellAnläggningInstances>();
 
+
+      var rälAnläggningsSpecifikationer = new List<AnläggningsspecifikationInstances>();
+      var rälAnläggningsProdukter = new List<AnläggningsproduktInstances>();
+      var rälBulkvaror = new List<BulkvaraInstances>();
       foreach (BIS_Räl bisRäl in formattedBisList)
       {
-        //Allt gammalt
-        //Räl räl = new Räl
-        //{
-        //  notering = bisRäl.Notering,
-        //  name = "Räl",
-        //  versionId = "",
-        //  företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
-        //  {
-        //    startSpecified = false,
-        //    endSpecified = false,
-        //    @class = new FTGeografiskPlaceringsreferensReference
-        //    {
-        //      instanceRef = "Räl",
-        //      softType = "FTGeografiskPlaceringsreferens"
-        //    }
-        //  }
-        //};
-
         //Allt nytt
-
         var rälSpec = new Rälspecifikation
         {
           name = "RälSpecifikation",
+          notering = bisRäl.Notering,
+          versionId = "001",
           numericSet = new RälspecifikationNumericSet(),
-          stringSet = new RälspecifikationStringSet(),
-          notering = bisRäl.Notering
+          stringSet = new RälspecifikationStringSet
+          {
+            skarvTyp = SkapaSkarvTyp(bisRäl, new Rälspecifikation_skarvTyp()),
+            typ = new Rälspecifikation_typ
+            {
+              generalProperty = new typ
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "typ"
+              },
+              //Vikt + Rälprofil(Rälmodell) + hårdhet; Don't know where it comes from
+              value = null,
+              JSonMapToPropertyName = _JsonMapToValue
+            }
+          }
         };
         rälSpec.id = rälSpec.name + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer;
 
+        var rälprodukt = new Rälprodukt
+        {
+          name = "RälProdukt",
+          notering = bisRäl.Notering,
+          versionId = "001",
+          numericSet = new RälproduktNumericSet
+          {
+            längd = SkapaLängd(bisRäl, new Rälprodukt_längd())
+          },
+          stringSet = new RälproduktStringSet
+          {
+            profiltyp = new Rälprodukt_profiltyp
+            {
+              generalProperty = new profiltyp
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "profiltyp"
+              },
+              value = bisRäl.Rälmodell,
+              JSonMapToPropertyName = _JsonMapToValue
+            },
+            stålsort = SkapaStålSort(bisRäl, new Rälprodukt_stålsort()),
+            tillverkningsprocess = SkapaTillverkningsProcess(bisRäl, new Rälprodukt_tillverkningsprocess()),
+            vikt = new Rälprodukt_vikt
+            {
+              generalProperty = new vikt
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "vikt"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = bisRäl.Vikt
+            }
+          }
+        };
+        rälprodukt.id = rälprodukt.name + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer;
+
+        var rälindivid = new Rälindivid
+        {
+          startSpecified = false,
+          endSpecified = false,
+          notering = bisRäl.Notering,
+          name = "RälIndivid",
+          versionId = "001",
+          numericSet = new RälindividNumericSet(),
+          stringSet = new RälindividStringSet()
+          {
+            revideradKlassifikation = new Rälindivid_revideradKlassifikation
+            {
+              Array = true,
+              generalProperty = new revideradKlassifikation
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "revideradKlassifikation"
+              },
+              value = bisRäl.Rev_Klass
+            }
+          }
+        };
+        rälindivid.id = rälindivid.name + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer;
+
+        //ENTRY INSTANCES
         var rälAnläggningsSpecifikation = new AnläggningsspecifikationEntrydefaultIn
         {
-
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "Anläggningsspecifikation",
+          data = rälSpec
         };
+        rälAnläggningsSpecifikationer.Add(rälAnläggningsSpecifikation);
+
+        var rälAnläggningsProdukt = new AnläggningsproduktEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "Anläggningsprodukt",
+          data = rälprodukt
+        };
+        rälAnläggningsProdukter.Add(rälAnläggningsProdukt);
+
+        var rälBulkvara = new BulkvaraEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "Bulkvara",
+          data = rälindivid
+        };
+        rälBulkvaror.Add(rälBulkvara);
       }
 
-      var funktionellAnläggningsSofttype = new SoftType_FunktionellAnläggning
+      //SOFTTYPES
+      var anläggningsSpecifikationSoftType = new SoftType_Anläggningsspecifikation
       {
         Array = true,
-        id = "FunktionellAnläggning",
-        instances = räls.ToArray()
+        id = "Anläggningsspecifikation",
+        instances = rälAnläggningsSpecifikationer.ToArray()
+      };
+      var anläggningsProduktSoftType = new SoftType_Anläggningsprodukt
+      {
+        Array = true,
+        id = "Anläggningsprodukt",
+        instances = rälAnläggningsProdukter.ToArray()
+      };
+      var bulkvaraSoftType = new SoftType_Bulkvara
+      {
+        Array = true,
+        id = "Bulkvara",
+        instances = rälBulkvaror.ToArray()
       };
 
-      containerSoftypes.Add(funktionellAnläggningsSofttype);
+      containerSoftypes.Add(anläggningsSpecifikationSoftType);
+      containerSoftypes.Add(anläggningsProduktSoftType);
+      containerSoftypes.Add(bulkvaraSoftType);
       containerSoftypes.AddRange(CreateSupplementarySoftypes());
       containerSoftypes.AddRange(CreateKeyReferences());
 
@@ -129,215 +228,123 @@ namespace DataMappingExperiments.DataMapping
       return container;
     }
 
-    #region PropertyCreationMethods
-
-    //TODO: Fixa hela den här metoden
-    private Räl PropertyRealization(Räl räl)
+    private Rälprodukt_tillverkningsprocess SkapaTillverkningsProcess(BIS_Räl bisRäl, Rälprodukt_tillverkningsprocess rälProcess)
     {
-      //räl.företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
-      //{
-      //  @class = new FTFunktionellAnläggningReference
-      //  {
-      //    softType = "FTFunktionellAnläggning",
-      //    instanceRef = "FTFunktionellAnläggning"
-      //  },
-      //  startSpecified = false,
-      //  endSpecified = false
-      //};
-      räl.företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
+      rälProcess.generalProperty = new tillverkningsprocess
       {
-        @class = new FTGeografiskPlaceringsreferensReference
-        {
-          softType = "FTGeografiskPlaceringsreferens",
-          instanceRef = "FTGeografiskPlaceringsreferens"
-        },
-        startSpecified = false,
-        endSpecified = false
+        softType = _SoftTypeProperty,
+        instanceRef = "tillverkningsprocess"
       };
+      rälProcess.JSonMapToPropertyName = _JsonMapToValue;
 
-      //var anläggningsSpec = new BreakdownElementRealization_FunktionellAnläggning_anläggningsspecifikation
-      //{
-      //  value = new AnläggningsspecifikationReference
-      //  {
-      //    softType = "Anläggningsspecifikation",
-      //    instanceRef = "Anläggningsspecifikation"
-      //  },
-      //  Array = true,
-      //  startSpecified = false,
-      //  endSpecified = false
-      //};
-
-      var anläggningsSpec = new BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsspecifikation
+      switch (bisRäl.Tillv_Process)
       {
-
-      };
-      räl.anläggningsspecifikation = new[] { anläggningsSpec };
-
-      var anläggningsUtrymme = new BreakdownElementRealization_FunktionellAnläggning_anläggningsutrymme
-      {
-        value = new AnläggningsutrymmeReference
-        {
-          softType = "Anläggningsutrymme",
-          instanceRef = "Anläggningsutrymme"
-        },
-        Array = true,
-        startSpecified = false,
-        endSpecified = false
-      };
-      //räl.anläggningsutrymme = new[] { anläggningsUtrymme };
-
-      //räl.datainsamling = new PropertyValueAssignment_FunktionellAnläggning_datainsamling
-      //{
-      //  startSpecified = false,
-      //  endSpecified = false,
-      //  value = "Datainsamling"
-      //};
-
-      var dokument = new DocumentReference_FunktionellAnläggning_dokument
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = new DokumentReference
-        {
-          softType = "Dokument",
-          instanceRef = "Dokument"
-        }
-      };
-      //räl.dokument = new[] { dokument };
-
-      //räl.företeelsetillkomst = new PropertyValueAssignment_FunktionellAnläggning_företeelsetillkomst
-      //{
-      //  startSpecified = false,
-      //  endSpecified = false,
-      //  value = "Företeelsetillkomst"
-      //};
-
-      //räl.ursprung = new PropertyValueAssignment_FunktionellAnläggning_ursprung
-      //{
-      //  startSpecified = false,
-      //  endSpecified = false,
-      //  value = ""
-      //};
-
-      var projekt = new ProjectReference_FunktionellAnläggning_projekt
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = new ProjektReference
-        {
-          softType = "Projekt",
-          instanceRef = "Projekt"
-        }
-      };
-      //räl.projekt = new[] { projekt };
-      return räl;
+        case "E":
+          rälProcess.value = "Elektro";
+          break;
+        case "M":
+          rälProcess.value = "Martin";
+          break;
+        case "S":
+          rälProcess.value = "Syrgasprocess";
+          break;
+        case "T":
+          rälProcess.value = "Thomas";
+          break;
+        case "?":
+          rälProcess.value = "?";
+          break;
+      }
+      return rälProcess;
     }
 
-    //private Räl_Tillvprocess SkapaTillverkningsProcess(BIS_Räl bisRäl, Räl_Tillvprocess rälTillvprocess)
-    //{
-    //  Tillvprocess tillvprocess = new Tillvprocess
-    //  {
-    //    instanceRef = "Tillv.process",
-    //    softType = _SoftTypeProperty
-    //  };
-    //  rälTillvprocess.generalProperty = tillvprocess;
-    //  rälTillvprocess.JSonMapToPropertyName = _JsonMapToValue;
+    private Rälprodukt_stålsort SkapaStålSort(BIS_Räl bisRäl, Rälprodukt_stålsort rälStålsort)
+    {
+      rälStålsort.generalProperty = new stålsort
+      {
+        softType = _SoftTypeProperty,
+        instanceRef = "stålsort"
+      };
+      rälStålsort.JSonMapToPropertyName = _JsonMapToValue;
 
-    //  switch (bisRäl.Tillv_Process)
-    //  {
-    //    case "E":
-    //      rälTillvprocess.value = "Elektro";
-    //      break;
-    //    case "M":
-    //      rälTillvprocess.value = "Martin";
-    //      break;
-    //    case "S":
-    //      rälTillvprocess.value = "Syrgasprocess";
-    //      break;
-    //    case "T":
-    //      rälTillvprocess.value = "Thomas";
-    //      break;
-    //    default:
-    //      rälTillvprocess.value = bisRäl.Tillv_Process;
-    //      break;
-    //  }
-    //  return rälTillvprocess;
-    //}
+      switch (bisRäl.Stålsort)
+      {
+        case "1100":
+          rälStålsort.value = "R320Cr";
+          break;
+        case "800":
+          rälStålsort.value = "R220";
+          break;
+        case "900A":
+          rälStålsort.value = "R260";
+          break;
+        case "Cr":
+          rälStålsort.value = "R320Cr";
+          break;
+        case "HT":
+          rälStålsort.value = "R350HT";
+          break;
+        case "LHT":
+          rälStålsort.value = "R350LHT";
+          break;
+        default:
+          rälStålsort.value = bisRäl.Stålsort;
+          break;
+      }
+      return rälStålsort;
+    }
 
-    //private Räl_Skarvtyp SkapaSkarvTyp(BIS_Räl bisRäl, Räl_Skarvtyp rälSkarvtyp)
-    //{
-    //  Skarvtyp skarvtyp = new Skarvtyp
-    //  {
-    //    instanceRef = "Skarvtyp",
-    //    softType = _SoftTypeProperty
-    //  };
-    //  rälSkarvtyp.generalProperty = skarvtyp;
-    //  rälSkarvtyp.JSonMapToPropertyName = _JsonMapToValue;
+    private Rälprodukt_längd SkapaLängd(BIS_Räl bisRäl, Rälprodukt_längd rälLängd)
+    {
+      rälLängd.generalProperty = new längd
+      {
+        softType = _SoftTypeProperty,
+        instanceRef = "längd"
+      };
+      rälLängd.Array = true;
+      rälLängd.JSonMapToPropertyName = _JsonMapToValue;
+      rälLängd.Unit = new m
+      {
+        softType = _SoftTypeProperty,
+        instanceRef = "m"
+      };
+      if (bisRäl.Längd != "?" && bisRäl.Längd != "L")
+      {
+        rälLängd.value = Convert.ToDecimal(bisRäl.Längd);
+      }
+      else
+      {
+        rälLängd.value = bisRäl.Längd == "L" ? 100 : 0;
+      }
+      return rälLängd;
+    }
 
-    //  switch (bisRäl.Skarvtyp)
-    //  {
-    //    case "D":
-    //      rälSkarvtyp.value = "Dubbelsliper(Skarvspår)";
-    //      break;
-    //    case "L":
-    //      rälSkarvtyp.value = "Långräl (Helsvetsat)";
-    //      break;
-    //    case "S":
-    //      rälSkarvtyp.value = "Svävande (Skarvspår)";
-    //      break;
-    //    case "T":
-    //      rälSkarvtyp.value = "Treslipers (Skarvspår)";
-    //      break;
-    //    default:
-    //      rälSkarvtyp.value = bisRäl.Skarvtyp;
-    //      break;
-    //  }
-    //  return rälSkarvtyp;
-    //}
+    private Rälspecifikation_skarvTyp SkapaSkarvTyp(BIS_Räl bisRäl, Rälspecifikation_skarvTyp rälSkarvTyp)
+    {
+      rälSkarvTyp.generalProperty = new skarvTyp
+      {
+        softType = _SoftTypeProperty,
+        instanceRef = "skarvTyp"
+      };
+      rälSkarvTyp.JSonMapToPropertyName = _JsonMapToValue;
 
-    //private Räl_Stålsort SkapaRälStålsort(BIS_Räl bisRäl, Räl_Stålsort rälStålsort)
-    //{
-    //  Stålsort stålsort = new Stålsort
-    //  {
-    //    instanceRef = "Stålsort",
-    //    softType = _SoftTypeProperty
-    //  };
-    //  rälStålsort.generalProperty = stålsort;
-    //  rälStålsort.JSonMapToPropertyName = _JsonMapToValue;
-
-    //  switch (bisRäl.Stålsort)
-    //  {
-    //    case "1100":
-    //      rälStålsort.value = "R320Cr";
-    //      break;
-    //    case "800":
-    //      rälStålsort.value = "R220";
-    //      break;
-    //    case "900A":
-    //      rälStålsort.value = "R260";
-    //      break;
-    //    case "900B":
-    //      rälStålsort.value = "900B";
-    //      break;
-    //    case "Cr":
-    //      rälStålsort.value = "R320Cr";
-    //      break;
-    //    case "HT":
-    //      rälStålsort.value = "R350HT";
-    //      break;
-    //    case "LHT":
-    //      rälStålsort.value = "R350LHT";
-    //      break;
-    //    default:
-    //      rälStålsort.value = bisRäl.Stålsort;
-    //      break;
-    //  }
-    //  return rälStålsort;
-    //}
-
-    #endregion
+      switch (bisRäl.Skarvtyp)
+      {
+        case "T":
+          rälSkarvTyp.value = "Treslipers (Skarvspår)";
+          break;
+        case "S":
+          rälSkarvTyp.value = "Svävande (skarvspår)";
+          break;
+        case "L":
+          rälSkarvTyp.value = "Långräl (Helsvetsat)";
+          break;
+        case "?":
+          rälSkarvTyp.value = bisRäl.Skarvtyp;
+          break;
+      }
+      return rälSkarvTyp;
+    }
 
     /// <summary>
     /// Squashing of the list. Unika plattformar: utan versioner med olika nätanknytningar.
@@ -352,14 +359,15 @@ namespace DataMappingExperiments.DataMapping
         myList.Add(objekt as BIS_Räl);
 
       //Notering kan vara olika på rader även med samma typnummer, därför måste de konkateneras.
-      var query = myList.GroupBy(objekt => objekt.ObjektTypNummer, (typNummer, notering) => new BIS_Räl
-      {
-        ObjektTypNummer = typNummer,
-        Notering = string.Join(" ", notering.Select(x => x.Notering).OrderBy(x => x))
-      });
+      //var query = myList.GroupBy(objekt => objekt.ObjektNummer, (typNummer, notering) => new BIS_Räl
+      //{
+      //  ObjektTypNummer = typNummer,
+      //  Notering = string.Join(" ", notering.Select(x => x.Notering).OrderBy(x => x))
+      //});
 
-      return query.GroupBy(objektDetalj => objektDetalj.ObjektNummer)
-        .Select(values => values.FirstOrDefault());
+      //Kommer att trycka ihop listan på objektnummer
+      return myList.GroupBy(objektDetalj => objektDetalj.ObjektNummer)
+        .Select(values => values.FirstOrDefault()).ToList();
     }
   }
 }
