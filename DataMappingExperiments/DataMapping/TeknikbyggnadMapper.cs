@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
 
@@ -128,7 +128,6 @@ namespace DataMappingExperiments.DataMapping
         case 63:
           myTeknikByggnad.SerieNummer = attributeValue;
           break;
-
       }
 
       return myTeknikByggnad;
@@ -136,12 +135,30 @@ namespace DataMappingExperiments.DataMapping
 
     public override Container ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
-      throw new NotImplementedException();
+      //Does not use the SquashList method
+      var formattedList = bisList;
+      var container = new Container();
+      var containerSoftypes = new List<SoftType>();
+
+      foreach (BIS_Teknikbyggnad bisTeknikbyggnad in formattedList)
+      {
+        
+      }
+
+      container.softTypes = containerSoftypes.ToArray();
+      return container;
     }
 
     public override IEnumerable<BIS_GrundObjekt> SquashTheList(List<BIS_GrundObjekt> bisList)
     {
-      throw new NotImplementedException();
+      var myList = new List<BIS_Teknikbyggnad>();
+
+      foreach (var objekt in bisList)
+        myList.Add(objekt as BIS_Teknikbyggnad);
+
+      myList = myList.GroupBy(objektDetalj => objektDetalj.ObjektNummer).Select(values => values.FirstOrDefault()).ToList();
+
+      return myList;
     }
   }
 }

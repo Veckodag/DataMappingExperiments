@@ -85,7 +85,7 @@ namespace DataMappingExperiments.DataMapping
     }
     public override Container ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
-      var formattedBisList = SquashTheList(bisList);
+      var formattedBisList = bisList;
       Container container = new Container();
       //All softypes must be aggregated before they are added to the container
       var containerSoftTypes = new List<SoftType>();

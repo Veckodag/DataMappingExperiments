@@ -73,10 +73,9 @@ namespace DataMappingExperiments.DataMapping
 
     public override Container ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
-      var formattedBisList = SquashTheList(bisList);
+      var formattedBisList = bisList;
       Container container = new Container();
       var containerSoftypes = new List<SoftType>();
-
 
       var rälAnläggningsSpecifikationer = new List<AnläggningsspecifikationInstances>();
       var rälAnläggningsProdukter = new List<AnläggningsproduktInstances>();
@@ -153,7 +152,7 @@ namespace DataMappingExperiments.DataMapping
           name = "RälIndivid",
           versionId = "001",
           numericSet = new RälindividNumericSet(),
-          stringSet = new RälindividStringSet()
+          stringSet = new RälindividStringSet
           {
             revideradKlassifikation = new Rälindivid_revideradKlassifikation
             {

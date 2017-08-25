@@ -39,7 +39,7 @@ namespace DataMappingExperiments.DataMapping
       //Console.WriteLine("Validating...");
       //var isValid = ValidateXML();
       //if (isValid) //Who cares about validation, dude!
-      XmlToJsonManager.XmlToJson(container);
+        XmlToJsonManager.XmlToJson(container);
     }
 
     private void XmlMessage()
@@ -122,7 +122,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           id = unitName,
-          inputSchemaRef = "defaultIn"
+          inputSchemaRef = _InputSchemaRef
         };
         var unit = new UnitdefaultIn
         {
@@ -138,7 +138,6 @@ namespace DataMappingExperiments.DataMapping
     {
       var propertyList = new List<PropertyInstances>();
 
-      //TODO: Map against proper properties
       string[] properties =
       {
         //"Hello World!", "THIS_IS_A_TEST_PROPERTY"
@@ -160,7 +159,6 @@ namespace DataMappingExperiments.DataMapping
         instance.data = property;
         propertyList.Add(instance);
       }
-
       return propertyList;
     }
 
@@ -1187,7 +1185,6 @@ namespace DataMappingExperiments.DataMapping
     {
       var softtypeList = new List<SoftType>();
 
-      //TODO: Make Real Properties
       var softtypeProperty = new SoftType_Property
       {
         Array = true,
