@@ -10,6 +10,7 @@ namespace DataMappingExperiments.DataMapping
     public SpårspärrMapper()
     {
       MapperType = MapperType.Spårspärr;
+      ExtraCounter = 1;
     }
     public sealed override MapperType MapperType { get; set; }
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject)
@@ -103,7 +104,6 @@ namespace DataMappingExperiments.DataMapping
 
     public override IEnumerable<BIS_GrundObjekt> SquashTheList(List<BIS_GrundObjekt> bisList)
     {
-      //TODO: Concatenate
       throw new NotImplementedException();
     }
   }

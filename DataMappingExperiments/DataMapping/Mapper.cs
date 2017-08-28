@@ -17,6 +17,8 @@ namespace DataMappingExperiments.DataMapping
     internal string _JsonMapToValue = "value";
     internal string _InputSchemaRef = "defaultIn";
     public abstract MapperType MapperType { get; set; }
+    //TODO: Change so it always initialize at 1
+    public int ExtraCounter { get; set; }
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);
     public abstract IEnumerable<BIS_GrundObjekt> SquashTheList(List<BIS_GrundObjekt> bisList);
@@ -35,11 +37,12 @@ namespace DataMappingExperiments.DataMapping
 
       XmlMessage();
 
-      //Could reset back to ignore validation
+      //Could reset back to validation
       //Console.WriteLine("Validating...");
       //var isValid = ValidateXML();
       //if (isValid) //Who cares about validation, dude!
         XmlToJsonManager.XmlToJson(container);
+        
     }
 
     private void XmlMessage()

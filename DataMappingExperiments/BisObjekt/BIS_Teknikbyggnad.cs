@@ -27,10 +27,12 @@
     public string ReservelverkTankvolym { get; set; }
     public string ReservelverkBatterimodell { get; set; }
     public string ReserveelverkBatteriInDatum { get; set; }
+    public string Beskrivning { get; set; }
     public string Besktningsklass { get; set; }
+    public string Nivå { get; set; }
     public string Komponent { get; set; }
     public string Placering { get; set; }
-    public string ModellTyp { get; set; }
+    public string KomponentModell { get; set; }
     public string Fabrikat { get; set; }
     public string SerieNummer { get; set; }
     public string Storlek { get; set; }
