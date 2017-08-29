@@ -38,11 +38,15 @@ namespace DataMappingExperiments.DataMapping
       XmlMessage();
 
       //Could reset back to validation
-      //Console.WriteLine("Validating...");
-      //var isValid = ValidateXML();
-      //if (isValid) //Who cares about validation, dude!
+      if (Program.EnableValidation)
+      {
+        Console.WriteLine("Validating...");
+        var isValid = ValidateXML();
+        if (isValid)
+          XmlToJsonManager.XmlToJson(container);
+      }
+      else
         XmlToJsonManager.XmlToJson(container);
-        
     }
 
     private void XmlMessage()
@@ -117,7 +121,7 @@ namespace DataMappingExperiments.DataMapping
     {
       var unitlist = new List<UnitInstances>();
       //The actual values could come from a config file.
-      string[] unitNameString = { "mm", "Procent", "Grader", "st" };
+      string[] unitNameString = { "mm", "Procent", "Grader", "st", "m" };
 
       foreach (var unitName in unitNameString)
       {
@@ -143,7 +147,9 @@ namespace DataMappingExperiments.DataMapping
 
       string[] properties =
       {
-        //"Hello World!", "THIS_IS_A_TEST_PROPERTY"
+        "verkligHöjd", "längd", "bredd", "nominellHöjd", "PlattformBeläggning", "plattformskantMaterial", "harSkyddsräcken",
+        "harPlattformsutrustning", "harLedstråk", "harSkyddzon", "harFotsteg", "typ", "profiltyp", "vikt", "revideradKlassifikation",
+        "tillverkningsprocess", "stålsort", "skarvTyp", "SystemID"
       };
 
       foreach (var propertyName in properties)
@@ -185,27 +191,6 @@ namespace DataMappingExperiments.DataMapping
         }
       };
 
-      var propertyNumericValue = new PropertyValueNumeric
-      {
-        Array = true,
-        generalProperty = new PropertyReference
-        {
-          softType = "Property",
-          instanceRef = "Property"
-        }
-      };
-      var genericDocumentReference = new DokumentReference
-      {
-        softType = "Dokument",
-        instanceRef = "Dokument"
-      };
-
-      var genericProjectReference = new ProjektReference
-      {
-        softType = "Projekt",
-        instanceRef = "Projekt"
-      };
-
       var genericAnläggningsproduktReference = new AnläggningsproduktReference
       {
         softType = "Anläggningsprodukt",
@@ -217,37 +202,17 @@ namespace DataMappingExperiments.DataMapping
         softType = "Anläggningsutrymme",
         instanceRef = "Anläggningsutrymme"
       };
-
-      //Dokument - NOT SOFTTYPE
-      var dokument = new DocumentReference_Anläggningsprodukt_dokument
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericDocumentReference
-      };
-      var dokumentLista = new List<DocumentReference_Anläggningsprodukt_dokument> { dokument };
-
-      //Projekt - NOT SOFTTYPE
-      var projekt = new ProjectReference_Anläggningsprodukt_projekt
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericProjectReference
-      };
-      var projektLista = new List<ProjectReference_Anläggningsprodukt_projekt> { projekt };
       //KEYREFS
 
       //Property
       var propertyInstance = new PropertyEntrydefaultIn
       {
         Array = true,
-        id = "Property",
-        inputSchemaRef = "defaultIn",
+        id = "PropertyEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new PropertydefaultIn
         {
-          id = "Property",
+          id = "PropertydefaultIn",
           name = "Property"
         }
       };
@@ -262,15 +227,16 @@ namespace DataMappingExperiments.DataMapping
       //Property END
 
       //Anläggningsprodukt
+      //TODO: Fortsätt här
       var produktInstance = new AnläggningsproduktEntrydefaultIn
       {
         Array = true,
-        id = "Anläggningsprodukt",
-        inputSchemaRef = "defaultIn",
+        id = "AnläggningsproduktEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new AnläggningsproduktdefaultIn
         {
-          id = "Anläggningsprodukt",
-          versionId = "Anläggningsprodukt",
+          id = "AnläggningsproduktdefaultIn",
+          versionId = "001",
           name = "Anläggningsprodukt",
           notering = "Anläggningsprodukt",
           företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
@@ -299,9 +265,7 @@ namespace DataMappingExperiments.DataMapping
             value = "Anläggningsprodukt",
             startSpecified = false,
             endSpecified = false
-          },
-          dokument = dokumentLista.ToArray(),
-          projekt = projektLista.ToArray()
+          }
         }
       };
       var produktInstanceLista = new List<AnläggningsproduktInstances> { produktInstance };
@@ -314,42 +278,23 @@ namespace DataMappingExperiments.DataMapping
       softtypeList.Add(produkt);
 
       //Bulkvara
-
-      var dokumentReference = new DocumentReference_Bulkvara_dokument
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericDocumentReference
-      };
-
-      var projektReference = new ProjectReference_Bulkvara_projekt
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericProjectReference
-      };
-
       var bulkvaraInstance = new BulkvaraEntrydefaultIn
       {
         Array = true,
-        id = "Bulkvara",
-        inputSchemaRef = "defaultIn",
+        id = "BulkvaraEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new BulkvaradefaultIn
         {
-          id = "Bulkvara",
+          id = "BulkvaradefaultIn",
           name = "Bulkvara",
           notering = "Bulkvara",
-          versionId = "Bulkvara",
+          versionId = "001",
           anläggningsprodukt = new ProductDesignVersionToIndividual_Bulkvara_anläggningsprodukt
           {
             startSpecified = false,
             endSpecified = false,
             product = genericAnläggningsproduktReference
           },
-          dokument = new[] { dokumentReference },
-          projekt = new[] { projektReference },
           företeelsetyp = new ClassificationReference_Bulkvara_företeelsetyp
           {
             startSpecified = false,
@@ -397,146 +342,18 @@ namespace DataMappingExperiments.DataMapping
       softtypeList.Add(bulkvara);
       //Bulkvara end
 
-      //Projekt
-      var projektInstance = new ProjektEntrydefaultIn
-      {
-        Array = true,
-        id = "Projekt",
-        inputSchemaRef = "defaultIn",
-        data = new ProjektdefaultIn
-        {
-          id = "Projekt",
-          name = "Projekt",
-          notering = "Projekt"
-        }
-      };
-
-      var projektInstanceLista = new List<ProjektInstances> { projektInstance };
-      var projektSoftype = new SoftType_Projekt
-      {
-        Array = true,
-        id = "Projekt",
-        instances = projektInstanceLista.ToArray()
-      };
-      softtypeList.Add(projektSoftype);
-      //Projekt end
-
-      //Dokument
-      var projektDokumentReference = new ProjectReference_Dokument_projekt
-      {
-        Array = true,
-        endSpecified = false,
-        startSpecified = false,
-        value = genericProjectReference
-      };
-
-      var dokumentDokumentReference = new DocumentReference_Dokument_dokument
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericDocumentReference
-      };
-
-      var dokumentExternReference = new DocumentReference_Dokument_externReferens
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = new ExternReferensReference
-        {
-          instanceRef = "ExternReferens",
-          softType = "ExternReferens"
-        }
-      };
-
-      var dokumentInstace = new DokumentEntrydefaultIn
-      {
-        Array = true,
-        id = "Dokument",
-        inputSchemaRef = "defaultIn",
-        data = new DokumentdefaultIn
-        {
-          id = "Dokument",
-          name = "Dokument",
-          notering = "Dokument",
-          versionId = "Dokument",
-          stringSet = new PropertyValueSetAssignment_Dokument_stringSet
-          {
-            startSpecified = false,
-            endSpecified = false,
-            value = new[] { propertyStringValue }
-          },
-          numericSet = new PropertyValueSetAssignment_Dokument_numericSet(),
-          företeelsetyp = new ClassificationReference_Dokument_företeelsetyp
-          {
-            startSpecified = false,
-            endSpecified = false,
-            @class = new FTDokumentReference
-            {
-              softType = "FTDokument",
-              instanceRef = "FTDokument"
-            }
-          },
-          datainsamling = new PropertyValueAssignment_Dokument_datainsamling
-          {
-            startSpecified = false,
-            endSpecified = false
-          },
-          ursprung = new PropertyValueAssignment_Dokument_ursprung
-          {
-            startSpecified = false,
-            endSpecified = false
-          },
-          företeelsetillkomst = new PropertyValueAssignment_Dokument_företeelsetillkomst
-          {
-            startSpecified = false,
-            endSpecified = false
-          },
-          projekt = new[] { projektDokumentReference },
-          dokument = new[] { dokumentDokumentReference },
-          externReferens = new[] { dokumentExternReference }
-        }
-      };
-
-      var dokumentInstanceLista = new List<DokumentInstances> { dokumentInstace };
-      var dokumentSoftType = new SoftType_Dokument
-      {
-        Array = true,
-        id = "Dokument",
-        instances = dokumentInstanceLista.ToArray()
-      };
-      softtypeList.Add(dokumentSoftType);
-      //Dokument end
-
       //Styckevara
-      var styckevaraDokumentReference = new DocumentReference_Styckevara_dokument
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericDocumentReference
-      };
-
-      var styckevaraProjektReference = new ProjectReference_Styckevara_projekt
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericProjectReference
-      };
-
       var styckevaraInstance = new StyckevaraEntrydefaultIn
       {
         Array = true,
-        id = "Styckevara",
-        inputSchemaRef = "defaultIn",
+        id = "StyckevaraEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new StyckevaradefaultIn
         {
-          id = "Styckevara",
+          id = "StyckevaradefaultIn",
           name = "Styckevara",
           notering = "Styckevara",
-          versionId = "Styckevara",
+          versionId = "001",
           anläggningsprodukt = new ProductDesignVersionToIndividual_Styckevara_anläggningsprodukt
           {
             startSpecified = false,
@@ -573,9 +390,7 @@ namespace DataMappingExperiments.DataMapping
           {
             startSpecified = false,
             endSpecified = false
-          },
-          dokument = new[] { styckevaraDokumentReference },
-          projekt = new[] { styckevaraProjektReference }
+          }
         }
       };
 
@@ -589,16 +404,15 @@ namespace DataMappingExperiments.DataMapping
       softtypeList.Add(styckevaraSoftType);
       //Styckevara END
 
-      //FTFunktionellAnläggning 
-
+      //FTFunktionellAnläggning
       var FTFunktionellAnläggningInstance = new FTFunktionellAnläggningEntrydefaultIn
       {
         Array = true,
-        id = "FTFunktionellAnläggning",
-        inputSchemaRef = "defaultIn",
+        id = "FTFunktionellAnläggningEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new FTFunktionellAnläggningdefaultIn
         {
-          id = "FTFunktionellAnläggning",
+          id = "FTFunktionellAnläggningdefaultIn",
           name = "FTFunktionellAnläggning"
         }
       };
@@ -615,22 +429,6 @@ namespace DataMappingExperiments.DataMapping
       //FTFunktionellAnläggning END
 
       //Anläggningsspecifikation
-
-      var anläggningsspecifikationDokumentReference = new DocumentReference_Anläggningsspecifikation_dokument
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericDocumentReference
-      };
-
-      var anläggningsspecifikationProjectReference = new ProjectReference_Anläggningsspecifikation_projekt
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericProjectReference
-      };
 
       var anläggningsspecifikationAnläggningsprodukt = new BreakdownElementRealization_Anläggningsspecifikation_anläggningsprodukt
       {
@@ -651,14 +449,14 @@ namespace DataMappingExperiments.DataMapping
       var anläggningsspecifikationInstance = new AnläggningsspecifikationEntrydefaultIn
       {
         Array = true,
-        id = "Anläggningsspecifikation",
-        inputSchemaRef = "defaultIn",
+        id = "AnläggningsspecifikationEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new AnläggningsspecifikationdefaultIn
         {
-          id = "Anläggningsspecifikation",
+          id = "AnläggningsspecifikationdefaultIn",
           name = "Anläggningsspecifikation",
           notering = "Anläggningsspecifikation",
-          versionId = "Anläggningsspecifikation",
+          versionId = "001",
           datainsamling = new PropertyValueAssignment_Anläggningsspecifikation_datainsamling
           {
             startSpecified = false,
@@ -684,8 +482,6 @@ namespace DataMappingExperiments.DataMapping
             startSpecified = false,
             endSpecified = false
           },
-          dokument = new[] { anläggningsspecifikationDokumentReference },
-          projekt = new[] { anläggningsspecifikationProjectReference },
           anläggningsprodukt = new[] { anläggningsspecifikationAnläggningsprodukt },
           anläggningsutrymme = new[] { anläggningsspecifikationAnläggningsutrymme }
         }
@@ -703,31 +499,17 @@ namespace DataMappingExperiments.DataMapping
 
       //KonstateradTillståndsIndivid
 
-      var konstateradTillståndsIndividDocumentReference = new DocumentReference_KonstateradTillståndsindivid_dokument
-      {
-        startSpecified = false,
-        endSpecified = false,
-        value = genericDocumentReference
-      };
-
-      var konstateradTillståndsIndividProjectReference = new ProjectReference_KonstateradTillståndsindivid_projekt
-      {
-        startSpecified = false,
-        endSpecified = false,
-        value = genericProjectReference
-      };
-
       var konstateradTillståndsIndividInstance = new KonstateradTillståndsindividEntrydefaultIn
       {
         Array = true,
-        id = "KonstateradTillståndsindivid",
-        inputSchemaRef = "defaultIn",
+        id = "KonstateradTillståndsindividEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new KonstateradTillståndsindividdefaultIn
         {
-          id = "KonstateradTillståndsindivid",
+          id = "KonstateradTillståndsindividdefaultIn",
           name = "KonstateradTillståndsindivid",
           notering = "KonstateradTillståndsindivid",
-          versionId = "KonstateradTillståndsindivid",
+          versionId = "001",
           datainsamling = new PropertyValueAssignment_KonstateradTillståndsindivid_datainsamling
           {
             startSpecified = false,
@@ -759,9 +541,7 @@ namespace DataMappingExperiments.DataMapping
             endSpecified = false,
             value = new[] { propertyStringValue }
           },
-          numericSet = new PropertyValueSetAssignment_KonstateradTillståndsindivid_numericSet(),
-          dokument = new[] { konstateradTillståndsIndividDocumentReference },
-          projekt = new[] { konstateradTillståndsIndividProjectReference }
+          numericSet = new PropertyValueSetAssignment_KonstateradTillståndsindivid_numericSet()
         }
       };
 
@@ -776,33 +556,17 @@ namespace DataMappingExperiments.DataMapping
       //KonstateradTillståndsIndivid END
 
       //PlaneradIndivid
-      var planeradIndividDokumentReference = new DocumentReference_PlaneradIndivid_dokument
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericDocumentReference
-      };
-
-      var planeradIndividProjectReference = new ProjectReference_PlaneradIndivid_projekt
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericProjectReference
-      };
-
       var planeradIndividInstance = new PlaneradIndividEntrydefaultIn
       {
         Array = true,
-        id = "PlaneradIndivid",
-        inputSchemaRef = "defaultIn",
+        id = "PlaneradIndividEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new PlaneradIndividdefaultIn
         {
-          id = "PlaneradIndivid",
+          id = "PlaneradIndividdefaultIn",
           name = "PlaneradIndivid",
           notering = "PlaneradIndivid",
-          versionId = "PlaneradIndivid",
+          versionId = "001",
           anläggningsprodukt = new ProductDesignVersionToIndividual_PlaneradIndivid_anläggningsprodukt
           {
             startSpecified = false,
@@ -840,9 +604,7 @@ namespace DataMappingExperiments.DataMapping
             endSpecified = false,
             value = new[] { propertyStringValue }
           },
-          numericSet = new PropertyValueSetAssignment_PlaneradIndivid_numericSet(),
-          dokument = new[] { planeradIndividDokumentReference },
-          projekt = new[] { planeradIndividProjectReference }
+          numericSet = new PropertyValueSetAssignment_PlaneradIndivid_numericSet()
         }
       };
       var planeradIndividInstances = new List<PlaneradIndividInstances> { planeradIndividInstance };
@@ -856,33 +618,18 @@ namespace DataMappingExperiments.DataMapping
       //PlaneradIndivid END
 
       //Anläggningsutrymme
-      var anläggningsutrymmeDocumentReference = new DocumentReference_Anläggningsutrymme_dokument
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericDocumentReference
-      };
-
-      var anläggningsutrymmeProjectReference = new ProjectReference_Anläggningsutrymme_projekt
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = genericProjectReference
-      };
 
       var anläggningsutrymmeInstance = new AnläggningsutrymmeEntrydefaultIn
       {
         Array = true,
-        id = "Anläggningsutrymme",
-        inputSchemaRef = "defaultIn",
+        id = "AnläggningsutrymmeEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new AnläggningsutrymmedefaultIn
         {
-          id = "Anläggningsutrymme",
+          id = "AnläggningsutrymmedefaultIn",
           name = "Anläggningsutrymme",
           notering = "Anläggningsutrymme",
-          versionId = "Anläggningsutrymme",
+          versionId = "001",
           datainsamling = new PropertyValueAssignment_Anläggningsutrymme_datainsamling
           {
             startSpecified = false,
@@ -914,9 +661,7 @@ namespace DataMappingExperiments.DataMapping
             endSpecified = false,
             value = new[] { propertyStringValue }
           },
-          numericSet = new PropertyValueSetAssignment_Anläggningsutrymme_numericSet(),
-          dokument = new[] { anläggningsutrymmeDocumentReference },
-          projekt = new[] { anläggningsutrymmeProjectReference }
+          numericSet = new PropertyValueSetAssignment_Anläggningsutrymme_numericSet()
         }
       };
       var anläggningsutrymmeInstances = new List<AnläggningsutrymmeInstances> { anläggningsutrymmeInstance };
@@ -933,11 +678,11 @@ namespace DataMappingExperiments.DataMapping
       var FTGeografiskplaceringsreferensInstance = new FTGeografiskPlaceringsreferensEntrydefaultIn
       {
         Array = true,
-        id = "FTGeografiskPlaceringsreferens",
-        inputSchemaRef = "defaultIn",
+        id = "FTGeografiskPlaceringsreferensEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new FTGeografiskPlaceringsreferensdefaultIn
         {
-          id = "FTGeografiskPlaceringsreferens",
+          id = "FTGeografiskPlaceringsreferensdefaultIn",
           name = "FTGeografiskPlaceringsreferens"
         }
       };
@@ -955,11 +700,11 @@ namespace DataMappingExperiments.DataMapping
       var FTAnläggningsProdukt = new FTAnläggningsproduktEntrydefaultIn
       {
         Array = true,
-        id = "FTAnläggningsprodukt",
-        inputSchemaRef = "defaultIn",
+        id = "FTAnläggningsproduktEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new FTAnläggningsproduktdefaultIn
         {
-          id = "FTAnläggningsprodukt",
+          id = "FTAnläggningsproduktdefaultIn",
           name = "FTAnläggningsprodukt"
         }
       };
@@ -977,11 +722,11 @@ namespace DataMappingExperiments.DataMapping
       var FTStyckevaraInstance = new FTStyckevaraEntrydefaultIn
       {
         Array = true,
-        id = "FTStyckevara",
-        inputSchemaRef = "defaultIn",
+        id = "FTStyckevaraEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new FTStyckevaradefaultIn
         {
-          id = "FTStyckevaraInstances",
+          id = "FTStyckevaradefaultIn",
           name = "FTStyckevaraInstances"
         }
       };
@@ -1000,11 +745,11 @@ namespace DataMappingExperiments.DataMapping
       var FTDokumentInstance = new FTDokumentEntrydefaultIn
       {
         Array = true,
-        id = "FTDokument",
-        inputSchemaRef = "defaultIn",
+        id = "FTDokumentEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new FTDokumentdefaultIn
         {
-          id = "FTDokument",
+          id = "FTDokumentdefaultIn",
           name = "FTDokument"
         }
       };
@@ -1022,11 +767,11 @@ namespace DataMappingExperiments.DataMapping
       var FTKonstateradTillståndsindividInstance = new FTKonstateradTillståndsindividEntrydefaultIn
       {
         Array = true,
-        id = "FTKonstateradTillståndsindivid",
-        inputSchemaRef = "defaultIn",
+        id = "FTKonstateradTillståndsindividEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new FTKonstateradTillståndsindividdefaultIn
         {
-          id = "FTKonstateradTillståndsindivid",
+          id = "FTKonstateradTillståndsindividdefaultIn",
           name = "FTKonstateradTillståndsindivid"
         }
       };
@@ -1044,11 +789,11 @@ namespace DataMappingExperiments.DataMapping
       var FTBulkvaraInstance = new FTBulkvaraEntrydefaultIn
       {
         Array = true,
-        id = "FTBulkvara",
-        inputSchemaRef = "defaultIn",
+        id = "FTBulkvaraEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new FTBulkvaradefaultIn
         {
-          id = "FTBulkvara",
+          id = "FTBulkvaradefaultIn",
           name = "FTBulkvara"
         }
       };
@@ -1066,11 +811,11 @@ namespace DataMappingExperiments.DataMapping
       var FTAnläggningsspecifikationInstance = new FTAnläggningsspecifikationEntrydefaultIn
       {
         Array = true,
-        id = "FTAnläggningsspecifikation",
-        inputSchemaRef = "defaultIn",
+        id = "FTAnläggningsspecifikationEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new FTAnläggningsspecifikationdefaultIn
         {
-          id = "FTAnläggningsspecifikation",
+          id = "FTAnläggningsspecifikationdefaultIn",
           name = "FTAnläggningsspecifikation"
         }
       };
@@ -1088,11 +833,11 @@ namespace DataMappingExperiments.DataMapping
       var externReferensInstance = new ExternReferensEntrydefaultIn
       {
         Array = true,
-        id = "ExternReferens",
-        inputSchemaRef = "defaultIn",
+        id = "ExternReferensEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new ExternReferensdefaultIn
         {
-          id = "ExternReferens",
+          id = "ExternReferensdefaultIn",
           name = "ExternReferens",
           notering = "ExternReferens",
           file = new ExternalFile_ExternReferens_file
@@ -1116,11 +861,11 @@ namespace DataMappingExperiments.DataMapping
       var FTAnläggningsutrymmeInstance = new FTAnläggningsutrymmeEntrydefaultIn
       {
         Array = true,
-        id = "FTAnläggningsutrymme",
-        inputSchemaRef = "defaultIn",
+        id = "FTAnläggningsutrymmeEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new FTAnläggningsutrymmedefaultIn
         {
-          id = "FTAnläggningsutrymme",
+          id = "FTAnläggningsutrymmedefaultIn",
           name = "FTAnläggningsutrymme"
         }
       };
@@ -1139,11 +884,11 @@ namespace DataMappingExperiments.DataMapping
       var FTPlaneradIndividInstance = new FTPlaneradIndividEntrydefaultIn
       {
         Array = true,
-        id = "FTPlaneradIndivid",
-        inputSchemaRef = "defaultIn",
+        id = "FTPlaneradIndividEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
         data = new FTPlaneradIndividdefaultIn
         {
-          id = "FTPlaneradIndivid",
+          id = "FTPlaneradIndividdefaultIn",
           name = "FTPlaneradIndivid"
         }
       };
@@ -1156,26 +901,6 @@ namespace DataMappingExperiments.DataMapping
       };
       softtypeList.Add(FTPlaneradIndivid);
       //FTPlaneradIndivid END
-      var geografiskFTSofttype = new SoftType_FTGeografiskPlaceringsreferens
-      {
-        Array = true,
-        id = "FTGeografiskPlaceringsreferens"
-      };
-      var FTPlattformar = new List<FTGeografiskPlaceringsreferensInstances>();
-      var ftPlattformsInstans = new FTGeografiskPlaceringsreferensEntrydefaultIn
-      {
-        Array = true,
-        id = "FTGeografiskPlaceringsreferens",
-        inputSchemaRef = "defaultIn",
-        data = new FTGeografiskPlaceringsreferensdefaultIn
-        {
-          id = "FTGeografiskPlaceringsreferens",
-          name = "FTGeografiskPlaceringsreferens"
-        }
-      };
-      FTPlattformar.Add(ftPlattformsInstans);
-      geografiskFTSofttype.instances = FTPlattformar.ToArray();
-      softtypeList.Add(geografiskFTSofttype);
 
       return softtypeList;
     }

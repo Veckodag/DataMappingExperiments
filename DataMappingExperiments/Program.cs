@@ -11,10 +11,11 @@ namespace DataMappingExperiments
     public static string xmlOutput = "";
     public static DataContainer SelectedDataContainer;
     internal static bool PringLog = false;
+    internal static bool EnableValidation = false;
     static void Main(string[] args)
     {
       //Set the datatype once here
-      SelectedDataContainer = DataContainerType("räl");
+      SelectedDataContainer = DataContainerType("plattform");
       sourceFile = StringManager.GetFilePathSetting(SelectedDataContainer.Input);
       xmlOutput = StringManager.GetFilePathSetting(SelectedDataContainer.Output);
       StartManager(sourceFile, SelectedDataContainer.MapperType);

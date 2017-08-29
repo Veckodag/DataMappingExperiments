@@ -104,6 +104,7 @@ namespace DataMappingExperiments.DataMapping
       //Does all the real mapping against ANDA resources
       foreach (BIS_Plattform bisPlattform in formattedBisList)
       {
+        var suffix = bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
         //TODO: Figure out what the plattform does
         //var masterPlattform = new Plattform();
 
@@ -111,7 +112,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "AnläggningsproduktEntrydefaultIn" + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter
+          id = "PlattformProduktAnläggningsproduktEntrydefaultIn" + suffix
         };
 
         Plattformprodukt plattformprodukt = new Plattformprodukt
@@ -169,9 +170,8 @@ namespace DataMappingExperiments.DataMapping
             }
           }
         };
-        plattformprodukt.id = plattformprodukt.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
-
-        plattformprodukt = PlattformProduktPropertyRealization(plattformprodukt);
+        plattformprodukt.id = plattformprodukt.name + suffix;
+        //plattformprodukt = PlattformProduktPropertyRealization(plattformprodukt);
         plattformsProduktInstans.data = plattformprodukt;
         plattformsProdukter.Add(plattformsProduktInstans);
 
@@ -179,7 +179,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = "defaultIn",
-          id = "FunktionellAnläggningEntrydefaultIn" + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter
+          id = "PlattformFunktionFunktionellAnläggningEntrydefaultIn" + suffix
         };
 
         var plattformFunktion = new Plattformfunktion
@@ -197,7 +197,7 @@ namespace DataMappingExperiments.DataMapping
         };
         plattformFunktion = SkyddzonOchLedstråk(bisPlattform, plattformFunktion, new Plattformfunktion_harLedstråk(), new Plattformfunktion_harSkyddszon());
 
-        plattformFunktion.id = plattformFunktion.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+        plattformFunktion.id = plattformFunktion.name + suffix;
         plattformFunktion = PlattformFunktionPropertyRealization(plattformFunktion);
         plattformsFunktionInstans.data = plattformFunktion;
         plattformsFunktioner.Add(plattformsFunktionInstans);
@@ -206,19 +206,19 @@ namespace DataMappingExperiments.DataMapping
         var plattformAnläggningsProduktInstans = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,
-          id = "AnläggningsproduktEntrydefaultIn" + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter,
+          id = "PlattformVäderskyddOchSkärmtakAnläggningsproduktEntrydefaultIn" + suffix,
           inputSchemaRef = _InputSchemaRef
         };
 
         var plattformStyckevaraInstans = new StyckevaraEntrydefaultIn
         {
           Array = true,
-          id = "StyckevaraEntrydefaultIn" + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter,
+          id = "PlattformVäderskyddOchSkärmtakStyckevaraEntrydefaultIn" + suffix,
           inputSchemaRef = _InputSchemaRef
         };
 
         var väderskyddProdukt = new Väderskyddprodukt { name = "Väderskyddprodukt", notering = bisPlattform.Notering };
-        väderskyddProdukt.id = väderskyddProdukt.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+        väderskyddProdukt.id = väderskyddProdukt.name + suffix;
         var väderskyddIndivid = new Väderskyddindivid
         {
           startSpecified = false,
@@ -226,10 +226,10 @@ namespace DataMappingExperiments.DataMapping
           name = "Väderskyddindivid",
           notering = bisPlattform.Notering
         };
-        väderskyddIndivid.id = väderskyddIndivid.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+        väderskyddIndivid.id = väderskyddIndivid.name + suffix;
 
         var skärmtakProdukt = new Skärmtakprodukt { name = "Skärmtakprodukt", notering = bisPlattform.Notering };
-        skärmtakProdukt.id = skärmtakProdukt.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+        skärmtakProdukt.id = skärmtakProdukt.name + suffix;
         var skärmtakIndivid = new Skärmtakindivid
         {
           startSpecified = false,
@@ -237,7 +237,7 @@ namespace DataMappingExperiments.DataMapping
           name = "Skärmtakindivid",
           notering = bisPlattform.Notering
         };
-        skärmtakIndivid.id = skärmtakIndivid.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+        skärmtakIndivid.id = skärmtakIndivid.name + suffix;
 
         switch (bisPlattform.Väderskydd)
         {
@@ -256,7 +256,7 @@ namespace DataMappingExperiments.DataMapping
 
         //Skylt
         var skyltProdukt = new Fast_skyltprodukt { name = "Fast_skyltprodukt", notering = bisPlattform.Notering };
-        skyltProdukt.id = skyltProdukt.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+        skyltProdukt.id = skyltProdukt.name + suffix;
         var skyltIndivid = new Fast_skyltindivid
         {
           startSpecified = false,
@@ -264,19 +264,19 @@ namespace DataMappingExperiments.DataMapping
           name = "Fast_skultindivid",
           notering = bisPlattform.Notering
         };
-        skyltIndivid.id = skyltIndivid.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+        skyltIndivid.id = skyltIndivid.name + suffix;
 
         var plattformSkyltAnläggningsProdukt = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,
-          id = "AnläggningsproduktEntrydefaultIn" + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter,
+          id = "PlattformSkyltAnläggningsproduktEntrydefaultIn" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = skyltProdukt
         };
         var plattformSkyltStyckevara = new StyckevaraEntrydefaultIn
         {
           Array = true,
-          id = "StyckevaraEntrydefaultIn" + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter,
+          id = "PlattformSkyltStyckevaraEntrydefaultIn" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = skyltIndivid
         };
@@ -294,21 +294,21 @@ namespace DataMappingExperiments.DataMapping
           stringSet = new KanalisationproduktStringSet(),
           numericSet = new KanalisationproduktNumericSet()
         };
-        kanalisationsProdukt.id = kanalisationsProdukt.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+        kanalisationsProdukt.id = kanalisationsProdukt.name + suffix;
         var kanalisationsIndivid = new Kanalisationindivid { name = "Kanalisationindivid", notering = bisPlattform.Notering };
-        kanalisationsIndivid.id = kanalisationsIndivid.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+        kanalisationsIndivid.id = kanalisationsIndivid.name + suffix;
 
         var plattformKanalisationProdukt = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,
-          id = "AnläggningsproduktEntrydefaultIn" + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter,
+          id = "PlattformKanalisationAnläggningsproduktEntrydefaultIn" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = kanalisationsProdukt
         };
         var plattformKanalisationStyckevara = new StyckevaraEntrydefaultIn
         {
           Array = true,
-          id = "StyckevaraEntrydefaultIn" + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter,
+          id = "PlattformKanalisationStyckevaraEntrydefaultIn" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = kanalisationsIndivid
         };
@@ -326,12 +326,12 @@ namespace DataMappingExperiments.DataMapping
           name = "Plattformindivid",
           notering = bisPlattform.Notering
         };
-        plattformindivid.id = plattformindivid.name + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+        plattformindivid.id = plattformindivid.name + suffix;
 
         var plattformIndividStyckevara = new StyckevaraEntrydefaultIn
         {
           Array = true,
-          id = "StyckevaraEntrydefaultIn" + bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter,
+          id = "PlattformIndividStyckevaraEntrydefaultIn" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = plattformindivid
         };
@@ -541,20 +541,6 @@ namespace DataMappingExperiments.DataMapping
         endSpecified = false
       };
 
-      var projekt = new ProjectReference_Anläggningsprodukt_projekt
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = new ProjektReference
-        {
-          softType = "Projekt",
-          instanceRef = "Projekt"
-        }
-      };
-      var projektLista = new List<ProjectReference_Anläggningsprodukt_projekt> { projekt };
-      plattformprodukt.projekt = projektLista.ToArray();
-
       plattformprodukt.ursprung = new PropertyValueAssignment_Anläggningsprodukt_ursprung
       {
         startSpecified = false,
@@ -572,23 +558,9 @@ namespace DataMappingExperiments.DataMapping
           instanceRef = "FTAnläggningsprodukt"
         }
       };
-      //Dokument
-      var dokument = new DocumentReference_Anläggningsprodukt_dokument()
-      {
-        value = new DokumentReference
-        {
-          softType = "Dokument",
-          instanceRef = "Dokument"
-        },
-        Array = true,
-        startSpecified = false,
-        endSpecified = false
-      };
-      var dokumentLista = new List<DocumentReference_Anläggningsprodukt_dokument> { dokument };
-      plattformprodukt.dokument = dokumentLista.ToArray();
-
       return plattformprodukt;
     }
+    #endregion
     private Plattformprodukt_verkligHöjd SkapaVerkligHöjd(BIS_Plattform bisPlattform, Plattformprodukt_verkligHöjd plattformVerkligHöjd)
     {
       plattformVerkligHöjd.generalProperty = new verkligHöjd
@@ -642,163 +614,6 @@ namespace DataMappingExperiments.DataMapping
       return plattformBeläggning;
     }
 
-    #endregion
-
-    private Plattform PropertyRealization(Plattform plattform)
-    {
-      plattform.arbetsnamn = "Arbetsnamn";
-
-      //Anläggningsprodukt
-      var anläggningsProdukt = new BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsprodukt
-      {
-        value = new AnläggningsproduktReference
-        {
-          softType = "Anläggningsprodukt",
-          instanceRef = "Anläggningsprodukt"
-        },
-        Array = true,
-        startSpecified = false,
-        endSpecified = false
-      };
-      var anläggningsProduktLista =
-        new List<BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsprodukt> { anläggningsProdukt };
-      plattform.anläggningsprodukt = anläggningsProduktLista.ToArray();
-
-      //Anläggningsspecifikation
-      var anläggningsSpec = new BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsspecifikation
-      {
-        value = new AnläggningsspecifikationReference
-        {
-          softType = "Anläggningsspecifikation",
-          instanceRef = "Anläggningsspecifikation"
-        },
-        Array = true,
-        startSpecified = false,
-        endSpecified = false
-      };
-      var anläggningsSpecLista =
-        new List<BreakdownElementRealization_GeografiskPlaceringsreferens_anläggningsspecifikation> { anläggningsSpec };
-      plattform.anläggningsspecifikation = anläggningsSpecLista.ToArray();
-
-      //Bulkvara
-      var bulkvara = new BreakdownElementRealization_GeografiskPlaceringsreferens_bulkvara
-      {
-        value = new BulkvaraReference
-        {
-          softType = "Bulkvara",
-          instanceRef = "Bulkvara"
-        },
-        Array = true,
-        startSpecified = false,
-        endSpecified = false
-      };
-      var bulkvaraLista = new List<BreakdownElementRealization_GeografiskPlaceringsreferens_bulkvara> { bulkvara };
-      plattform.bulkvara = bulkvaraLista.ToArray();
-
-      //Dokument
-      var dokument = new DocumentReference_GeografiskPlaceringsreferens_dokument
-      {
-        value = new DokumentReference
-        {
-          softType = "Dokument",
-          instanceRef = "Dokument"
-        },
-        Array = true,
-        startSpecified = false,
-        endSpecified = false
-      };
-      var dokumentLista = new List<DocumentReference_GeografiskPlaceringsreferens_dokument> { dokument };
-      plattform.dokument = dokumentLista.ToArray();
-
-      //Företeelsetyp
-      var företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
-      {
-        startSpecified = false,
-        endSpecified = false,
-        @class = new FTGeografiskPlaceringsreferensReference
-        {
-          softType = "FTGeografiskPlaceringsreferens",
-          instanceRef = "FTGeografiskPlaceringsreferens"
-        }
-      };
-      plattform.företeelsetyp = företeelsetyp;
-
-      //Konstaterad Tillståndsindivid
-      var tillståndsIndivid = new BreakdownElementRealization_GeografiskPlaceringsreferens_konstateradTillståndsindivid
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = new KonstateradTillståndsindividReference
-        {
-          softType = "KonstateradTillståndsindivid",
-          instanceRef = "KonstateradTillståndsindivid"
-        }
-      };
-      var tillståndsindividLista =
-        new List<BreakdownElementRealization_GeografiskPlaceringsreferens_konstateradTillståndsindivid> { tillståndsIndivid };
-      plattform.konstateradTillståndsindivid = tillståndsindividLista.ToArray();
-
-      //Styckevara
-      var styckevara = new BreakdownElementRealization_GeografiskPlaceringsreferens_styckevara
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = new StyckevaraReference
-        {
-          softType = "Styckevara",
-          instanceRef = "Styckevara"
-        }
-      };
-
-      var styckevaraLista = new List<BreakdownElementRealization_GeografiskPlaceringsreferens_styckevara> { styckevara };
-      plattform.styckevara = styckevaraLista.ToArray();
-
-      //Projekt
-      var projekt = new ProjectReference_GeografiskPlaceringsreferens_projekt
-      {
-        Array = true,
-        startSpecified = false,
-        endSpecified = false,
-        value = new ProjektReference
-        {
-          softType = "Projekt",
-          instanceRef = "Projekt"
-        }
-      };
-
-      var projektLista = new List<ProjectReference_GeografiskPlaceringsreferens_projekt> { projekt };
-      plattform.projekt = projektLista.ToArray();
-
-      //Ursprung
-      plattform.ursprung = new PropertyValueAssignment_GeografiskPlaceringsreferens_ursprung
-      {
-        startSpecified = false,
-        endSpecified = false,
-        value = ""
-      };
-
-      //FöreteelseTillkomst
-      var företeelsetillkomst = new PropertyValueAssignment_GeografiskPlaceringsreferens_företeelsetillkomst
-      {
-        value = "Företeelsetillkomst",
-        startSpecified = false,
-        endSpecified = false
-      };
-      plattform.företeelsetillkomst = företeelsetillkomst;
-
-      //Datainsamling
-      var datainsamling = new PropertyValueAssignment_GeografiskPlaceringsreferens_datainsamling
-      {
-        value = "Datainsamling",
-        startSpecified = false,
-        endSpecified = false
-      };
-      plattform.datainsamling = datainsamling;
-
-      return plattform;
-    }
     /// <summary>
     /// Temporary squashing of the list. Unika plattformar: utan versioner med olika nätanknytningar.
     /// </summary>

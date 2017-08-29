@@ -13,7 +13,7 @@ namespace DataMappingExperiments.DataMapping
       ExtraCounter = 1;
     }
     public sealed override MapperType MapperType { get; set; }
-    private bool _IsComponent = false;
+    //private bool _IsComponent = false;
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject)
     {
       var myTeknikByggnad = (BIS_Teknikbyggnad)bisObject;
@@ -154,6 +154,7 @@ namespace DataMappingExperiments.DataMapping
 
       foreach (BIS_Teknikbyggnad bisTeknikbyggnad in formattedList)
       {
+        var suffix = bisTeknikbyggnad.ObjektTypNummer + bisTeknikbyggnad.ObjektNummer + ExtraCounter;
         var funktionellTeknikbyggnadssystem = new FunktionellTeknikbyggnadssystem
         {
           name = "FunktionellTeknikbyggnadssystem",
@@ -175,14 +176,14 @@ namespace DataMappingExperiments.DataMapping
           }
         };
 
-        funktionellTeknikbyggnadssystem.id = funktionellTeknikbyggnadssystem.name + bisTeknikbyggnad.ObjektTypNummer + bisTeknikbyggnad.ObjektNummer;
+        funktionellTeknikbyggnadssystem.id = funktionellTeknikbyggnadssystem.name + suffix;
         var teknikbyggnad = new Teknikbyggnad
         {
           name = "Teknikbyggnad",
           notering = bisTeknikbyggnad.Notering,
           versionId = "001"
         };
-        teknikbyggnad.id = teknikbyggnad.name + bisTeknikbyggnad.ObjektTypNummer + bisTeknikbyggnad.ObjektNummer;
+        teknikbyggnad.id = teknikbyggnad.name + suffix;
 
         var funktionellTeknikbyggnad = new FunktionellTeknikbyggnad
         {
@@ -204,8 +205,7 @@ namespace DataMappingExperiments.DataMapping
           },
           notering = bisTeknikbyggnad.Notering
         };
-        funktionellTeknikbyggnad.id = funktionellTeknikbyggnad.name + bisTeknikbyggnad.ObjektTypNummer +
-                                      bisTeknikbyggnad.ObjektNummer;
+        funktionellTeknikbyggnad.id = funktionellTeknikbyggnad.name + suffix;
 
         
         var teknikbyggnadProdukt = new TeknikbyggnadProdukt();

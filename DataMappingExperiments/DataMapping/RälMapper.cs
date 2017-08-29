@@ -83,6 +83,7 @@ namespace DataMappingExperiments.DataMapping
       var rälBulkvaror = new List<BulkvaraInstances>();
       foreach (BIS_Räl bisRäl in formattedBisList)
       {
+        var suffix = bisRäl.ObjektTypNummer + bisRäl.ObjektNummer + ExtraCounter;
         //Allt nytt
         var rälSpec = new Rälspecifikation
         {
@@ -106,7 +107,7 @@ namespace DataMappingExperiments.DataMapping
             }
           }
         };
-        rälSpec.id = rälSpec.name + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer + ExtraCounter;
+        rälSpec.id = rälSpec.name + suffix;
 
         var rälprodukt = new Rälprodukt
         {
@@ -143,7 +144,7 @@ namespace DataMappingExperiments.DataMapping
             }
           }
         };
-        rälprodukt.id = rälprodukt.name + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer + ExtraCounter;
+        rälprodukt.id = rälprodukt.name + suffix;
 
         var rälindivid = new Rälindivid
         {
@@ -167,14 +168,14 @@ namespace DataMappingExperiments.DataMapping
             }
           }
         };
-        rälindivid.id = rälindivid.name + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer + ExtraCounter;
+        rälindivid.id = rälindivid.name + suffix;
 
         //ENTRY INSTANCES
         var rälAnläggningsSpecifikation = new AnläggningsspecifikationEntrydefaultIn
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "Anläggningsspecifikation" + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer + ExtraCounter,
+          id = "RälAnläggningsspecifikationEntrydefaultIn" + suffix,
           data = rälSpec
         };
         rälAnläggningsSpecifikationer.Add(rälAnläggningsSpecifikation);
@@ -183,7 +184,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "Anläggningsprodukt" + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer + ExtraCounter,
+          id = "RälAnläggningsproduktEntrydefaultIn" + suffix,
           data = rälprodukt
         };
         rälAnläggningsProdukter.Add(rälAnläggningsProdukt);
@@ -192,7 +193,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "Bulkvara" + bisRäl.ObjektTypNummer + bisRäl.ObjektNummer + ExtraCounter,
+          id = "RälBulkvaraEntrydefaultIn" + suffix,
           data = rälindivid
         };
         rälBulkvaror.Add(rälBulkvara);
@@ -307,7 +308,7 @@ namespace DataMappingExperiments.DataMapping
       rälLängd.JSonMapToPropertyName = _JsonMapToValue;
       rälLängd.Unit = new m
       {
-        softType = _SoftTypeProperty,
+        softType = "Unit",
         instanceRef = "m"
       };
       if (bisRäl.Längd != "?" && bisRäl.Längd != "L")
@@ -359,13 +360,6 @@ namespace DataMappingExperiments.DataMapping
 
       foreach (var objekt in bisList)
         myList.Add(objekt as BIS_Räl);
-
-      //Notering kan vara olika på rader även med samma typnummer, därför måste de konkateneras.
-      //var query = myList.GroupBy(objekt => objekt.ObjektNummer, (typNummer, notering) => new BIS_Räl
-      //{
-      //  ObjektTypNummer = typNummer,
-      //  Notering = string.Join(" ", notering.Select(x => x.Notering).OrderBy(x => x))
-      //});
 
       //Kommer att trycka ihop listan på objektnummer
       return myList.GroupBy(objektDetalj => objektDetalj.ObjektNummer)
