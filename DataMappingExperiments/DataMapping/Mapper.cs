@@ -147,9 +147,13 @@ namespace DataMappingExperiments.DataMapping
 
       string[] properties =
       {
-        "verkligHöjd", "längd", "bredd", "nominellHöjd", "PlattformBeläggning", "plattformskantMaterial", "harSkyddsräcken",
-        "harPlattformsutrustning", "harLedstråk", "harSkyddzon", "harFotsteg", "typ", "profiltyp", "vikt", "revideradKlassifikation",
-        "tillverkningsprocess", "stålsort", "skarvTyp", "SystemID"
+        "verkligHöjd", "längd", "bredd", "nominellHöjd", "PlattformBeläggning", "plattformskantMaterial",
+        "harSkyddsräcken", "harPlattformsutrustning", "harLedstråk", "harSkyddzon", "harFotsteg", "typ",
+        "profiltyp", "vikt", "revideradKlassifikation", "tillverkningsprocess", "stålsort", "skarvTyp", "SystemID",
+        "Anläggningsspecifikation", "Anläggningsutrymme", "Property", "Anläggningsprodukt", "PlaneradIndivid",
+
+        "FTBulkvara", "FTStyckevara", "FTAnläggningsspecifikation","FTKonstateradTillståndsindivid","FTPlaneradIndivid",
+        "FTAnläggningsutrymme", "FTFunktionellAnläggning", "FTAnläggningsprodukt", "FTMaterialkomposit"
       };
 
       foreach (var propertyName in properties)
@@ -212,8 +216,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new PropertydefaultIn
         {
-          id = "PropertydefaultIn",
-          name = "Property"
+          id = "Property" 
         }
       };
       var propertyInstances = new List<PropertyInstances> { propertyInstance };
@@ -227,7 +230,6 @@ namespace DataMappingExperiments.DataMapping
       //Property END
 
       //Anläggningsprodukt
-      //TODO: Fortsätt här
       var produktInstance = new AnläggningsproduktEntrydefaultIn
       {
         Array = true,
@@ -235,34 +237,15 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new AnläggningsproduktdefaultIn
         {
-          id = "AnläggningsproduktdefaultIn",
+          id = "Anläggningsprodukt",
           versionId = "001",
-          name = "Anläggningsprodukt",
-          notering = "Anläggningsprodukt",
           företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
           {
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = "FTAnläggningsprodukt"
+              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
             },
-            startSpecified = false,
-            endSpecified = false
-          },
-          datainsamling = new PropertyValueAssignment_Anläggningsprodukt_datainsamling
-          {
-            startSpecified = false,
-            endSpecified = false
-          },
-          företeelsetillkomst = new PropertyValueAssignment_Anläggningsprodukt_företeelsetillkomst
-          {
-            value = "Anläggningsprodukt",
-            startSpecified = false,
-            endSpecified = false
-          },
-          ursprung = new PropertyValueAssignment_Anläggningsprodukt_ursprung
-          {
-            value = "Anläggningsprodukt",
             startSpecified = false,
             endSpecified = false
           }
@@ -285,9 +268,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new BulkvaradefaultIn
         {
-          id = "BulkvaradefaultIn",
-          name = "Bulkvara",
-          notering = "Bulkvara",
+          id = "Bulkvara",
           versionId = "001",
           anläggningsprodukt = new ProductDesignVersionToIndividual_Bulkvara_anläggningsprodukt
           {
@@ -302,7 +283,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTBulkvaraReference
             {
               instanceRef = "FTBulkvara",
-              softType = "FTBulkvara"
+              softType = "FTBulkvaraEntrydefaultIn"
             }
           },
           datainsamling = new PropertyValueAssignment_Bulkvara_datainsamling
@@ -350,9 +331,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new StyckevaradefaultIn
         {
-          id = "StyckevaradefaultIn",
-          name = "Styckevara",
-          notering = "Styckevara",
+          id = "Styckevara",
           versionId = "001",
           anläggningsprodukt = new ProductDesignVersionToIndividual_Styckevara_anläggningsprodukt
           {
@@ -377,14 +356,18 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = "FTStyckevara"
+              instanceRef = "FTStyckevaraEntrydefaultIn"
             }
           },
           planeradIndivid = new ItemVersionReference_Styckevara_planeradIndivid
           {
             startSpecified = false,
             endSpecified = false,
-
+            value = new PlaneradIndividReference
+            {
+              softType = "PlaneradIndivid",
+              instanceRef = "PlaneradIndivid"
+            }
           },
           ursprung = new PropertyValueAssignment_Styckevara_ursprung
           {
@@ -403,33 +386,7 @@ namespace DataMappingExperiments.DataMapping
       };
       softtypeList.Add(styckevaraSoftType);
       //Styckevara END
-
-      //FTFunktionellAnläggning
-      var FTFunktionellAnläggningInstance = new FTFunktionellAnläggningEntrydefaultIn
-      {
-        Array = true,
-        id = "FTFunktionellAnläggningEntrydefaultIn",
-        inputSchemaRef = _InputSchemaRef,
-        data = new FTFunktionellAnläggningdefaultIn
-        {
-          id = "FTFunktionellAnläggningdefaultIn",
-          name = "FTFunktionellAnläggning"
-        }
-      };
-
-      var FTFunktionellAnläggningInstances = new List<FTFunktionellAnläggningInstances> { FTFunktionellAnläggningInstance };
-      var FTFunktionellAnläggningSoftType = new SoftType_FTFunktionellAnläggning
-      {
-        Array = true,
-        id = "FTFunktionellAnläggning",
-        instances = FTFunktionellAnläggningInstances.ToArray()
-      };
-      softtypeList.Add(FTFunktionellAnläggningSoftType);
-
-      //FTFunktionellAnläggning END
-
       //Anläggningsspecifikation
-
       var anläggningsspecifikationAnläggningsprodukt = new BreakdownElementRealization_Anläggningsspecifikation_anläggningsprodukt
       {
         Array = true,
@@ -453,9 +410,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new AnläggningsspecifikationdefaultIn
         {
-          id = "AnläggningsspecifikationdefaultIn",
-          name = "Anläggningsspecifikation",
-          notering = "Anläggningsspecifikation",
+          id = "Anläggningsspecifikation",
           versionId = "001",
           datainsamling = new PropertyValueAssignment_Anläggningsspecifikation_datainsamling
           {
@@ -474,7 +429,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsspecifikationReference
             {
               softType = "FTAnläggningsspecifikation",
-              instanceRef = "FTAnläggningsspecifikation"
+              instanceRef = "FTAnläggningsspecifikationEntrydefaultIn"
             }
           },
           ursprung = new PropertyValueAssignment_Anläggningsspecifikation_ursprung
@@ -498,7 +453,6 @@ namespace DataMappingExperiments.DataMapping
       //Anläggningsspecifikation END
 
       //KonstateradTillståndsIndivid
-
       var konstateradTillståndsIndividInstance = new KonstateradTillståndsindividEntrydefaultIn
       {
         Array = true,
@@ -506,9 +460,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new KonstateradTillståndsindividdefaultIn
         {
-          id = "KonstateradTillståndsindividdefaultIn",
-          name = "KonstateradTillståndsindivid",
-          notering = "KonstateradTillståndsindivid",
+          id = "KonstateradTillståndsindivid",
           versionId = "001",
           datainsamling = new PropertyValueAssignment_KonstateradTillståndsindivid_datainsamling
           {
@@ -527,7 +479,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTKonstateradTillståndsindividReference
             {
               softType = "FTKonstateradTillståndsindivid",
-              instanceRef = "FTKonstateradTillståndsindivid"
+              instanceRef = "FTKonstateradTillståndsindividEntrydefaultIn"
             }
           },
           ursprung = new PropertyValueAssignment_KonstateradTillståndsindivid_ursprung
@@ -563,9 +515,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new PlaneradIndividdefaultIn
         {
-          id = "PlaneradIndividdefaultIn",
-          name = "PlaneradIndivid",
-          notering = "PlaneradIndivid",
+          id = "PlaneradIndivid",
           versionId = "001",
           anläggningsprodukt = new ProductDesignVersionToIndividual_PlaneradIndivid_anläggningsprodukt
           {
@@ -590,7 +540,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTPlaneradIndividReference
             {
               softType = "FTPlaneradIndivid",
-              instanceRef = "FTPlaneradIndivid"
+              instanceRef = "FTPlaneradIndividEntrydefaultIn"
             }
           },
           ursprung = new PropertyValueAssignment_PlaneradIndivid_ursprung
@@ -626,9 +576,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new AnläggningsutrymmedefaultIn
         {
-          id = "AnläggningsutrymmedefaultIn",
-          name = "Anläggningsutrymme",
-          notering = "Anläggningsutrymme",
+          id = "Anläggningsutrymme",
           versionId = "001",
           datainsamling = new PropertyValueAssignment_Anläggningsutrymme_datainsamling
           {
@@ -647,7 +595,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsutrymmeReference
             {
               softType = "FTAnläggningsutrymme",
-              instanceRef = "FTAnläggningsutrymme"
+              instanceRef = "FTAnläggningsutrymmeEntrydefaultIn"
             }
           },
           ursprung = new PropertyValueAssignment_Anläggningsutrymme_ursprung
@@ -674,6 +622,54 @@ namespace DataMappingExperiments.DataMapping
       softtypeList.Add(anläggningsutrymmeSoftType);
       //Anläggningsutrymme END
 
+      //ExternReferens
+      var externReferensInstance = new ExternReferensEntrydefaultIn
+      {
+        Array = true,
+        id = "ExternReferensEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
+        data = new ExternReferensdefaultIn
+        {
+          id = "ExternReferens",
+          file = new ExternalFile_ExternReferens_file
+          {
+            lokalisering = "ExternReferens"
+          }
+        }
+      };
+      var externReferensInstances = new List<ExternReferensInstances> { externReferensInstance };
+      var externReferensSoftType = new SoftType_ExternReferens
+      {
+        Array = true,
+        id = "ExternReferens",
+        instances = externReferensInstances.ToArray()
+      };
+      softtypeList.Add(externReferensSoftType);
+      //ExternReferens END
+
+      //FTFunktionellAnläggning
+      var FTFunktionellAnläggningInstance = new FTFunktionellAnläggningEntrydefaultIn
+      {
+        Array = true,
+        id = "FTFunktionellAnläggningEntrydefaultIn",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTFunktionellAnläggningdefaultIn
+        {
+          id = Program.SelectedDataContainer.Name
+        }
+      };
+
+      var FTFunktionellAnläggningInstances = new List<FTFunktionellAnläggningInstances> { FTFunktionellAnläggningInstance };
+      var FTFunktionellAnläggningSoftType = new SoftType_FTFunktionellAnläggning
+      {
+        Array = true,
+        id = "FTFunktionellAnläggning",
+        instances = FTFunktionellAnläggningInstances.ToArray()
+      };
+      softtypeList.Add(FTFunktionellAnläggningSoftType);
+
+      //FTFunktionellAnläggning END
+
       //FTGeografiskPlaceringsReferens
       var FTGeografiskplaceringsreferensInstance = new FTGeografiskPlaceringsreferensEntrydefaultIn
       {
@@ -682,8 +678,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new FTGeografiskPlaceringsreferensdefaultIn
         {
-          id = "FTGeografiskPlaceringsreferensdefaultIn",
-          name = "FTGeografiskPlaceringsreferens"
+          id = Program.SelectedDataContainer.Name
         }
       };
       var FTGeografiskPlaceringsreferensInstances = new List<FTGeografiskPlaceringsreferensInstances> { FTGeografiskplaceringsreferensInstance };
@@ -704,8 +699,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new FTAnläggningsproduktdefaultIn
         {
-          id = "FTAnläggningsproduktdefaultIn",
-          name = "FTAnläggningsprodukt"
+          id = Program.SelectedDataContainer.Name
         }
       };
       var FTAnläggningsproduktInstances = new List<FTAnläggningsproduktInstances> { FTAnläggningsProdukt };
@@ -726,8 +720,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new FTStyckevaradefaultIn
         {
-          id = "FTStyckevaradefaultIn",
-          name = "FTStyckevaraInstances"
+          id = Program.SelectedDataContainer.Name
         }
       };
 
@@ -749,8 +742,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new FTDokumentdefaultIn
         {
-          id = "FTDokumentdefaultIn",
-          name = "FTDokument"
+          id = Program.SelectedDataContainer.Name
         }
       };
       var FTDokumentInstances = new List<FTDokumentInstances> { FTDokumentInstance };
@@ -771,8 +763,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new FTKonstateradTillståndsindividdefaultIn
         {
-          id = "FTKonstateradTillståndsindividdefaultIn",
-          name = "FTKonstateradTillståndsindivid"
+          id = Program.SelectedDataContainer.Name
         }
       };
       var FTKonstateradTillståndsindividInstances = new List<FTKonstateradTillståndsindividInstances> { FTKonstateradTillståndsindividInstance };
@@ -793,8 +784,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new FTBulkvaradefaultIn
         {
-          id = "FTBulkvaradefaultIn",
-          name = "FTBulkvara"
+          id = Program.SelectedDataContainer.Name
         }
       };
       var FTBulkvaraInstances = new List<FTBulkvaraInstances> { FTBulkvaraInstance };
@@ -815,8 +805,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new FTAnläggningsspecifikationdefaultIn
         {
-          id = "FTAnläggningsspecifikationdefaultIn",
-          name = "FTAnläggningsspecifikation"
+          id = Program.SelectedDataContainer.Name
         }
       };
       var FTAnläggningsspecifikationInstances = new List<FTAnläggningsspecifikationInstances> { FTAnläggningsspecifikationInstance };
@@ -829,34 +818,6 @@ namespace DataMappingExperiments.DataMapping
       softtypeList.Add(FTAnläggningsspecifikationSoftType);
       //FTAnläggningsspecifikation END
 
-      //ExternReferens
-      var externReferensInstance = new ExternReferensEntrydefaultIn
-      {
-        Array = true,
-        id = "ExternReferensEntrydefaultIn",
-        inputSchemaRef = _InputSchemaRef,
-        data = new ExternReferensdefaultIn
-        {
-          id = "ExternReferensdefaultIn",
-          name = "ExternReferens",
-          notering = "ExternReferens",
-          file = new ExternalFile_ExternReferens_file
-          {
-            name = "ExternReferens",
-            lokalisering = "ExternReferens"
-          }
-        }
-      };
-      var externReferensInstances = new List<ExternReferensInstances> { externReferensInstance };
-      var externReferensSoftType = new SoftType_ExternReferens
-      {
-        Array = true,
-        id = "ExternReferens",
-        instances = externReferensInstances.ToArray()
-      };
-      softtypeList.Add(externReferensSoftType);
-      //ExternReferens END
-
       //FTAnläggningsutrymme
       var FTAnläggningsutrymmeInstance = new FTAnläggningsutrymmeEntrydefaultIn
       {
@@ -865,8 +826,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new FTAnläggningsutrymmedefaultIn
         {
-          id = "FTAnläggningsutrymmedefaultIn",
-          name = "FTAnläggningsutrymme"
+          id = Program.SelectedDataContainer.Name
         }
       };
       var FTAnläggningsutrymmeInstances = new List<FTAnläggningsutrymmeInstances> { FTAnläggningsutrymmeInstance };
@@ -888,8 +848,7 @@ namespace DataMappingExperiments.DataMapping
         inputSchemaRef = _InputSchemaRef,
         data = new FTPlaneradIndividdefaultIn
         {
-          id = "FTPlaneradIndividdefaultIn",
-          name = "FTPlaneradIndivid"
+          id = Program.SelectedDataContainer.Name
         }
       };
       var FTPlaneradIndividInstances = new List<FTPlaneradIndividInstances> { FTPlaneradIndividInstance };

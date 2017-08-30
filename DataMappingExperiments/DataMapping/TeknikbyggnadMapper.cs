@@ -173,6 +173,16 @@ namespace DataMappingExperiments.DataMapping
               Array = true,
               value = bisTeknikbyggnad.Beteckning
             }
+          },
+          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTFunktionellAnläggningReference
+            {
+              softType = "FTFunktionellAnläggning",
+              instanceRef = "FTFunktionellAnläggning"
+            }
           }
         };
 
@@ -188,6 +198,7 @@ namespace DataMappingExperiments.DataMapping
         var funktionellTeknikbyggnad = new FunktionellTeknikbyggnad
         {
           name = "FunktionellTeknikbyggnad",
+          notering = bisTeknikbyggnad.Notering,
           numericSet = new FunktionellTeknikbyggnadNumericSet(),
           stringSet = new FunktionellTeknikbyggnadStringSet
           {
@@ -203,14 +214,101 @@ namespace DataMappingExperiments.DataMapping
               value = bisTeknikbyggnad.Typ
             }
           },
-          notering = bisTeknikbyggnad.Notering
+          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTFunktionellAnläggningReference
+            {
+              softType = "FTFunktionellAnläggning",
+              instanceRef = "FTFunktionellAnläggning"
+            }
+          }
         };
         funktionellTeknikbyggnad.id = funktionellTeknikbyggnad.name + suffix;
 
-        
-        var teknikbyggnadProdukt = new TeknikbyggnadProdukt();
-        var fasadbeklädnadMaterial = new FasadbeklädnadMaterial();
-        var funktionellÅskskyddsystem = new FunktionellÅskskyddssystem();
+        var teknikbyggnadProdukt = new TeknikbyggnadProdukt
+        {
+          name = "TeknikbyggnadProdukt",
+          notering = bisTeknikbyggnad.Notering,
+          stringSet = new TeknikbyggnadProduktStringSet
+          {
+            typ = new TeknikbyggnadProdukt_typ
+            {
+              generalProperty = new typ
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "typ"
+              },
+              Array = true,
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = bisTeknikbyggnad.Typ
+            }
+          },
+          numericSet = new TeknikbyggnadProduktNumericSet(),
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "FTAnläggningsprodukt"
+            }
+          }
+        };
+        teknikbyggnadProdukt.id = teknikbyggnadProdukt.name + suffix;
+
+        //TODO: Fortsätt här
+        var fasadbeklädnadMaterial = new FasadbeklädnadMaterial
+        {
+          name = "FasadbeklädnadMaterial",
+          notering = bisTeknikbyggnad.Notering,
+          stringSet = new FasadbeklädnadMaterialStringSet
+          {
+            typ = new FasadbeklädnadMaterial_typ
+            {
+              generalProperty = new typ
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "typ"
+              }
+            }
+          },
+          numericSet = new FasadbeklädnadMaterialNumericSet(),
+          företeelsetyp = new ClassificationReference_Materialkomposit_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTMaterialkompositReference
+            {
+              softType = "FTMaterialkomposit",
+              instanceRef = "FTMaterialkomposit"
+            }
+          }
+        };
+        fasadbeklädnadMaterial.id = fasadbeklädnadMaterial.name + suffix;
+
+        var funktionellÅskskyddsystem = new FunktionellÅskskyddssystem
+        {
+          name = "FunktionellÅsksjyddssystem",
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTFunktionellAnläggningReference
+            {
+              softType = "FTFunktionellAnläggning",
+              instanceRef = "FTFunktionellAnläggning"
+            }
+          },
+          numericSet = new FunktionellÅskskyddssystemNumericSet(),
+          stringSet = new FunktionellÅskskyddssystemStringSet(),
+          
+        };
+        funktionellÅskskyddsystem.id = funktionellÅskskyddsystem.name + suffix;
+
         var funktionellElkraftförsörjning = new FunktionellElkraftförsörjning();
         var elkraftförsörjningSpecifikation = new ElkraftförsörjningSpecifikation();
         var elkraftförsörjningsProdukt = new ElkraftförsörjningProdukt();

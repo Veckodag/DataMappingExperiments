@@ -42,14 +42,14 @@ namespace DataMappingExperiments
       switch (typeName)
       {
         case "plattform":
-          return new DataContainer { Input = "PlattformInput", Output = "PlattformOutput", Json = "PlattformJson", MapperType = MapperType.Plattform };
+          return new DataContainer { Input = "PlattformInput", Output = "PlattformOutput", Json = "PlattformJson", MapperType = MapperType.Plattform, Name = "Plattform"};
         case "räl":
-          return new DataContainer { Input = "RälInput", Output = "RälOutput", Json = "RälJson", MapperType = MapperType.Räl };
+          return new DataContainer { Input = "RälInput", Output = "RälOutput", Json = "RälJson", MapperType = MapperType.Räl, Name = "Räl"};
         case "teknikbyggnad":
-          return new DataContainer { Input = "TeknikbyggnadInput", Output = "TeknikbyggnadOutput", Json = "TeknikbyggnadJson", MapperType = MapperType.Teknikbyggnad };
+          return new DataContainer { Input = "TeknikbyggnadInput", Output = "TeknikbyggnadOutput", Json = "TeknikbyggnadJson", MapperType = MapperType.Teknikbyggnad, Name = "Teknikbyggnad"};
         //The cases below are not fully implemented yet
         case "spårspärr":
-          return new DataContainer { Input = "SpårspärrInput", Output = "SpårspärrOutput", Json = "SpårspärrJson", MapperType = MapperType.Spårspärr };
+          return new DataContainer { Input = "SpårspärrInput", Output = "SpårspärrOutput", Json = "SpårspärrJson", MapperType = MapperType.Spårspärr, Name = "Spårspärr"};
         default:
           throw new ArgumentNullException();
       }
@@ -60,6 +60,7 @@ namespace DataMappingExperiments
       public string Input { get; set; }
       public string Output { get; set; }
       public string Json { get; set; }
+      public string Name { get; set; }
       public MapperType MapperType { get; set; }
     }
   }

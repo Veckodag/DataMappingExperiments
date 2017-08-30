@@ -105,7 +105,6 @@ namespace DataMappingExperiments.DataMapping
       foreach (BIS_Plattform bisPlattform in formattedBisList)
       {
         var suffix = bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
-        //TODO: Figure out what the plattform does
         //var masterPlattform = new Plattform();
 
         var plattformsProduktInstans = new AnläggningsproduktEntrydefaultIn
@@ -168,17 +167,26 @@ namespace DataMappingExperiments.DataMapping
                 softType = "Unit"
               }
             }
+          },
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+            }
           }
         };
         plattformprodukt.id = plattformprodukt.name + suffix;
-        //plattformprodukt = PlattformProduktPropertyRealization(plattformprodukt);
         plattformsProduktInstans.data = plattformprodukt;
         plattformsProdukter.Add(plattformsProduktInstans);
 
         var plattformsFunktionInstans = new FunktionellAnläggningEntrydefaultIn
         {
           Array = true,
-          inputSchemaRef = "defaultIn",
+          inputSchemaRef = _InputSchemaRef,
           id = "PlattformFunktionFunktionellAnläggningEntrydefaultIn" + suffix
         };
 
@@ -193,12 +201,19 @@ namespace DataMappingExperiments.DataMapping
             harPlattformsutrustning = SkapaPlattformUtrustning(bisPlattform, new Plattformfunktion_harPlattformsutrustning()),
             harSkyddsräcken = SkapaPlattformSkyddsräcken(bisPlattform, new Plattformfunktion_harSkyddsräcken())
           },
-          numericSet = new PlattformfunktionNumericSet()
+          numericSet = new PlattformfunktionNumericSet(),
+          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+          {
+            @class = new FTFunktionellAnläggningReference
+            {
+              softType = "FTFunktionellAnläggning",
+              instanceRef = "FTFunktionellAnläggningEntrydefaultIn"
+            }
+          }
         };
         plattformFunktion = SkyddzonOchLedstråk(bisPlattform, plattformFunktion, new Plattformfunktion_harLedstråk(), new Plattformfunktion_harSkyddszon());
 
         plattformFunktion.id = plattformFunktion.name + suffix;
-        plattformFunktion = PlattformFunktionPropertyRealization(plattformFunktion);
         plattformsFunktionInstans.data = plattformFunktion;
         plattformsFunktioner.Add(plattformsFunktionInstans);
 
@@ -217,25 +232,83 @@ namespace DataMappingExperiments.DataMapping
           inputSchemaRef = _InputSchemaRef
         };
 
-        var väderskyddProdukt = new Väderskyddprodukt { name = "Väderskyddprodukt", notering = bisPlattform.Notering };
+        var väderskyddProdukt = new Väderskyddprodukt
+        {
+          name = "Väderskyddprodukt",
+          notering = bisPlattform.Notering,
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+            }
+          }
+        };
         väderskyddProdukt.id = väderskyddProdukt.name + suffix;
         var väderskyddIndivid = new Väderskyddindivid
         {
           startSpecified = false,
           endSpecified = false,
           name = "Väderskyddindivid",
-          notering = bisPlattform.Notering
+          notering = bisPlattform.Notering,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "FTStyckevaraEntrydefaultIn"
+            }
+          },
+          planeradIndivid = new ItemVersionReference_Styckevara_planeradIndivid
+          {
+            startSpecified = false,
+            endSpecified = false,
+            value = new PlaneradIndividReference
+            {
+              softType = "PlaneradIndivid",
+              instanceRef = "PlaneradIndividEntrydefaultIn"
+            }
+          }
         };
         väderskyddIndivid.id = väderskyddIndivid.name + suffix;
 
-        var skärmtakProdukt = new Skärmtakprodukt { name = "Skärmtakprodukt", notering = bisPlattform.Notering };
+        var skärmtakProdukt = new Skärmtakprodukt
+        {
+          name = "Skärmtakprodukt",
+          notering = bisPlattform.Notering,
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+            }
+          }
+        };
         skärmtakProdukt.id = skärmtakProdukt.name + suffix;
         var skärmtakIndivid = new Skärmtakindivid
         {
           startSpecified = false,
           endSpecified = false,
           name = "Skärmtakindivid",
-          notering = bisPlattform.Notering
+          notering = bisPlattform.Notering,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "FTStyckevaraEntrydefaultIn"
+            }
+          }
         };
         skärmtakIndivid.id = skärmtakIndivid.name + suffix;
 
@@ -255,14 +328,38 @@ namespace DataMappingExperiments.DataMapping
         //End Väderskydd
 
         //Skylt
-        var skyltProdukt = new Fast_skyltprodukt { name = "Fast_skyltprodukt", notering = bisPlattform.Notering };
+        var skyltProdukt = new Fast_skyltprodukt
+        {
+          name = "Fast_skyltprodukt",
+          notering = bisPlattform.Notering,
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+            }
+          }
+        };
         skyltProdukt.id = skyltProdukt.name + suffix;
         var skyltIndivid = new Fast_skyltindivid
         {
           startSpecified = false,
           endSpecified = false,
           name = "Fast_skultindivid",
-          notering = bisPlattform.Notering
+          notering = bisPlattform.Notering,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "FTStyckevaraEntrydefaultIn"
+            }
+          }
         };
         skyltIndivid.id = skyltIndivid.name + suffix;
 
@@ -292,10 +389,36 @@ namespace DataMappingExperiments.DataMapping
           name = "Kanalisationprodukt",
           notering = bisPlattform.Notering,
           stringSet = new KanalisationproduktStringSet(),
-          numericSet = new KanalisationproduktNumericSet()
+          numericSet = new KanalisationproduktNumericSet(),
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+            }
+          }
         };
         kanalisationsProdukt.id = kanalisationsProdukt.name + suffix;
-        var kanalisationsIndivid = new Kanalisationindivid { name = "Kanalisationindivid", notering = bisPlattform.Notering };
+        var kanalisationsIndivid = new Kanalisationindivid
+        {
+          name = "Kanalisationindivid",
+          notering = bisPlattform.Notering,
+          startSpecified = false,
+          endSpecified = false,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "FTStyckevaraEntrydefaultIn"
+            }
+          }
+        };
         kanalisationsIndivid.id = kanalisationsIndivid.name + suffix;
 
         var plattformKanalisationProdukt = new AnläggningsproduktEntrydefaultIn
@@ -324,7 +447,17 @@ namespace DataMappingExperiments.DataMapping
           startSpecified = false,
           endSpecified = false,
           name = "Plattformindivid",
-          notering = bisPlattform.Notering
+          notering = bisPlattform.Notering,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "FTStyckevaraEntrydefaultIn"
+            }
+          }
         };
         plattformindivid.id = plattformindivid.name + suffix;
 
@@ -341,6 +474,22 @@ namespace DataMappingExperiments.DataMapping
       }
       //Real Test
       //Add new softypes to containerSoftTypes
+      //plattformsProdukter.RemoveRange(1, plattformsProdukter.Count - 1);
+      //plattformsFunktioner.RemoveRange(1, plattformsFunktioner.Count - 1);
+      //plattformVäderskydd.RemoveRange(1, plattformVäderskydd.Count - 1);
+      //plattformStyckevaror.RemoveRange(1, plattformStyckevaror.Count - 1);
+      //if (plattformSkylt.Any() && plattformSkyltIndivid.Any())
+      //{
+      //  plattformSkylt.RemoveRange(1, plattformSkylt.Count - 1);
+      //  plattformSkyltIndivid.RemoveRange(1, plattformSkyltIndivid.Count - 1);
+      //}
+      //if (plattformKanalisation.Any() && plattformKanalisationIndivid.Any())
+      //{
+      //  plattformKanalisation.RemoveRange(1, plattformKanalisation.Count - 1);
+      //  plattformKanalisationIndivid.RemoveRange(1, plattformKanalisationIndivid.Count - 1);
+      //}
+      //plattformIndivider.RemoveRange(1, plattformIndivider.Count - 1);
+
 
       var anläggningsProduktSoftType = new SoftType_Anläggningsprodukt
       {
@@ -396,6 +545,7 @@ namespace DataMappingExperiments.DataMapping
         id = "Styckevara",
         instances = plattformIndivider.ToArray()
       };
+
       containerSoftTypes.Add(anläggningsProduktSoftType);
       containerSoftTypes.Add(funktionellAnläggningsSoftType);
       containerSoftTypes.Add(anläggningsProduktSoftTypeSkydd);
@@ -414,41 +564,6 @@ namespace DataMappingExperiments.DataMapping
       container.softTypes = containerSoftTypes.ToArray();
       return container;
     }
-
-    private Plattformfunktion PlattformFunktionPropertyRealization(Plattformfunktion plattformFunktion)
-    {
-      var anläggningsSpec = new BreakdownElementRealization_FunktionellAnläggning_anläggningsspecifikation
-      {
-        value = new AnläggningsspecifikationReference
-        {
-          softType = _SoftTypeProperty,
-          instanceRef = "Anläggningsspecifikation"
-        },
-        Array = true,
-        startSpecified = false,
-        endSpecified = false
-      };
-      var anläggningsSpecLista =
-        new List<BreakdownElementRealization_FunktionellAnläggning_anläggningsspecifikation> { anläggningsSpec };
-      plattformFunktion.anläggningsspecifikation = anläggningsSpecLista.ToArray();
-
-      var anläggningsUtrymme = new BreakdownElementRealization_FunktionellAnläggning_anläggningsutrymme
-      {
-        value = new AnläggningsutrymmeReference
-        {
-          softType = _SoftTypeProperty,
-          instanceRef = "Anläggningsutrymme"
-        },
-        Array = true,
-        startSpecified = false,
-        endSpecified = false
-      };
-      var anläggningsUtrymmeLista = new List<BreakdownElementRealization_FunktionellAnläggning_anläggningsutrymme> { anläggningsUtrymme };
-      plattformFunktion.anläggningsutrymme = anläggningsUtrymmeLista.ToArray();
-
-      return plattformFunktion;
-    }
-
     private Plattformfunktion_harSkyddsräcken SkapaPlattformSkyddsräcken(BIS_Plattform bisPlattform, Plattformfunktion_harSkyddsräcken plattformSkyddsräcken)
     {
       plattformSkyddsräcken.generalProperty = new harSkyddsräcken
@@ -523,42 +638,51 @@ namespace DataMappingExperiments.DataMapping
       return plattformFotsteg;
     }
 
-    #region PlattformproduktPropertyCreation
+    #region PropertyRealization SHOULD NOT BE USED
     private Plattformprodukt PlattformProduktPropertyRealization(Plattformprodukt plattformprodukt)
     {
-      //Datainsamling
-      plattformprodukt.datainsamling = new PropertyValueAssignment_Anläggningsprodukt_datainsamling
+      plattformprodukt.datainsamling = new PropertyValueAssignment_Anläggningsprodukt_datainsamling();
+      plattformprodukt.företeelsetillkomst = new PropertyValueAssignment_Anläggningsprodukt_företeelsetillkomst();
+      plattformprodukt.ursprung = new PropertyValueAssignment_Anläggningsprodukt_ursprung();
+      
+      return plattformprodukt;
+    }
+    private Plattformfunktion PlattformFunktionPropertyRealization(Plattformfunktion plattformFunktion)
+    {
+      var anläggningsSpec = new BreakdownElementRealization_FunktionellAnläggning_anläggningsspecifikation
       {
-        startSpecified = false,
-        endSpecified = false,
-        value = "Datainsamling"
-      };
-      //Företeelsetillkomst
-      plattformprodukt.företeelsetillkomst = new PropertyValueAssignment_Anläggningsprodukt_företeelsetillkomst
-      {
-        value = "Företeelsetillkomst",
+        value = new AnläggningsspecifikationReference
+        {
+          softType = "Anläggningsspecifikation",
+          instanceRef = "Anläggningsspecifikation"
+        },
+        Array = true,
         startSpecified = false,
         endSpecified = false
       };
+      var anläggningsSpecLista =
+        new List<BreakdownElementRealization_FunktionellAnläggning_anläggningsspecifikation> { anläggningsSpec };
+      plattformFunktion.anläggningsspecifikation = anläggningsSpecLista.ToArray();
 
-      plattformprodukt.ursprung = new PropertyValueAssignment_Anläggningsprodukt_ursprung
+      var anläggningsUtrymme = new BreakdownElementRealization_FunktionellAnläggning_anläggningsutrymme
       {
-        startSpecified = false,
-        endSpecified = false,
-        value = "Ursprung"
-      };
-
-      plattformprodukt.företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
-      {
-        startSpecified = false,
-        endSpecified = false,
-        @class = new FTAnläggningsproduktReference
+        value = new AnläggningsutrymmeReference
         {
-          softType = "FTAnläggningsprodukt",
-          instanceRef = "FTAnläggningsprodukt"
-        }
+          softType = "Anläggningsutrymme",
+          instanceRef = "Anläggningsutrymme"
+        },
+        Array = true,
+        startSpecified = false,
+        endSpecified = false
       };
-      return plattformprodukt;
+      var anläggningsUtrymmeLista = new List<BreakdownElementRealization_FunktionellAnläggning_anläggningsutrymme> { anläggningsUtrymme };
+      plattformFunktion.anläggningsutrymme = anläggningsUtrymmeLista.ToArray();
+
+      plattformFunktion.datainsamling = new PropertyValueAssignment_FunktionellAnläggning_datainsamling();
+      plattformFunktion.företeelsetillkomst = new PropertyValueAssignment_FunktionellAnläggning_företeelsetillkomst();
+      plattformFunktion.ursprung = new PropertyValueAssignment_FunktionellAnläggning_ursprung();
+
+      return plattformFunktion;
     }
     #endregion
     private Plattformprodukt_verkligHöjd SkapaVerkligHöjd(BIS_Plattform bisPlattform, Plattformprodukt_verkligHöjd plattformVerkligHöjd)

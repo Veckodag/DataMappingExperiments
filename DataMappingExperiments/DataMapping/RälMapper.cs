@@ -89,7 +89,6 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "Rälspecifikation",
           notering = bisRäl.Notering,
-          versionId = "001",
           numericSet = new RälspecifikationNumericSet(),
           stringSet = new RälspecifikationStringSet
           {
@@ -105,6 +104,16 @@ namespace DataMappingExperiments.DataMapping
               value = null,
               JSonMapToPropertyName = _JsonMapToValue
             }
+          },
+          företeelsetyp = new ClassificationReference_Anläggningsspecifikation_företeelsetyp
+          {
+            @class = new FTAnläggningsspecifikationReference
+            {
+              softType = "FTAnläggningsspecifikation",
+              instanceRef = "FTAnläggningsspecifikation"
+            },
+            startSpecified = false,
+            endSpecified = false
           }
         };
         rälSpec.id = rälSpec.name + suffix;
@@ -113,7 +122,6 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "RälProdukt",
           notering = bisRäl.Notering,
-          versionId = "001",
           numericSet = new RälproduktNumericSet
           {
             längd = SkapaLängd(bisRäl, new Rälprodukt_längd())
@@ -142,6 +150,16 @@ namespace DataMappingExperiments.DataMapping
               JSonMapToPropertyName = _JsonMapToValue,
               value = bisRäl.Vikt
             }
+          },
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "FTAnläggningsprodukt"
+            }
           }
         };
         rälprodukt.id = rälprodukt.name + suffix;
@@ -152,7 +170,6 @@ namespace DataMappingExperiments.DataMapping
           endSpecified = false,
           notering = bisRäl.Notering,
           name = "Rälindivid",
-          versionId = "001",
           numericSet = new RälindividNumericSet(),
           stringSet = new RälindividStringSet
           {
@@ -165,6 +182,16 @@ namespace DataMappingExperiments.DataMapping
                 instanceRef = "revideradKlassifikation"
               },
               value = bisRäl.Rev_Klass
+            }
+          },
+          företeelsetyp = new ClassificationReference_Bulkvara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTBulkvaraReference
+            {
+              softType = "FTBulkvara",
+              instanceRef = "FTBulkvara"
             }
           }
         };
