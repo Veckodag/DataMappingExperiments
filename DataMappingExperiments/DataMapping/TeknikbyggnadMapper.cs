@@ -181,7 +181,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTFunktionellAnläggningReference
             {
               softType = "FTFunktionellAnläggning",
-              instanceRef = "FTFunktionellAnläggning"
+              instanceRef = "FTFunktionellAnläggningEntrydefaultIn"
             }
           }
         };
@@ -221,7 +221,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTFunktionellAnläggningReference
             {
               softType = "FTFunktionellAnläggning",
-              instanceRef = "FTFunktionellAnläggning"
+              instanceRef = "FTFunktionellAnläggningEntrydefaultIn"
             }
           }
         };
@@ -253,7 +253,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = "FTAnläggningsprodukt"
+              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
             }
           }
         };
@@ -283,7 +283,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTMaterialkompositReference
             {
               softType = "FTMaterialkomposit",
-              instanceRef = "FTMaterialkomposit"
+              instanceRef = "FTMaterialkompositEntrydefaultIn"
             }
           }
         };
@@ -291,7 +291,7 @@ namespace DataMappingExperiments.DataMapping
 
         var funktionellÅskskyddsystem = new FunktionellÅskskyddssystem
         {
-          name = "FunktionellÅsksjyddssystem",
+          name = "FunktionellÅskskyddssystem",
           notering = bisTeknikbyggnad.Notering,
           företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
           {
@@ -300,17 +300,59 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTFunktionellAnläggningReference
             {
               softType = "FTFunktionellAnläggning",
-              instanceRef = "FTFunktionellAnläggning"
+              instanceRef = "FTFunktionellAnläggningEntrydefaultIn"
             }
           },
           numericSet = new FunktionellÅskskyddssystemNumericSet(),
-          stringSet = new FunktionellÅskskyddssystemStringSet(),
-          
+          stringSet = new FunktionellÅskskyddssystemStringSet
+          {
+            åskskyddsnivå = new FunktionellÅskskyddssystem_åskskyddsnivå
+            {
+              Array = true,
+              generalProperty = new åskskyddsnivå
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "åskskyddsnivå"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = bisTeknikbyggnad.Åskskydd
+            }
+          }
         };
         funktionellÅskskyddsystem.id = funktionellÅskskyddsystem.name + suffix;
 
-        var funktionellElkraftförsörjning = new FunktionellElkraftförsörjning();
-        var elkraftförsörjningSpecifikation = new ElkraftförsörjningSpecifikation();
+        var funktionellElkraftförsörjning = new FunktionellElkraftförsörjning
+        {
+          name = "FunktionellElkraftförsörjning",
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTFunktionellAnläggningReference
+            {
+              softType = "FTFunktionellAnläggning",
+              instanceRef = "FTFunktionellAnläggningEntrydefaultIn"
+            }
+          }
+        };
+        funktionellElkraftförsörjning.id = funktionellElkraftförsörjning.name + suffix;
+
+        var elkraftförsörjningSpecifikation = new ElkraftförsörjningSpecifikation
+        {
+          name = "ElkraftförsörjningSpecifikation",
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_Anläggningsspecifikation_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsspecifikationReference
+            {
+              softType = "FTAnläggningsspecifikation",
+              instanceRef = "FTAnläggningsspecifikationEntrydefaultIn"
+            }
+          }
+        };
         var elkraftförsörjningsProdukt = new ElkraftförsörjningProdukt();
         var elkraftförsörjningIndivid = new ElkraftförsörjningIndivid();
         var funktionellReservekraft = new FunktionellReservkraft();

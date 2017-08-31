@@ -654,7 +654,7 @@ namespace DataMappingExperiments.DataMapping
         value = new AnläggningsspecifikationReference
         {
           softType = "Anläggningsspecifikation",
-          instanceRef = "Anläggningsspecifikation"
+          instanceRef = "AnläggningsspecifikationEntrydefaultIn"
         },
         Array = true,
         startSpecified = false,
@@ -669,7 +669,7 @@ namespace DataMappingExperiments.DataMapping
         value = new AnläggningsutrymmeReference
         {
           softType = "Anläggningsutrymme",
-          instanceRef = "Anläggningsutrymme"
+          instanceRef = "AnläggningsutrymmeEntrydefaultIn"
         },
         Array = true,
         startSpecified = false,
