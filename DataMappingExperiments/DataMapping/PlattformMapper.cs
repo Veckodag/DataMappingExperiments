@@ -11,7 +11,6 @@ namespace DataMappingExperiments.DataMapping
     public PlattformMapper()
     {
       MapperType = MapperType.Plattform;
-      ExtraCounter = 1;
     }
     public sealed override MapperType MapperType { get; set; }
 
@@ -105,8 +104,6 @@ namespace DataMappingExperiments.DataMapping
       foreach (BIS_Plattform bisPlattform in formattedBisList)
       {
         var suffix = bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
-        //var masterPlattform = new Plattform();
-
         var plattformsProduktInstans = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,
@@ -114,11 +111,11 @@ namespace DataMappingExperiments.DataMapping
           id = "PlattformProduktAnläggningsproduktEntrydefaultIn" + suffix
         };
 
-        Plattformprodukt plattformprodukt = new Plattformprodukt
+        var plattformprodukt = new Plattformprodukt
         {
           notering = bisPlattform.Notering,
           name = "Plattformprodukt",
-          versionId = "001",
+          versionId = _VersionId,
           stringSet = new PlattformproduktStringSet
           {
             PlattformBeläggning = SkapaPlattformBeläggning(bisPlattform, new Plattformprodukt_PlattformBeläggning()),
@@ -194,7 +191,7 @@ namespace DataMappingExperiments.DataMapping
         {
           notering = bisPlattform.Notering,
           name = "PlattformFunktion",
-          versionId = "001",
+          versionId = _VersionId,
           stringSet = new PlattformfunktionStringSet
           {
             harFotsteg = SkapaPlattformFotsteg(bisPlattform, new Plattformfunktion_harFotsteg()),
@@ -236,6 +233,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "Väderskyddprodukt",
           notering = bisPlattform.Notering,
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
           {
             startSpecified = false,
@@ -254,6 +252,7 @@ namespace DataMappingExperiments.DataMapping
           endSpecified = false,
           name = "Väderskyddindivid",
           notering = bisPlattform.Notering,
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
           {
             startSpecified = false,
@@ -281,6 +280,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "Skärmtakprodukt",
           notering = bisPlattform.Notering,
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
           {
             startSpecified = false,
@@ -299,6 +299,7 @@ namespace DataMappingExperiments.DataMapping
           endSpecified = false,
           name = "Skärmtakindivid",
           notering = bisPlattform.Notering,
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
           {
             startSpecified = false,
@@ -332,6 +333,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "Fast_skyltprodukt",
           notering = bisPlattform.Notering,
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
           {
             startSpecified = false,
@@ -350,6 +352,7 @@ namespace DataMappingExperiments.DataMapping
           endSpecified = false,
           name = "Fast_skultindivid",
           notering = bisPlattform.Notering,
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
           {
             startSpecified = false,
@@ -388,6 +391,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "Kanalisationprodukt",
           notering = bisPlattform.Notering,
+          versionId = _VersionId,
           stringSet = new KanalisationproduktStringSet(),
           numericSet = new KanalisationproduktNumericSet(),
           företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
@@ -406,6 +410,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "Kanalisationindivid",
           notering = bisPlattform.Notering,
+          versionId = _VersionId,
           startSpecified = false,
           endSpecified = false,
           företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
@@ -441,13 +446,14 @@ namespace DataMappingExperiments.DataMapping
           plattformKanalisationIndivid.Add(plattformKanalisationStyckevara);
         }
 
-        //PlattformIndivid?!
+        //PlattformIndivid
         var plattformindivid = new Plattformindivid
         {
           startSpecified = false,
           endSpecified = false,
           name = "Plattformindivid",
           notering = bisPlattform.Notering,
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
           {
             startSpecified = false,
@@ -472,25 +478,6 @@ namespace DataMappingExperiments.DataMapping
 
         ExtraCounter++;
       }
-      //Real Test
-      //Add new softypes to containerSoftTypes
-      //plattformsProdukter.RemoveRange(1, plattformsProdukter.Count - 1);
-      //plattformsFunktioner.RemoveRange(1, plattformsFunktioner.Count - 1);
-      //plattformVäderskydd.RemoveRange(1, plattformVäderskydd.Count - 1);
-      //plattformStyckevaror.RemoveRange(1, plattformStyckevaror.Count - 1);
-      //if (plattformSkylt.Any() && plattformSkyltIndivid.Any())
-      //{
-      //  plattformSkylt.RemoveRange(1, plattformSkylt.Count - 1);
-      //  plattformSkyltIndivid.RemoveRange(1, plattformSkyltIndivid.Count - 1);
-      //}
-      //if (plattformKanalisation.Any() && plattformKanalisationIndivid.Any())
-      //{
-      //  plattformKanalisation.RemoveRange(1, plattformKanalisation.Count - 1);
-      //  plattformKanalisationIndivid.RemoveRange(1, plattformKanalisationIndivid.Count - 1);
-      //}
-      //plattformIndivider.RemoveRange(1, plattformIndivider.Count - 1);
-
-
       var anläggningsProduktSoftType = new SoftType_Anläggningsprodukt
       {
         Array = true,
@@ -638,53 +625,6 @@ namespace DataMappingExperiments.DataMapping
       return plattformFotsteg;
     }
 
-    #region PropertyRealization SHOULD NOT BE USED
-    private Plattformprodukt PlattformProduktPropertyRealization(Plattformprodukt plattformprodukt)
-    {
-      plattformprodukt.datainsamling = new PropertyValueAssignment_Anläggningsprodukt_datainsamling();
-      plattformprodukt.företeelsetillkomst = new PropertyValueAssignment_Anläggningsprodukt_företeelsetillkomst();
-      plattformprodukt.ursprung = new PropertyValueAssignment_Anläggningsprodukt_ursprung();
-      
-      return plattformprodukt;
-    }
-    private Plattformfunktion PlattformFunktionPropertyRealization(Plattformfunktion plattformFunktion)
-    {
-      var anläggningsSpec = new BreakdownElementRealization_FunktionellAnläggning_anläggningsspecifikation
-      {
-        value = new AnläggningsspecifikationReference
-        {
-          softType = "Anläggningsspecifikation",
-          instanceRef = "AnläggningsspecifikationEntrydefaultIn"
-        },
-        Array = true,
-        startSpecified = false,
-        endSpecified = false
-      };
-      var anläggningsSpecLista =
-        new List<BreakdownElementRealization_FunktionellAnläggning_anläggningsspecifikation> { anläggningsSpec };
-      plattformFunktion.anläggningsspecifikation = anläggningsSpecLista.ToArray();
-
-      var anläggningsUtrymme = new BreakdownElementRealization_FunktionellAnläggning_anläggningsutrymme
-      {
-        value = new AnläggningsutrymmeReference
-        {
-          softType = "Anläggningsutrymme",
-          instanceRef = "AnläggningsutrymmeEntrydefaultIn"
-        },
-        Array = true,
-        startSpecified = false,
-        endSpecified = false
-      };
-      var anläggningsUtrymmeLista = new List<BreakdownElementRealization_FunktionellAnläggning_anläggningsutrymme> { anläggningsUtrymme };
-      plattformFunktion.anläggningsutrymme = anläggningsUtrymmeLista.ToArray();
-
-      plattformFunktion.datainsamling = new PropertyValueAssignment_FunktionellAnläggning_datainsamling();
-      plattformFunktion.företeelsetillkomst = new PropertyValueAssignment_FunktionellAnläggning_företeelsetillkomst();
-      plattformFunktion.ursprung = new PropertyValueAssignment_FunktionellAnläggning_ursprung();
-
-      return plattformFunktion;
-    }
-    #endregion
     private Plattformprodukt_verkligHöjd SkapaVerkligHöjd(BIS_Plattform bisPlattform, Plattformprodukt_verkligHöjd plattformVerkligHöjd)
     {
       plattformVerkligHöjd.generalProperty = new verkligHöjd
@@ -703,7 +643,15 @@ namespace DataMappingExperiments.DataMapping
         case "mellan":
           plattformVerkligHöjd.value = 0.58M;
           break;
-          //TODO: Andra cases
+        case "hög":
+          plattformVerkligHöjd.value = 0.73M;
+          break;
+        case "TSD Hög":
+          plattformVerkligHöjd.value = 0.75M;
+          break;
+        case "TSD Mellan":
+          plattformVerkligHöjd.value = 0.55M;
+          break;
       }
       plattformVerkligHöjd.Unit = new m
       {
@@ -736,22 +684,6 @@ namespace DataMappingExperiments.DataMapping
       plattformBeläggning.value = bisPlattform.Beläggning == "?" ? "Okänt" : bisPlattform.Beläggning;
       plattformBeläggning.JSonMapToPropertyName = _JsonMapToValue;
       return plattformBeläggning;
-    }
-
-    /// <summary>
-    /// Temporary squashing of the list. Unika plattformar: utan versioner med olika nätanknytningar.
-    /// </summary>
-    /// <param name="bisList"></param>
-    /// <returns></returns>
-    public override IEnumerable<BIS_GrundObjekt> SquashTheList(List<BIS_GrundObjekt> bisList)
-    {
-      var myList = new List<BIS_Plattform>();
-
-      foreach (var objekt in bisList)
-        myList.Add(objekt as BIS_Plattform);
-
-      return myList.GroupBy(plattformDetalj => plattformDetalj.ObjektNummer)
-        .Select(values => values.FirstOrDefault()).ToList();
     }
   }
 }

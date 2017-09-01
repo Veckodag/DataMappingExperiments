@@ -10,7 +10,6 @@ namespace DataMappingExperiments.DataMapping
     public TeknikbyggnadMapper()
     {
       MapperType = MapperType.Teknikbyggnad;
-      ExtraCounter = 1;
     }
     public sealed override MapperType MapperType { get; set; }
     //private bool _IsComponent = false;
@@ -141,13 +140,11 @@ namespace DataMappingExperiments.DataMapping
           myTeknikByggnad.InstDatum = attributeValue;
           break;
       }
-
       return myTeknikByggnad;
     }
 
     public override Container ObjectStructure(List<BIS_GrundObjekt> bisList)
     {
-      //Does not use the SquashList method
       var formattedList = bisList;
       var container = new Container();
       var containerSoftypes = new List<SoftType>();
@@ -159,6 +156,17 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "FunktionellTeknikbyggnadssystem",
           notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
+          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTFunktionellAnläggningReference
+            {
+              softType = "FTFunktionellAnläggning",
+              instanceRef = "FTFunktionellAnläggningEntrydefaultIn"
+            }
+          },
           numericSet = new FunktionellTeknikbyggnadssystemNumericSet(),
           stringSet = new FunktionellTeknikbyggnadssystemStringSet
           {
@@ -173,16 +181,6 @@ namespace DataMappingExperiments.DataMapping
               Array = true,
               value = bisTeknikbyggnad.Beteckning
             }
-          },
-          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
-          {
-            startSpecified = false,
-            endSpecified = false,
-            @class = new FTFunktionellAnläggningReference
-            {
-              softType = "FTFunktionellAnläggning",
-              instanceRef = "FTFunktionellAnläggningEntrydefaultIn"
-            }
           }
         };
 
@@ -191,7 +189,17 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "Teknikbyggnad",
           notering = bisTeknikbyggnad.Notering,
-          versionId = "001"
+          versionId = _VersionId,
+          företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTGeografiskPlaceringsreferensReference
+            {
+              softType = "FTGeografiskPlaceringsreferens",
+              instanceRef = "FTGeografiskPlaceringsreferensEntrydefaultIn"
+            }
+          }
         };
         teknikbyggnad.id = teknikbyggnad.name + suffix;
 
@@ -199,6 +207,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "FunktionellTeknikbyggnad",
           notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
           numericSet = new FunktionellTeknikbyggnadNumericSet(),
           stringSet = new FunktionellTeknikbyggnadStringSet
           {
@@ -231,6 +240,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "TeknikbyggnadProdukt",
           notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
           stringSet = new TeknikbyggnadProduktStringSet
           {
             typ = new TeknikbyggnadProdukt_typ
@@ -259,23 +269,11 @@ namespace DataMappingExperiments.DataMapping
         };
         teknikbyggnadProdukt.id = teknikbyggnadProdukt.name + suffix;
 
-        //TODO: Fortsätt här
         var fasadbeklädnadMaterial = new FasadbeklädnadMaterial
         {
           name = "FasadbeklädnadMaterial",
           notering = bisTeknikbyggnad.Notering,
-          stringSet = new FasadbeklädnadMaterialStringSet
-          {
-            typ = new FasadbeklädnadMaterial_typ
-            {
-              generalProperty = new typ
-              {
-                softType = _SoftTypeProperty,
-                instanceRef = "typ"
-              }
-            }
-          },
-          numericSet = new FasadbeklädnadMaterialNumericSet(),
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_Materialkomposit_företeelsetyp
           {
             startSpecified = false,
@@ -285,7 +283,22 @@ namespace DataMappingExperiments.DataMapping
               softType = "FTMaterialkomposit",
               instanceRef = "FTMaterialkompositEntrydefaultIn"
             }
-          }
+          },
+          stringSet = new FasadbeklädnadMaterialStringSet
+          {
+            typ = new FasadbeklädnadMaterial_typ
+            {
+              Array = true,
+              generalProperty = new typ
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "typ"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = bisTeknikbyggnad.Fasadutförande
+            }
+          },
+          numericSet = new FasadbeklädnadMaterialNumericSet()
         };
         fasadbeklädnadMaterial.id = fasadbeklädnadMaterial.name + suffix;
 
@@ -293,6 +306,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "FunktionellÅskskyddssystem",
           notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
           {
             startSpecified = false,
@@ -325,6 +339,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "FunktionellElkraftförsörjning",
           notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
           {
             startSpecified = false,
@@ -334,6 +349,21 @@ namespace DataMappingExperiments.DataMapping
               softType = "FTFunktionellAnläggning",
               instanceRef = "FTFunktionellAnläggningEntrydefaultIn"
             }
+          },
+          numericSet = new FunktionellElkraftförsörjningNumericSet(),
+          stringSet = new FunktionellElkraftförsörjningStringSet
+          {
+            typ = new FunktionellElkraftförsörjning_typ
+            {
+              Array = true,
+              JSonMapToPropertyName = _JsonMapToValue,
+              generalProperty = new typ
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "typ"
+              },
+              value = bisTeknikbyggnad.OrdinarieNät
+            }
           }
         };
         funktionellElkraftförsörjning.id = funktionellElkraftförsörjning.name + suffix;
@@ -342,6 +372,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "ElkraftförsörjningSpecifikation",
           notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
           företeelsetyp = new ClassificationReference_Anläggningsspecifikation_företeelsetyp
           {
             startSpecified = false,
@@ -351,8 +382,34 @@ namespace DataMappingExperiments.DataMapping
               softType = "FTAnläggningsspecifikation",
               instanceRef = "FTAnläggningsspecifikationEntrydefaultIn"
             }
+          },
+          numericSet = new ElkraftförsörjningSpecifikationNumericSet(),
+          stringSet = new ElkraftförsörjningSpecifikationStringSet
+          {
+            faser = new ElkraftförsörjningSpecifikation_faser
+            {
+              generalProperty = new faser
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "faser"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = bisTeknikbyggnad.OrtsnätFaser
+            },
+            skyddstransformatorKapacitet = new ElkraftförsörjningSpecifikation_skyddstransformatorKapacitet
+            {
+              generalProperty = new skyddstransformatorKapacitet
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "skyddstransformatorKapacitet"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = bisTeknikbyggnad.MellantrafoStorlek
+            },
+            säkring = new ElkraftförsörjningSpecifikation_säkring()
           }
         };
+        elkraftförsörjningSpecifikation.id = elkraftförsörjningSpecifikation.name + suffix;
         var elkraftförsörjningsProdukt = new ElkraftförsörjningProdukt();
         var elkraftförsörjningIndivid = new ElkraftförsörjningIndivid();
         var funktionellReservekraft = new FunktionellReservkraft();
@@ -375,21 +432,8 @@ namespace DataMappingExperiments.DataMapping
 
         ExtraCounter++;
       }
-
       container.softTypes = containerSoftypes.ToArray();
       return container;
-    }
-
-    public override IEnumerable<BIS_GrundObjekt> SquashTheList(List<BIS_GrundObjekt> bisList)
-    {
-      var myList = new List<BIS_Teknikbyggnad>();
-
-      foreach (var objekt in bisList)
-        myList.Add(objekt as BIS_Teknikbyggnad);
-
-      myList = myList.GroupBy(objektDetalj => objektDetalj.ObjektNummer).Select(values => values.FirstOrDefault()).ToList();
-
-      return myList;
     }
   }
 }

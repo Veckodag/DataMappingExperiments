@@ -11,7 +11,6 @@ namespace DataMappingExperiments.DataMapping
     public RälMapper()
     {
       MapperType = MapperType.Räl;
-      ExtraCounter = 1;
     }
     public sealed override MapperType MapperType { get; set; }
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject)
@@ -89,6 +88,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "Rälspecifikation",
           notering = bisRäl.Notering,
+          versionId = _VersionId,
           numericSet = new RälspecifikationNumericSet(),
           stringSet = new RälspecifikationStringSet
           {
@@ -100,8 +100,8 @@ namespace DataMappingExperiments.DataMapping
                 softType = _SoftTypeProperty,
                 instanceRef = "typ"
               },
-              //Vikt + Rälprofil(Rälmodell) + hårdhet; Don't know where it comes from
-              value = null,
+              //TODO: Vikt + Rälprofil(Rälmodell) + hårdhet; Don't know where it comes from
+              //value = null,
               JSonMapToPropertyName = _JsonMapToValue
             }
           },
@@ -110,7 +110,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsspecifikationReference
             {
               softType = "FTAnläggningsspecifikation",
-              instanceRef = "FTAnläggningsspecifikation"
+              instanceRef = "FTAnläggningsspecifikationEntrydefaultIn"
             },
             startSpecified = false,
             endSpecified = false
@@ -122,6 +122,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "RälProdukt",
           notering = bisRäl.Notering,
+          versionId = _VersionId,
           numericSet = new RälproduktNumericSet
           {
             längd = SkapaLängd(bisRäl, new Rälprodukt_längd())
@@ -158,7 +159,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = "FTAnläggningsprodukt"
+              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
             }
           }
         };
@@ -169,6 +170,7 @@ namespace DataMappingExperiments.DataMapping
           startSpecified = false,
           endSpecified = false,
           notering = bisRäl.Notering,
+          versionId = _VersionId,
           name = "Rälindivid",
           numericSet = new RälindividNumericSet(),
           stringSet = new RälindividStringSet
@@ -191,7 +193,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTBulkvaraReference
             {
               softType = "FTBulkvara",
-              instanceRef = "FTBulkvara"
+              instanceRef = "FTBulkvaraEntrydefaultIn"
             }
           }
         };
@@ -374,23 +376,6 @@ namespace DataMappingExperiments.DataMapping
           break;
       }
       return rälSkarvTyp;
-    }
-
-    /// <summary>
-    /// Squashing of the list. Unika plattformar: utan versioner med olika nätanknytningar.
-    /// </summary>
-    /// <param name="bisList"></param>
-    /// <returns></returns>
-    public override IEnumerable<BIS_GrundObjekt> SquashTheList(List<BIS_GrundObjekt> bisList)
-    {
-      var myList = new List<BIS_Räl>();
-
-      foreach (var objekt in bisList)
-        myList.Add(objekt as BIS_Räl);
-
-      //Kommer att trycka ihop listan på objektnummer
-      return myList.GroupBy(objektDetalj => objektDetalj.ObjektNummer)
-        .Select(values => values.FirstOrDefault()).ToList();
     }
   }
 }
