@@ -149,8 +149,8 @@ namespace DataMappingExperiments.DataMapping
       {
         "verkligHöjd", "längd", "bredd", "nominellHöjd", "PlattformBeläggning", "plattformskantMaterial",
         "harSkyddsräcken", "harPlattformsutrustning", "harLedstråk", "harSkyddzon", "harFotsteg", "typ",
-        "profiltyp", "vikt", "revideradKlassifikation", "tillverkningsprocess", "stålsort",
-        "skarvTyp", "SystemID", "åskskyddsnivå", "faser", "skyddstransformatorKapacitet"
+        "profiltyp", "vikt", "revideradKlassifikation", "tillverkningsprocess", "stålsort", "skarvTyp",
+        "SystemID", "åskskyddsnivå", "faser", "skyddstransformatorKapacitet", "säkring", "OrtsNätsavtal"
       };
 
       foreach (var propertyName in properties)

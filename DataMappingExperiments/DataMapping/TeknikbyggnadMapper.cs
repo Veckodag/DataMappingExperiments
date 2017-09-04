@@ -2,6 +2,7 @@
 using System.Linq;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace DataMappingExperiments.DataMapping
 {
@@ -406,13 +407,106 @@ namespace DataMappingExperiments.DataMapping
               JSonMapToPropertyName = _JsonMapToValue,
               value = bisTeknikbyggnad.MellantrafoStorlek
             },
-            säkring = new ElkraftförsörjningSpecifikation_säkring()
+            säkring = new ElkraftförsörjningSpecifikation_säkring
+            {
+              generalProperty = new säkring
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "säkring"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = bisTeknikbyggnad.OrtsnätSäkring
+            }
           }
         };
         elkraftförsörjningSpecifikation.id = elkraftförsörjningSpecifikation.name + suffix;
-        var elkraftförsörjningsProdukt = new ElkraftförsörjningProdukt();
-        var elkraftförsörjningIndivid = new ElkraftförsörjningIndivid();
-        var funktionellReservekraft = new FunktionellReservkraft();
+
+        var elkraftförsörjningsProdukt = new ElkraftförsörjningProdukt
+        {
+          name = "ElkraftförsörjningProdukt",
+          notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+            }
+          }
+        };
+        elkraftförsörjningsProdukt.id = elkraftförsörjningsProdukt.name + suffix;
+
+        var elkraftförsörjningIndivid = new ElkraftförsörjningIndivid
+        {
+          name = "ElkraftförsörjningIndivid",
+          notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
+          startSpecified = false,
+          endSpecified = false,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "FTStyckevaraEntrydefaultIn"
+            }
+          },
+          stringSet = new ElkraftförsörjningIndividStringSet
+          {
+            OrtsNätsavtal = new ElkraftförsörjningIndivid_OrtsNätsavtal
+            {
+              Array = true,
+              generalProperty = new OrtsNätsavtal
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "OrtsNätsavtal"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = bisTeknikbyggnad.OrtsnätIDNummer
+            }
+          },
+          numericSet = new ElkraftförsörjningIndividNumericSet()
+        };
+        elkraftförsörjningIndivid.id = elkraftförsörjningIndivid.name + suffix;
+
+        var funktionellReservekraft = new FunktionellReservkraft
+        {
+          name = "FunktionellReservkraft",
+          notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
+          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTFunktionellAnläggningReference
+            {
+              softType = "FTFunktionellAnläggning",
+              instanceRef = "FTFunktionellAnläggningEntrydefaultIn"
+            }
+          },
+          stringSet = new FunktionellReservkraftStringSet
+          {
+            typ = new FunktionellReservkraft_typ
+            {
+              Array = true,
+              JSonMapToPropertyName = _JsonMapToValue,
+              generalProperty = new typ
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "typ"
+              },
+              value = bisTeknikbyggnad.RedundantNät
+            }
+          },
+          numericSet = new FunktionellReservkraftNumericSet()
+        };
+        funktionellReservekraft.id = funktionellReservekraft.name + suffix;
+
         var reservkraftSpecifikation = new ReservkraftSpecifikation();
         var reservelverkProdukt = new ReservelverkProdukt();
         var reservelverkIndivid = new ReservelverkIndivid();
