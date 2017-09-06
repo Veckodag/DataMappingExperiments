@@ -84,14 +84,15 @@ namespace DataMappingExperiments.DataMapping
       {
         var suffix = bisRäl.ObjektTypNummer + bisRäl.ObjektNummer + ExtraCounter;
         //Noterings fix
-        //if (string.IsNullOrEmpty(bisRäl.Notering))
-        //{
-        //  bisRäl.Notering = "Ingen notering";
-        //}
+        if (string.IsNullOrEmpty(bisRäl.Notering))
+        {
+          bisRäl.Notering = "Ingen notering";
+        }
         //Allt nytt
         var rälSpec = new Rälspecifikation
         {
           name = "Rälspecifikation",
+          notering = bisRäl.Notering,
           versionId = _VersionId,
           numericSet = new RälspecifikationNumericSet(),
           stringSet = new RälspecifikationStringSet
@@ -126,6 +127,7 @@ namespace DataMappingExperiments.DataMapping
         {
           name = "Rälprodukt",
           versionId = _VersionId,
+          notering = bisRäl.Notering,
           numericSet = new RälproduktNumericSet
           {
             längd = SkapaLängd(bisRäl, new Rälprodukt_längd())
@@ -173,6 +175,7 @@ namespace DataMappingExperiments.DataMapping
           startSpecified = false,
           endSpecified = false,
           versionId = _VersionId,
+          notering = bisRäl.Notering,
           name = "Rälindivid",
           numericSet = new RälindividNumericSet(),
           stringSet = new RälindividStringSet
@@ -274,7 +277,7 @@ namespace DataMappingExperiments.DataMapping
       var FTAnläggningsProdukt = new FTAnläggningsproduktEntrydefaultIn
       {
         Array = true,
-        id = "FTAnläggningsprodukt",
+        id = "Rälprodukt",
         inputSchemaRef = _InputSchemaRef,
         data = new FTAnläggningsproduktdefaultIn
         {
@@ -318,7 +321,7 @@ namespace DataMappingExperiments.DataMapping
       var FTBulkvaraInstance = new FTBulkvaraEntrydefaultIn
       {
         Array = true,
-        id = "FTBulkvara",
+        id = "Rälindivid",
         inputSchemaRef = _InputSchemaRef,
         data = new FTBulkvaradefaultIn
         {

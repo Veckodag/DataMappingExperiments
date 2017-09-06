@@ -14,6 +14,7 @@ namespace DataMappingExperiments.DataMapping
   public abstract class Mapper : IMapper
   {
     internal string _SoftTypeProperty = "Property";
+    internal string _SoftTypeUnit = "Unit";
     internal string _JsonMapToValue = "value";
     internal string _InputSchemaRef = "defaultIn";
     internal string _VersionId = "001";
@@ -122,7 +123,7 @@ namespace DataMappingExperiments.DataMapping
     {
       var unitlist = new List<UnitInstances>();
       //The actual values could come from a config file.
-      string[] unitNameString = { "mm", "Procent", "Grader", "st", "m" };
+      string[] unitNameString = { "mm", "Procent", "Grader", "st", "m", "kVA", "l" };
 
       foreach (var unitName in unitNameString)
       {
@@ -151,7 +152,8 @@ namespace DataMappingExperiments.DataMapping
         "verkligHöjd", "längd", "bredd", "nominellHöjd", "PlattformBeläggning", "plattformskantMaterial",
         "harSkyddsräcken", "harPlattformsutrustning", "harLedstråk", "harSkyddzon", "harFotsteg", "typ",
         "profiltyp", "vikt", "revideradKlassifikation", "tillverkningsprocess", "stålsort", "skarvTyp",
-        "SystemID", "åskskyddsnivå", "faser", "skyddstransformatorKapacitet", "säkring", "OrtsNätsavtal"
+        "SystemID", "åskskyddsnivå", "faser", "skyddstransformatorKapacitet", "säkring", "OrtsNätsavtal",
+        "kapacitet", "tankvolym"
       };
 
       foreach (var propertyName in properties)

@@ -108,7 +108,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "PlattformProduktAnläggningsproduktEntrydefaultIn" + suffix
+          id = "PlattformProduktAnläggningsprodukt" + suffix
         };
 
         var plattformprodukt = new Plattformprodukt
@@ -172,7 +172,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Plattformprodukt"
             }
           }
         };
@@ -184,7 +184,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "PlattformFunktionFunktionellAnläggningEntrydefaultIn" + suffix
+          id = "PlattformFunktionFunktionell" + suffix
         };
 
         var plattformFunktion = new Plattformfunktion
@@ -204,7 +204,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTFunktionellAnläggningReference
             {
               softType = "FTFunktionellAnläggning",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Plattformfunktion"
             }
           }
         };
@@ -218,14 +218,14 @@ namespace DataMappingExperiments.DataMapping
         var plattformAnläggningsProduktInstans = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,
-          id = "PlattformVäderskyddOchSkärmtakAnläggningsproduktEntrydefaultIn" + suffix,
+          id = "PlattformVäderskyddOchSkärmtakAnläggningsprodukt" + suffix,
           inputSchemaRef = _InputSchemaRef
         };
 
         var plattformStyckevaraInstans = new StyckevaraEntrydefaultIn
         {
           Array = true,
-          id = "PlattformVäderskyddOchSkärmtakStyckevaraEntrydefaultIn" + suffix,
+          id = "PlattformVäderskyddOchSkärmtakStyckevara" + suffix,
           inputSchemaRef = _InputSchemaRef
         };
 
@@ -241,11 +241,12 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Väderskyddprodukt"
             }
           }
         };
         väderskyddProdukt.id = väderskyddProdukt.name + suffix;
+
         var väderskyddIndivid = new Väderskyddindivid
         {
           startSpecified = false,
@@ -260,17 +261,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = Program.SelectedDataContainer.Name
-            }
-          },
-          planeradIndivid = new ItemVersionReference_Styckevara_planeradIndivid
-          {
-            startSpecified = false,
-            endSpecified = false,
-            value = new PlaneradIndividReference
-            {
-              softType = "PlaneradIndivid",
-              instanceRef = "PlaneradIndividEntrydefaultIn"
+              instanceRef = "Väderskyddindivid"
             }
           }
         };
@@ -288,11 +279,12 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Skärmtakprodukt"
             }
           }
         };
         skärmtakProdukt.id = skärmtakProdukt.name + suffix;
+
         var skärmtakIndivid = new Skärmtakindivid
         {
           startSpecified = false,
@@ -307,7 +299,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Skärmtakindivid"
             }
           }
         };
@@ -341,16 +333,17 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Fast_skyltprodukt"
             }
           }
         };
         skyltProdukt.id = skyltProdukt.name + suffix;
+
         var skyltIndivid = new Fast_skyltindivid
         {
           startSpecified = false,
           endSpecified = false,
-          name = "Fast_skultindivid",
+          name = "Fast_skyltindivid",
           notering = bisPlattform.Notering,
           versionId = _VersionId,
           företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
@@ -360,7 +353,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Fast_skyltindivid"
             }
           }
         };
@@ -369,14 +362,14 @@ namespace DataMappingExperiments.DataMapping
         var plattformSkyltAnläggningsProdukt = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,
-          id = "PlattformSkyltAnläggningsproduktEntrydefaultIn" + suffix,
+          id = "PlattformSkyltAnläggningsprodukt" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = skyltProdukt
         };
         var plattformSkyltStyckevara = new StyckevaraEntrydefaultIn
         {
           Array = true,
-          id = "PlattformSkyltStyckevaraEntrydefaultIn" + suffix,
+          id = "PlattformSkyltStyckevara" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = skyltIndivid
         };
@@ -401,7 +394,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Kanalisationprodukt"
             }
           }
         };
@@ -420,7 +413,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Kanalisationindivid"
             }
           }
         };
@@ -429,14 +422,14 @@ namespace DataMappingExperiments.DataMapping
         var plattformKanalisationProdukt = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,
-          id = "PlattformKanalisationAnläggningsproduktEntrydefaultIn" + suffix,
+          id = "PlattformKanalisationAnläggningsprodukt" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = kanalisationsProdukt
         };
         var plattformKanalisationStyckevara = new StyckevaraEntrydefaultIn
         {
           Array = true,
-          id = "PlattformKanalisationStyckevaraEntrydefaultIn" + suffix,
+          id = "PlattformKanalisationStyckevara" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = kanalisationsIndivid
         };
@@ -461,7 +454,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Plattformindivid"
             }
           }
         };
@@ -470,7 +463,7 @@ namespace DataMappingExperiments.DataMapping
         var plattformIndividStyckevara = new StyckevaraEntrydefaultIn
         {
           Array = true,
-          id = "PlattformIndividStyckevaraEntrydefaultIn" + suffix,
+          id = "PlattformIndividStyckevara" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = plattformindivid
         };
@@ -547,6 +540,8 @@ namespace DataMappingExperiments.DataMapping
       containerSoftTypes.AddRange(CreateSupplementarySoftypes());
       //containerSoftTypes.AddRange(CreateKeyReferences());
 
+      containerSoftTypes.AddRange(CreateFTKeyReferenceSoftTypes());
+
       //Last step is to prepare the container for serialization
       container.softTypes = containerSoftTypes.ToArray();
       return container;
@@ -555,7 +550,174 @@ namespace DataMappingExperiments.DataMapping
     public override List<SoftType> CreateFTKeyReferenceSoftTypes()
     {
       var softtypeList = new List<SoftType>();
-      //4 Anläggningsprodukter, 1 FunktionellAnläggning & 4 styckevaror
+
+      //FTAnläggningsProdukter 
+      var plattformProdukt = new FTAnläggningsproduktEntrydefaultIn
+      {
+        Array = true,
+        id = "Plattformprodukt",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTAnläggningsproduktdefaultIn
+        {
+          id = "Plattformprodukt",
+          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+
+      var väderskyddProdukt = new FTAnläggningsproduktEntrydefaultIn
+      {
+        Array = true,
+        id = "Väderskyddprodukt",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTAnläggningsproduktdefaultIn
+        {
+          id = "Väderskyddprodukt",
+          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+
+      var skärmtakProdukt = new FTAnläggningsproduktEntrydefaultIn
+      {
+        Array = true,
+        id = "Skärmtakprodukt",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTAnläggningsproduktdefaultIn
+        {
+          id = "Skärmtakprodukt",
+          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+      
+      var skyltProdukt = new FTAnläggningsproduktEntrydefaultIn
+      {
+        Array = true,
+        id = "Fast_skyltprodukt",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTAnläggningsproduktdefaultIn
+        {
+          id = "Fast_skyltprodukt",
+          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+      
+      var kanalisationprodukt = new FTAnläggningsproduktEntrydefaultIn
+      {
+        Array = true,
+        id = "Kanalisationprodukt",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTAnläggningsproduktdefaultIn
+        {
+          id = "Kanalisationprodukt",
+          name = "Läst från fil BIS_Kanalisation - datadefinition infomod 2p0.xlsm BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+
+      var FTAnläggningsproduktInstances = new List<FTAnläggningsproduktInstances>
+      { plattformProdukt, väderskyddProdukt, skärmtakProdukt, skyltProdukt, kanalisationprodukt };
+      var FTAnläggningsProduktSoftType = new SoftType_FTAnläggningsprodukt
+      {
+        Array = true,
+        id = "FTAnläggningsprodukt",
+        instances = FTAnläggningsproduktInstances.ToArray()
+      };
+      softtypeList.Add(FTAnläggningsProduktSoftType);
+      //FTAnläggningsProdukter END
+
+      //FTStyckevaror
+      
+      var väderskyddindivid = new FTStyckevaraEntrydefaultIn
+      {
+        Array = true,
+        id = "Väderskyddindivid",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTStyckevaradefaultIn
+        {
+          id = "Väderskyddindivid",
+          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+      
+      var skärmtakindivid = new FTStyckevaraEntrydefaultIn
+      {
+        Array = true,
+        id = "Skärmtakindivid",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTStyckevaradefaultIn
+        {
+          id = "Skärmtakindivid",
+          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+
+      var kanalisationindivid = new FTStyckevaraEntrydefaultIn
+      {
+        Array = true,
+        id = "Kanalisationindivid",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTStyckevaradefaultIn
+        {
+          id = "Kanalisationindivid",
+          name = "Läst från fil BIS_Kanalisation - datadefinition infomod 2p0.xlsm BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+
+      var plattformindivid = new FTStyckevaraEntrydefaultIn
+      {
+        Array = true,
+        id = "Plattformindivid",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTStyckevaradefaultIn
+        {
+          id = "Plattformindivid",
+          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+      
+      var skyltindivid = new FTStyckevaraEntrydefaultIn
+      {
+        Array = true,
+        id = "Fast_skyltindivid",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTStyckevaradefaultIn
+        {
+          id = "Fast_skyltindivid",
+          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+
+      var FTStyckevaraInstances = new List<FTStyckevaraInstances>
+      { väderskyddindivid, skärmtakindivid, kanalisationindivid, plattformindivid, skyltindivid };
+      var FTStyckevaraSoftType = new SoftType_FTStyckevara
+      {
+        Array = true,
+        id = "FTStyckevara",
+        instances = FTStyckevaraInstances.ToArray()
+      };
+      softtypeList.Add(FTStyckevaraSoftType);
+      //FTStyckevara END
+
+      //FTFunktionellAnläggning
+      var plattformfunktion = new FTFunktionellAnläggningEntrydefaultIn
+      {
+        Array = true,
+        id = "Plattformfunktion",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTFunktionellAnläggningdefaultIn
+        {
+          id = "Plattformfunktion",
+          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+        }
+      };
+
+      var FTFunktionellAnläggningInstances = new List<FTFunktionellAnläggningInstances> { plattformfunktion };
+      var FTFunktionellAnläggningSoftType = new SoftType_FTFunktionellAnläggning
+      {
+        Array = true,
+        id = "FTFunktionellAnläggning",
+        instances = FTFunktionellAnläggningInstances.ToArray()
+      };
+      softtypeList.Add(FTFunktionellAnläggningSoftType);
+      //FTFunktionellAnläggning END
 
       return softtypeList;
     }

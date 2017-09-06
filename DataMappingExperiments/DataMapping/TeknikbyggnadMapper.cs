@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
@@ -87,13 +88,13 @@ namespace DataMappingExperiments.DataMapping
           myTeknikByggnad.ReservelverkUtförande = attributeValue;
           break;
         case 47:
-          myTeknikByggnad.ReservelverkStorlek = attributeValue;
+          myTeknikByggnad.ReservelverkStorlek = Convert.ToDecimal(attributeValue);
           break;
         case 48:
           myTeknikByggnad.ReservelverkInstÅr = attributeValue;
           break;
         case 49:
-          myTeknikByggnad.ReservelverkTankvolym = attributeValue;
+          myTeknikByggnad.ReservelverkTankvolym = Convert.ToDecimal(attributeValue);
           break;
         case 50:
           myTeknikByggnad.ReservelverkBatterimodell = attributeValue;
@@ -153,6 +154,13 @@ namespace DataMappingExperiments.DataMapping
       foreach (BIS_Teknikbyggnad bisTeknikbyggnad in formattedList)
       {
         var suffix = bisTeknikbyggnad.ObjektTypNummer + bisTeknikbyggnad.ObjektNummer + ExtraCounter;
+
+        //Noterings fix
+        if (string.IsNullOrEmpty(bisTeknikbyggnad.Notering))
+        {
+          bisTeknikbyggnad.Notering = "Ingen notering";
+        }
+
         var funktionellTeknikbyggnadssystem = new FunktionellTeknikbyggnadssystem
         {
           name = "FunktionellTeknikbyggnadssystem",
@@ -165,7 +173,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTFunktionellAnläggningReference
             {
               softType = "FTFunktionellAnläggning",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "FunktionellTeknikbyggnadssystem"
             }
           },
           numericSet = new FunktionellTeknikbyggnadssystemNumericSet(),
@@ -198,7 +206,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTGeografiskPlaceringsreferensReference
             {
               softType = "FTGeografiskPlaceringsreferens",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "Teknikbyggnad"
             }
           }
         };
@@ -231,7 +239,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTFunktionellAnläggningReference
             {
               softType = "FTFunktionellAnläggning",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "FunktionellTeknikbyggnad"
             }
           }
         };
@@ -264,7 +272,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "TeknikbyggnadProdukt"
             }
           }
         };
@@ -282,7 +290,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTMaterialkompositReference
             {
               softType = "FTMaterialkomposit",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "FasadbeklädnadMaterial"
             }
           },
           stringSet = new FasadbeklädnadMaterialStringSet
@@ -315,7 +323,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTFunktionellAnläggningReference
             {
               softType = "FTFunktionellAnläggning",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "FunktionellÅskskyddssystem"
             }
           },
           numericSet = new FunktionellÅskskyddssystemNumericSet(),
@@ -348,7 +356,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTFunktionellAnläggningReference
             {
               softType = "FTFunktionellAnläggning",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "FunktionellElkraftförsörjning"
             }
           },
           numericSet = new FunktionellElkraftförsörjningNumericSet(),
@@ -381,7 +389,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsspecifikationReference
             {
               softType = "FTAnläggningsspecifikation",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "ElkraftförsörjningSpecifikation"
             }
           },
           numericSet = new ElkraftförsörjningSpecifikationNumericSet(),
@@ -433,7 +441,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "ElkraftförsörjningProdukt"
             }
           }
         };
@@ -453,7 +461,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "ElkraftförsörjningIndivid"
             }
           },
           stringSet = new ElkraftförsörjningIndividStringSet
@@ -486,7 +494,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTFunktionellAnläggningReference
             {
               softType = "FTFunktionellAnläggning",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "FunktionellReservkraft"
             }
           },
           stringSet = new FunktionellReservkraftStringSet
@@ -507,6 +515,7 @@ namespace DataMappingExperiments.DataMapping
         };
         funktionellReservekraft.id = funktionellReservekraft.name + suffix;
 
+        //TODO: Vart kommer drifttid ifrån
         var reservkraftSpecifikation = new ReservkraftSpecifikation
         {
           name = "ReservkraftSpecifikation",
@@ -519,7 +528,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsspecifikationReference
             {
               softType = "FTAnläggningsspecifikation",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "ReservkraftSpecifikation"
             }
           },
           //numericSet = new ReservkraftSpecifikationNumericSet
@@ -537,14 +546,30 @@ namespace DataMappingExperiments.DataMapping
           //},
           stringSet = new ReservkraftSpecifikationStringSet
           {
-            faser = new ReservkraftSpecifikation_faser()
+            faser = new ReservkraftSpecifikation_faser
             {
-              generalProperty = new faser()
+              generalProperty = new faser
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "faser"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = bisTeknikbyggnad.HjälpkraftFaser
             },
-            säkring = new ReservkraftSpecifikation_säkring()
+            säkring = new ReservkraftSpecifikation_säkring
+            {
+              generalProperty = new säkring
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "säkring"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = bisTeknikbyggnad.HjälpkraftSäkring
+            }
           }
         };
         reservkraftSpecifikation.id = reservkraftSpecifikation.name + suffix;
+
         var reservelverkProdukt = new ReservelverkProdukt
         {
           name = "ReservelverkProdukt",
@@ -557,12 +582,77 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = Program.SelectedDataContainer.Name
+              instanceRef = "ReservelverkProdukt"
             }
-          }
+          },
+          numericSet = new ReservelverkProduktNumericSet
+          {
+            kapacitet = new ReservelverkProdukt_kapacitet
+            {
+              generalProperty = new kapacitet
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "kapacitet"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              Unit = new kVA
+              {
+                softType = _SoftTypeUnit,
+                instanceRef = "kVA"
+              },
+              value = bisTeknikbyggnad.ReservelverkStorlek
+            },
+            tankvolym = new ReservelverkProdukt_tankvolym
+            {
+              generalProperty = new tankvolym
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "tankvolym"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              Unit = new l
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "l"
+              },
+              value = bisTeknikbyggnad.ReservelverkTankvolym
+            }
+          },
+          stringSet = new ReservelverkProduktStringSet()
         };
-        var reservelverkIndivid = new ReservelverkIndivid();
-        var batteriSpecifikation = new BatteriSpecifikation();
+        reservelverkProdukt.id = reservelverkProdukt.name + suffix;
+
+        var batteriSpecifikation = new BatteriSpecifikation
+        {
+          name = "BatteriSpecifikation",
+          notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
+          företeelsetyp = new ClassificationReference_Anläggningsspecifikation_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsspecifikationReference
+            {
+              softType = "FTAnläggningsspecifikation",
+              instanceRef = "BatteriSpecifikation"
+            }
+          },
+          numericSet = new BatteriSpecifikationNumericSet
+          {
+            kapacitet = new BatteriSpecifikation_kapacitet
+            {
+              generalProperty = new kapacitet
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "kapacitet"
+              }
+            },
+            spänning = new BatteriSpecifikation_spänning()
+          },
+          stringSet = new BatteriSpecifikationStringSet()
+        };
+        reservkraftSpecifikation.id = reservkraftSpecifikation.name + suffix;
+
         var batteriProdukt = new BatteriProdukt();
         var batteriIndivid = new BatteriIndivid();
         var funktionellKlimatanläggning = new FunktionellKlimatanläggning();
@@ -575,6 +665,7 @@ namespace DataMappingExperiments.DataMapping
 
         //Not sure if used
         var teknikbyggnadIndivid = new TeknikbyggnadIndivid();
+        var reservelverkIndivid = new ReservelverkIndivid();
 
         ExtraCounter++;
       }
