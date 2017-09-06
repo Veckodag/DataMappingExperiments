@@ -83,11 +83,15 @@ namespace DataMappingExperiments.DataMapping
       foreach (BIS_Räl bisRäl in formattedBisList)
       {
         var suffix = bisRäl.ObjektTypNummer + bisRäl.ObjektNummer + ExtraCounter;
+        //Noterings fix
+        //if (string.IsNullOrEmpty(bisRäl.Notering))
+        //{
+        //  bisRäl.Notering = "Ingen notering";
+        //}
         //Allt nytt
         var rälSpec = new Rälspecifikation
         {
           name = "Rälspecifikation",
-          notering = bisRäl.Notering,
           versionId = _VersionId,
           numericSet = new RälspecifikationNumericSet(),
           stringSet = new RälspecifikationStringSet
@@ -100,28 +104,27 @@ namespace DataMappingExperiments.DataMapping
                 softType = _SoftTypeProperty,
                 instanceRef = "typ"
               },
-              //TODO: Vikt + Rälprofil(Rälmodell) + hårdhet; Don't know where it comes from
-              //value = null,
-              JSonMapToPropertyName = _JsonMapToValue
+              JSonMapToPropertyName = _JsonMapToValue,
+              value = "?"
             }
+            //TODO: Vikt + Rälprofil(Rälmodell) + hårdhet; Don't know where it comes from
           },
           företeelsetyp = new ClassificationReference_Anläggningsspecifikation_företeelsetyp
           {
             @class = new FTAnläggningsspecifikationReference
             {
               softType = "FTAnläggningsspecifikation",
-              instanceRef = "FTAnläggningsspecifikationEntrydefaultIn"
+              instanceRef = "Rälspecifikation"
             },
             startSpecified = false,
             endSpecified = false
-          }
+          },
+          id = "Rälspecifikation" + suffix
         };
-        rälSpec.id = rälSpec.name + suffix;
 
         var rälprodukt = new Rälprodukt
         {
-          name = "RälProdukt",
-          notering = bisRäl.Notering,
+          name = "Rälprodukt",
           versionId = _VersionId,
           numericSet = new RälproduktNumericSet
           {
@@ -159,17 +162,16 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+              instanceRef = "Rälprodukt"
             }
-          }
+          },
+          id = "Rälprodukt" + suffix
         };
-        rälprodukt.id = rälprodukt.name + suffix;
 
         var rälindivid = new Rälindivid
         {
           startSpecified = false,
           endSpecified = false,
-          notering = bisRäl.Notering,
           versionId = _VersionId,
           name = "Rälindivid",
           numericSet = new RälindividNumericSet(),
@@ -193,18 +195,18 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTBulkvaraReference
             {
               softType = "FTBulkvara",
-              instanceRef = "FTBulkvaraEntrydefaultIn"
+              instanceRef = "Rälindivid"
             }
-          }
+          },
+          id = "Rälindivid" + suffix
         };
-        rälindivid.id = rälindivid.name + suffix;
 
         //ENTRY INSTANCES
         var rälAnläggningsSpecifikation = new AnläggningsspecifikationEntrydefaultIn
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "RälAnläggningsspecifikationEntrydefaultIn" + suffix,
+          id = "RälAnläggningsspecifikation" + suffix,
           data = rälSpec
         };
         rälAnläggningsSpecifikationer.Add(rälAnläggningsSpecifikation);
@@ -213,7 +215,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "RälAnläggningsproduktEntrydefaultIn" + suffix,
+          id = "RälAnläggningsprodukt" + suffix,
           data = rälprodukt
         };
         rälAnläggningsProdukter.Add(rälAnläggningsProdukt);
@@ -222,7 +224,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "RälBulkvaraEntrydefaultIn" + suffix,
+          id = "RälBulkvara" + suffix,
           data = rälindivid
         };
         rälBulkvaror.Add(rälBulkvara);
@@ -254,12 +256,90 @@ namespace DataMappingExperiments.DataMapping
       containerSoftypes.Add(anläggningsProduktSoftType);
       containerSoftypes.Add(bulkvaraSoftType);
       containerSoftypes.AddRange(CreateSupplementarySoftypes());
-      containerSoftypes.AddRange(CreateKeyReferences());
+      //New in this file
+      containerSoftypes.AddRange(CreateFTKeyReferenceSoftTypes());
+      // OLD BIG METHOD IN MAPPER THAT IS NOT USED ANYMORE
+      //containerSoftypes.AddRange(CreateKeyReferences());
 
       container.softTypes = containerSoftypes.ToArray();
       return container;
     }
 
+    public override List<SoftType> CreateFTKeyReferenceSoftTypes()
+    {
+      var softtypeList = new List<SoftType>();
+      //FT A-Spec, A-Produkt och Bulkvara
+
+      //FTAnläggningsProdukt
+      var FTAnläggningsProdukt = new FTAnläggningsproduktEntrydefaultIn
+      {
+        Array = true,
+        id = "FTAnläggningsprodukt",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTAnläggningsproduktdefaultIn
+        {
+          id = "Rälprodukt",
+          name = "Läst från fil BIS_Räl - datadefinition infomod 2p0.xlsm"
+        }
+      };
+      var FTAnläggningsproduktInstances = new List<FTAnläggningsproduktInstances> { FTAnläggningsProdukt };
+      var FTAnläggningsProduktSoftType = new SoftType_FTAnläggningsprodukt
+      {
+        Array = true,
+        id = "FTAnläggningsprodukt",
+        instances = FTAnläggningsproduktInstances.ToArray()
+      };
+      softtypeList.Add(FTAnläggningsProduktSoftType);
+      //FTAnläggningsProdukt END
+
+      //FTAnläggningsspecifikation
+      var FTAnläggningsspecifikationInstance = new FTAnläggningsspecifikationEntrydefaultIn
+      {
+        Array = true,
+        id = "Rälspecifikation",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTAnläggningsspecifikationdefaultIn
+        {
+          id = "Rälspecifikation",
+          name = "Läst från fil BIS_Räl - datadefinition infomod 2p0.xlsm"
+        }
+      };
+      var FTAnläggningsspecifikationInstances = new List<FTAnläggningsspecifikationInstances> { FTAnläggningsspecifikationInstance };
+      var FTAnläggningsspecifikationSoftType = new SoftType_FTAnläggningsspecifikation
+      {
+        Array = true,
+        id = "FTAnläggningsspecifikation",
+        instances = FTAnläggningsspecifikationInstances.ToArray()
+      };
+      softtypeList.Add(FTAnläggningsspecifikationSoftType);
+      //FTAnläggningsspecifikation END
+
+      //FTBulkvara
+      var FTBulkvaraInstance = new FTBulkvaraEntrydefaultIn
+      {
+        Array = true,
+        id = "FTBulkvara",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTBulkvaradefaultIn
+        {
+          id = "Rälindivid",
+          name = "Läst från fil BIS_Räl - datadefinition infomod 2p0.xlsm"
+        }
+      };
+      var FTBulkvaraInstances = new List<FTBulkvaraInstances> { FTBulkvaraInstance };
+      var FTBulkvaraSoftType = new SoftType_FTBulkvara
+      {
+        Array = true,
+        id = "FTBulkvara",
+        instances = FTBulkvaraInstances.ToArray()
+      };
+      softtypeList.Add(FTBulkvaraSoftType);
+      //FTBulkvara END
+
+      return softtypeList;
+    }
+
+    #region RälPropertyTranslators
     private Rälprodukt_tillverkningsprocess SkapaTillverkningsProcess(BIS_Räl bisRäl, Rälprodukt_tillverkningsprocess rälProcess)
     {
       rälProcess.generalProperty = new tillverkningsprocess
@@ -353,6 +433,7 @@ namespace DataMappingExperiments.DataMapping
 
     private Rälspecifikation_skarvTyp SkapaSkarvTyp(BIS_Räl bisRäl, Rälspecifikation_skarvTyp rälSkarvTyp)
     {
+
       rälSkarvTyp.generalProperty = new skarvTyp
       {
         softType = _SoftTypeProperty,
@@ -377,5 +458,6 @@ namespace DataMappingExperiments.DataMapping
       }
       return rälSkarvTyp;
     }
+    #endregion
   }
 }

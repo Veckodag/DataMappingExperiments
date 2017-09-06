@@ -172,7 +172,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           }
         };
@@ -204,7 +204,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTFunktionellAnläggningReference
             {
               softType = "FTFunktionellAnläggning",
-              instanceRef = "FTFunktionellAnläggningEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           }
         };
@@ -241,7 +241,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           }
         };
@@ -260,7 +260,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = "FTStyckevaraEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           },
           planeradIndivid = new ItemVersionReference_Styckevara_planeradIndivid
@@ -288,7 +288,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           }
         };
@@ -307,7 +307,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = "FTStyckevaraEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           }
         };
@@ -341,7 +341,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           }
         };
@@ -360,7 +360,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = "FTStyckevaraEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           }
         };
@@ -401,7 +401,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           }
         };
@@ -420,7 +420,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = "FTStyckevaraEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           }
         };
@@ -461,7 +461,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = "FTStyckevaraEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           }
         };
@@ -545,12 +545,22 @@ namespace DataMappingExperiments.DataMapping
 
       //Adds the extra softypes needed
       containerSoftTypes.AddRange(CreateSupplementarySoftypes());
-      containerSoftTypes.AddRange(CreateKeyReferences());
+      //containerSoftTypes.AddRange(CreateKeyReferences());
 
       //Last step is to prepare the container for serialization
       container.softTypes = containerSoftTypes.ToArray();
       return container;
     }
+
+    public override List<SoftType> CreateFTKeyReferenceSoftTypes()
+    {
+      var softtypeList = new List<SoftType>();
+      //4 Anläggningsprodukter, 1 FunktionellAnläggning & 4 styckevaror
+
+      return softtypeList;
+    }
+
+    #region PlattformPropertyTranslators
     private Plattformfunktion_harSkyddsräcken SkapaPlattformSkyddsräcken(BIS_Plattform bisPlattform, Plattformfunktion_harSkyddsräcken plattformSkyddsräcken)
     {
       plattformSkyddsräcken.generalProperty = new harSkyddsräcken
@@ -685,5 +695,6 @@ namespace DataMappingExperiments.DataMapping
       plattformBeläggning.JSonMapToPropertyName = _JsonMapToValue;
       return plattformBeläggning;
     }
+    #endregion
   }
 }

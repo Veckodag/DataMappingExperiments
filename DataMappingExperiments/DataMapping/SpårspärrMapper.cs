@@ -101,5 +101,10 @@ namespace DataMappingExperiments.DataMapping
     {
       throw new NotImplementedException();
     }
+
+    public override List<SoftType> CreateFTKeyReferenceSoftTypes()
+    {
+      throw new NotImplementedException();
+    }
   }
 }

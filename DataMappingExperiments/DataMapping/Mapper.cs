@@ -22,6 +22,7 @@ namespace DataMappingExperiments.DataMapping
     public int ExtraCounter { get; set; } = 1;
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);
+    public abstract List<SoftType> CreateFTKeyReferenceSoftTypes();
 
     /// <summary>
     /// Writes out the XML file and entry point for JSON conversion
@@ -187,7 +188,7 @@ namespace DataMappingExperiments.DataMapping
         generalProperty = new PropertyReference
         {
           softType = "Property",
-          instanceRef = "PropertyEntrydefaultIn"
+          instanceRef = Program.SelectedDataContainer.Name
         }
       };
 
@@ -204,27 +205,6 @@ namespace DataMappingExperiments.DataMapping
       };
       //KEYREFS
 
-      //Property
-      var propertyInstance = new PropertyEntrydefaultIn
-      {
-        Array = true,
-        id = "PropertyEntrydefaultIn",
-        inputSchemaRef = _InputSchemaRef,
-        data = new PropertydefaultIn
-        {
-          id = "Property"
-        }
-      };
-      var propertyInstances = new List<PropertyInstances> { propertyInstance };
-      var propertySoftType = new SoftType_Property
-      {
-        Array = true,
-        id = "Property",
-        instances = propertyInstances.ToArray()
-      };
-      softtypeList.Add(propertySoftType);
-      //Property END
-
       //Anläggningsprodukt
       var produktInstance = new AnläggningsproduktEntrydefaultIn
       {
@@ -240,7 +220,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsproduktReference
             {
               softType = "FTAnläggningsprodukt",
-              instanceRef = "FTAnläggningsproduktEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             },
             startSpecified = false,
             endSpecified = false
@@ -279,7 +259,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTBulkvaraReference
             {
               softType = "FTBulkvara",
-              instanceRef = "FTBulkvaraEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           },
           datainsamling = new PropertyValueAssignment_Bulkvara_datainsamling
@@ -352,7 +332,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTStyckevaraReference
             {
               softType = "FTStyckevara",
-              instanceRef = "FTStyckevaraEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           },
           planeradIndivid = new ItemVersionReference_Styckevara_planeradIndivid
@@ -425,7 +405,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsspecifikationReference
             {
               softType = "FTAnläggningsspecifikation",
-              instanceRef = "FTAnläggningsspecifikationEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           },
           ursprung = new PropertyValueAssignment_Anläggningsspecifikation_ursprung
@@ -475,7 +455,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTKonstateradTillståndsindividReference
             {
               softType = "FTKonstateradTillståndsindivid",
-              instanceRef = "FTKonstateradTillståndsindividEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           },
           ursprung = new PropertyValueAssignment_KonstateradTillståndsindivid_ursprung
@@ -536,7 +516,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTPlaneradIndividReference
             {
               softType = "FTPlaneradIndivid",
-              instanceRef = "FTPlaneradIndividEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           },
           ursprung = new PropertyValueAssignment_PlaneradIndivid_ursprung
@@ -591,7 +571,7 @@ namespace DataMappingExperiments.DataMapping
             @class = new FTAnläggningsutrymmeReference
             {
               softType = "FTAnläggningsutrymme",
-              instanceRef = "FTAnläggningsutrymmeEntrydefaultIn"
+              instanceRef = Program.SelectedDataContainer.Name
             }
           },
           ursprung = new PropertyValueAssignment_Anläggningsutrymme_ursprung
@@ -617,12 +597,17 @@ namespace DataMappingExperiments.DataMapping
       };
       softtypeList.Add(anläggningsutrymmeSoftType);
       //Anläggningsutrymme END
+      return softtypeList;
+    }
 
+    internal List<SoftType> CreateFeatureTypesSoftTypes()
+    {
+      var softtypeList = new List<SoftType>();
       //FTFunktionellAnläggning
       var FTFunktionellAnläggningInstance = new FTFunktionellAnläggningEntrydefaultIn
       {
         Array = true,
-        id = "FTFunktionellAnläggningEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTFunktionellAnläggningdefaultIn
         {
@@ -646,7 +631,7 @@ namespace DataMappingExperiments.DataMapping
       var FTGeografiskplaceringsreferensInstance = new FTGeografiskPlaceringsreferensEntrydefaultIn
       {
         Array = true,
-        id = "FTGeografiskPlaceringsreferensEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTGeografiskPlaceringsreferensdefaultIn
         {
@@ -668,7 +653,7 @@ namespace DataMappingExperiments.DataMapping
       var FTAnläggningsProdukt = new FTAnläggningsproduktEntrydefaultIn
       {
         Array = true,
-        id = "FTAnläggningsproduktEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTAnläggningsproduktdefaultIn
         {
@@ -690,7 +675,7 @@ namespace DataMappingExperiments.DataMapping
       var FTStyckevaraInstance = new FTStyckevaraEntrydefaultIn
       {
         Array = true,
-        id = "FTStyckevaraEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTStyckevaradefaultIn
         {
@@ -713,7 +698,7 @@ namespace DataMappingExperiments.DataMapping
       var FTDokumentInstance = new FTDokumentEntrydefaultIn
       {
         Array = true,
-        id = "FTDokumentEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTDokumentdefaultIn
         {
@@ -735,7 +720,7 @@ namespace DataMappingExperiments.DataMapping
       var FTKonstateradTillståndsindividInstance = new FTKonstateradTillståndsindividEntrydefaultIn
       {
         Array = true,
-        id = "FTKonstateradTillståndsindividEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTKonstateradTillståndsindividdefaultIn
         {
@@ -757,7 +742,7 @@ namespace DataMappingExperiments.DataMapping
       var FTBulkvaraInstance = new FTBulkvaraEntrydefaultIn
       {
         Array = true,
-        id = "FTBulkvaraEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTBulkvaradefaultIn
         {
@@ -779,7 +764,7 @@ namespace DataMappingExperiments.DataMapping
       var FTAnläggningsspecifikationInstance = new FTAnläggningsspecifikationEntrydefaultIn
       {
         Array = true,
-        id = "FTAnläggningsspecifikationEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTAnläggningsspecifikationdefaultIn
         {
@@ -801,7 +786,7 @@ namespace DataMappingExperiments.DataMapping
       var FTAnläggningsutrymmeInstance = new FTAnläggningsutrymmeEntrydefaultIn
       {
         Array = true,
-        id = "FTAnläggningsutrymmeEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTAnläggningsutrymmedefaultIn
         {
@@ -823,7 +808,7 @@ namespace DataMappingExperiments.DataMapping
       var FTMaterialkompositInstance = new FTMaterialkompositEntrydefaultIn
       {
         Array = true,
-        id = "FTMaterialkompositEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTMaterialkompositdefaultIn
         {
@@ -845,7 +830,7 @@ namespace DataMappingExperiments.DataMapping
       var FTPlaneradIndividInstance = new FTPlaneradIndividEntrydefaultIn
       {
         Array = true,
-        id = "FTPlaneradIndividEntrydefaultIn",
+        id = Program.SelectedDataContainer.Name,
         inputSchemaRef = _InputSchemaRef,
         data = new FTPlaneradIndividdefaultIn
         {
