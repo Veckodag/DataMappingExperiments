@@ -75,6 +75,7 @@
     <Compile Include="BisObjekt\BIS_Trumma.cs" />
     <Compile Include="BisObjekt\BIS_TågOchLokvärmeanläggning.cs" />
     <Compile Include="DataMapping\PlattformMapper.cs" />
+    <Compile Include="DataMapping\SkarvMapper.cs" />
     <Compile Include="DataMapping\SpårspärrMapper.cs" />
     <Compile Include="DataMapping\TeknikbyggnadMapper.cs" />
     <Compile Include="Obsolete\Plattform.cs" />
@@ -105,6 +106,7 @@
     </None>
     <None Include="Testdata\Fln-Blg Plattformar Detaljlägen.xlsx" />
     <None Include="Testdata\Fln-Blg Räl Detaljlägen.xlsx" />
+    <None Include="Testdata\Fln-Blg Skarv Detaljlägen.xlsx" />
     <None Include="Testdata\Fln-Blg Spårspärrar Detaljlägen.xlsx" />
     <None Include="Testdata\Fln-Blg Teknikbyggnader Detaljlägen.xlsx" />
   </ItemGroup>

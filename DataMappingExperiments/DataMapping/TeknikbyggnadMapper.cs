@@ -645,6 +645,12 @@ namespace DataMappingExperiments.DataMapping
               {
                 softType = _SoftTypeProperty,
                 instanceRef = "kapacitet"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              Unit = new Ah
+              {
+                softType = _SoftTypeUnit,
+                instanceRef = "Ah"
               }
             },
             spänning = new BatteriSpecifikation_spänning()

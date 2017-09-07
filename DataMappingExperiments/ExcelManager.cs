@@ -65,7 +65,7 @@ namespace DataMappingExperiments
         case MapperType.Kanalisation:
           return new BIS_Kanalisation();
         case MapperType.Skarv:
-          return new BIS_Kanalisation();
+          return new BIS_Skarv();
         case MapperType.Trumma:
           return new BIS_Trumma();
         case MapperType.TågOchLokVärmeanläggning:
@@ -77,6 +77,7 @@ namespace DataMappingExperiments
     //Sets and instatiates the mappingtype property on the Mapper
     private Mapper GetMappingType(MapperType mapperType)
     {
+      //TODO: Add the other mapping classes
       switch (mapperType)
       {
         case MapperType.Plattform:
@@ -87,8 +88,9 @@ namespace DataMappingExperiments
           return new SpårspärrMapper();
         case MapperType.Teknikbyggnad:
           return new TeknikbyggnadMapper();
-        case MapperType.Kanalisation:
         case MapperType.Skarv:
+          return new SkarvMapper();
+        case MapperType.Kanalisation:
         case MapperType.Trumma:
         case MapperType.TågOchLokVärmeanläggning:
           return null;

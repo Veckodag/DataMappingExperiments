@@ -123,7 +123,8 @@ namespace DataMappingExperiments.DataMapping
     {
       var unitlist = new List<UnitInstances>();
       //The actual values could come from a config file.
-      string[] unitNameString = { "mm", "Procent", "Grader", "st", "m", "kVA", "l" };
+      string[] unitNameString = 
+        { "mm", "Procent", "Grader", "st", "m", "kVA", "l", "Ah" };
 
       foreach (var unitName in unitNameString)
       {
@@ -153,7 +154,7 @@ namespace DataMappingExperiments.DataMapping
         "harSkyddsräcken", "harPlattformsutrustning", "harLedstråk", "harSkyddzon", "harFotsteg", "typ",
         "profiltyp", "vikt", "revideradKlassifikation", "tillverkningsprocess", "stålsort", "skarvTyp",
         "SystemID", "åskskyddsnivå", "faser", "skyddstransformatorKapacitet", "säkring", "OrtsNätsavtal",
-        "kapacitet", "tankvolym"
+        "kapacitet", "tankvolym", "längdPassräl", "hårdgjord", "partikelmagnetposition", "avståndFrånSkarv"
       };
 
       foreach (var propertyName in properties)
