@@ -15,11 +15,10 @@
     public string LokalfrigivBarIndivid { get; set; }
     public string Återgående { get; set; }
     public string FördFörÅtergång { get; set; }
-
     public string Nivå { get; set; }
     public string Komponent { get; set; }
     public string Position { get; set; }
-    public string ModellTyp { get; set; }
+    public string ModellDefinition { get; set; }
     public string Artnr { get; set; }
     public string Inldat { get; set; }
   }

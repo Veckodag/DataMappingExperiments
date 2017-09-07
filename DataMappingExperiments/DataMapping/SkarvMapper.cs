@@ -205,7 +205,6 @@ namespace DataMappingExperiments.DataMapping
     public override List<SoftType> CreateFTKeyReferenceSoftTypes()
     {
       var softtypeList = new List<SoftType>();
-      // 1 GpR, 2  A-Prod, 2 Styck
 
       //FTGeografiskPlaceringsReferens
       var isolerskarv = new FTGeografiskPlaceringsreferensEntrydefaultIn
@@ -448,7 +447,7 @@ namespace DataMappingExperiments.DataMapping
           partikelmagnetposition = new PartikelmagnetIndivid_partikelmagnetposition
           {
             Array = true,
-            value = skarv.Position,
+            value = string.IsNullOrEmpty(skarv.Position) ? "?" : skarv.Position,
             generalProperty = new partikelmagnetposition
             {
               instanceRef = "partikelmagnetposition",

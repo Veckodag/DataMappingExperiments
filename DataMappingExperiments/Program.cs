@@ -15,7 +15,7 @@ namespace DataMappingExperiments
     static void Main(string[] args)
     {
       //Set the datatype once here
-      SelectedDataContainer = DataContainerType("skarv");
+      SelectedDataContainer = DataContainerType("spårspärr");
       sourceFile = StringManager.GetFilePathSetting(SelectedDataContainer.Input);
       xmlOutput = StringManager.GetFilePathSetting(SelectedDataContainer.Output);
       StartManager(sourceFile, SelectedDataContainer.MapperType);
@@ -49,7 +49,6 @@ namespace DataMappingExperiments
           return new DataContainer { Input = "TeknikbyggnadInput", Output = "TeknikbyggnadOutput", Json = "TeknikbyggnadJson", MapperType = MapperType.Teknikbyggnad, Name = "Teknikbyggnad"};
         case "skarv":
           return new DataContainer { Input = "SkarvInput", Output = "SkarvOutput", Json = "SkarvJson", MapperType = MapperType.Skarv, Name = "Skarv" };
-        //The cases below are not fully implemented yet
         case "spårspärr":
           return new DataContainer { Input = "SpårspärrInput", Output = "SpårspärrOutput", Json = "SpårspärrJson", MapperType = MapperType.Spårspärr, Name = "Spårspärr"};
         default:

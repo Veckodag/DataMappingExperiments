@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
 

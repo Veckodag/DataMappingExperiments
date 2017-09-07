@@ -154,7 +154,10 @@ namespace DataMappingExperiments.DataMapping
         "harSkyddsräcken", "harPlattformsutrustning", "harLedstråk", "harSkyddzon", "harFotsteg", "typ",
         "profiltyp", "vikt", "revideradKlassifikation", "tillverkningsprocess", "stålsort", "skarvTyp",
         "SystemID", "åskskyddsnivå", "faser", "skyddstransformatorKapacitet", "säkring", "OrtsNätsavtal",
-        "kapacitet", "tankvolym", "längdPassräl", "hårdgjord", "partikelmagnetposition", "avståndFrånSkarv"
+        "kapacitet", "tankvolym", "längdPassräl", "hårdgjord", "partikelmagnetposition", "avståndFrånSkarv",
+        "ID-ICONIS", "TLS-beteckning", "TLS-id", "TLS-terminal", "TLS-typ", "TLS-ursprung", "spårspärrNr",
+        "Centralt_x0020_omläggningsbar", "Går_x0020_att_x0020_spärra_x0020_i_x0020_ställverk", "Återgående",
+        "Lokalfrigivningsbar_x0020_individuellt"
       };
 
       foreach (var propertyName in properties)
@@ -627,7 +630,6 @@ namespace DataMappingExperiments.DataMapping
         instances = FTFunktionellAnläggningInstances.ToArray()
       };
       softtypeList.Add(FTFunktionellAnläggningSoftType);
-
       //FTFunktionellAnläggning END
 
       //FTGeografiskPlaceringsReferens
