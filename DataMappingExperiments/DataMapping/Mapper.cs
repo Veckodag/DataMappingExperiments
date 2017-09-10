@@ -19,7 +19,6 @@ namespace DataMappingExperiments.DataMapping
     internal string _InputSchemaRef = "defaultIn";
     internal string _VersionId = "001";
     public abstract MapperType MapperType { get; set; }
-    //TODO: Change so it always initialize at 1
     public int ExtraCounter { get; set; } = 1;
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);
@@ -124,7 +123,7 @@ namespace DataMappingExperiments.DataMapping
       var unitlist = new List<UnitInstances>();
       //The actual values could come from a config file.
       string[] unitNameString = 
-        { "mm", "Procent", "Grader", "st", "m", "kVA", "l", "Ah" };
+        { "mm", "Procent", "Grader", "st", "m", "kVA", "l", "Ah", "V", "h" };
 
       foreach (var unitName in unitNameString)
       {
@@ -157,7 +156,9 @@ namespace DataMappingExperiments.DataMapping
         "kapacitet", "tankvolym", "längdPassräl", "hårdgjord", "partikelmagnetposition", "avståndFrånSkarv",
         "ID-ICONIS", "TLS-beteckning", "TLS-id", "TLS-terminal", "TLS-typ", "TLS-ursprung", "spårspärrNr",
         "Centralt_x0020_omläggningsbar", "Går_x0020_att_x0020_spärra_x0020_i_x0020_ställverk", "Återgående",
-        "Lokalfrigivningsbar_x0020_individuellt"
+        "drifttid", "kapacitet", "Lokalfrigivningsbar_x0020_individuellt", "spänning", "effektförbrukning",
+        "minKapacitet"
+
       };
 
       foreach (var propertyName in properties)

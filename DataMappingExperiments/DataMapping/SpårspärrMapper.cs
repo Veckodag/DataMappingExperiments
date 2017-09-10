@@ -138,7 +138,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "spårspärr" + suffix,
+          id = "Spårspärr" + suffix,
           data = spårspärr
         };
         geografiskaplaceringsreferenser.Add(spårspärrEntry);
@@ -147,7 +147,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "funktionellspårspärr" + suffix,
+          id = "FunktionellSpårspärr" + suffix,
           data = funktionellspårspärr
         };
         funktionellaanläggningar.Add(funktionellspårspärrEntry);
@@ -156,7 +156,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "spårspärrprodukt" + suffix,
+          id = "SpårSpärrProdukt" + suffix,
           data = spårspärrprodukt
         };
         anläggningsprodukter.Add(spårspärrproduktEntry);
@@ -165,7 +165,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "spårspärrklotsprodukt" + suffix,
+          id = "SpårspärrklotsProdukt" + suffix,
           data = spårspärrklotsprodukt
         };
         anläggningsprodukter.Add(spårspärrklotsproduktEntry);
@@ -174,7 +174,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "spårspärrdrivprodukt" + suffix,
+          id = "SpårspärrdrivProdukt" + suffix,
           data = spårspärrdrivprodukt
         };
         anläggningsprodukter.Add(spårspärrdrivproduktEntry);
@@ -183,7 +183,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "elmotorprodukt" + suffix,
+          id = "ElmotorProdukt" + suffix,
           data = elmotorprodukt
         };
         anläggningsprodukter.Add(elmotorproduktEntry);
@@ -192,7 +192,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "växelställprodukt" + suffix,
+          id = "VäxelställProdukt" + suffix,
           data = växelställprodukt
         };
         anläggningsprodukter.Add(växelställproduktEntry);
@@ -201,7 +201,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "kontrollanordningsprodukt" + suffix,
+          id = "KontrollanordningsProdukt" + suffix,
           data = kontrollanordningsprodukt
         };
         anläggningsprodukter.Add(kontrollanordningsproduktEntry);
@@ -210,7 +210,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "staggropsvärmeprodukt" + suffix,
+          id = "StaggropsvärmeProdukt" + suffix,
           data = staggropsvärmeprodukt
         };
         anläggningsprodukter.Add(staggropsvärmeproduktEntry);
@@ -219,7 +219,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "spårspärrklotsindivid" + suffix,
+          id = "SpårspärrklotsIndivid" + suffix,
           data = spårspärrklotsindivid
         };
         styckevaror.Add(spårspärrklotsindividEntry);
@@ -229,7 +229,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "spårrspärrindivid" + suffix,
+          id = "SpårrspärrIndivid" + suffix,
           data = spårrspärrindivid
         };
         styckevaror.Add(spårrspärrindividEntry);
@@ -238,7 +238,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "spårspärrdrivindivid" + suffix,
+          id = "SpårspärrdrivIndivid" + suffix,
           data = spårspärrdrivindivid
         };
         styckevaror.Add(spårspärrdrivindividEntry);
@@ -247,7 +247,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "elmotorindivid" + suffix,
+          id = "ElmotorIndivid" + suffix,
           data = elmotorindivid
         };
         styckevaror.Add(elmotorindividEntry);
@@ -256,7 +256,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "växelställindivid" + suffix,
+          id = "VäxelställIndivid" + suffix,
           data = växelställindivid
         };
         styckevaror.Add(växelställindividEntry);
@@ -265,7 +265,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "kontrollanordningsindivid" + suffix,
+          id = "KontrollanordningsIndivid" + suffix,
           data = kontrollanordningsindivid
         };
         styckevaror.Add(kontrollanordningsindividEntry);
@@ -274,7 +274,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "staggropsvärmeindivid" + suffix,
+          id = "StaggropsvärmeIndivid" + suffix,
           data = staggropsvärmeindivid
         };
         styckevaror.Add(staggropsvärmeindividEntry);

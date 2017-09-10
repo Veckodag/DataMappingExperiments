@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
-using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace DataMappingExperiments.DataMapping
 {
@@ -151,15 +149,22 @@ namespace DataMappingExperiments.DataMapping
       var container = new Container();
       var containerSoftypes = new List<SoftType>();
 
+      //List of non-FT softypes
+      var geografiskaPlaceringar = new List<GeografiskPlaceringsreferensInstances>();
+      var specifikationer = new List<AnläggningsspecifikationInstances>();
+      var produkter = new List<AnläggningsproduktInstances>();
+      var funktionellaAnläggningar = new List<FunktionellAnläggningInstances>();
+      var material = new List<MaterialkompositInstances>();
+      var styckevaror = new List<StyckevaraInstances>();
+
       foreach (BIS_Teknikbyggnad bisTeknikbyggnad in formattedList)
       {
         var suffix = bisTeknikbyggnad.ObjektTypNummer + bisTeknikbyggnad.ObjektNummer + ExtraCounter;
 
         //Noterings fix
-        if (string.IsNullOrEmpty(bisTeknikbyggnad.Notering))
-        {
-          bisTeknikbyggnad.Notering = "Ingen notering";
-        }
+        bisTeknikbyggnad.Notering = string.IsNullOrEmpty(bisTeknikbyggnad.Notering)
+          ? "Ingen Notering"
+          : bisTeknikbyggnad.Notering;
 
         var funktionellTeknikbyggnadssystem = new FunktionellTeknikbyggnadssystem
         {
@@ -194,6 +199,7 @@ namespace DataMappingExperiments.DataMapping
         };
 
         funktionellTeknikbyggnadssystem.id = funktionellTeknikbyggnadssystem.name + suffix;
+
         var teknikbyggnad = new Teknikbyggnad
         {
           name = "Teknikbyggnad",
@@ -531,19 +537,39 @@ namespace DataMappingExperiments.DataMapping
               instanceRef = "ReservkraftSpecifikation"
             }
           },
-          //numericSet = new ReservkraftSpecifikationNumericSet
-          //{
-          //  drifttid = new ReservkraftSpecifikation_drifttid
-          //  {
-          //    generalProperty = new drifttid
-          //    {
-          //      softType = "Property",
-          //      instanceRef = "drifttid"
-          //    },
-          //    JSonMapToPropertyName = _JsonMapToValue,
-          //  },
-          //  kapacitet = new ReservkraftSpecifikation_kapacitet()
-          //},
+          numericSet = new ReservkraftSpecifikationNumericSet
+          {
+            drifttid = new ReservkraftSpecifikation_drifttid
+            {
+              generalProperty = new drifttid
+              {
+                softType = "Property",
+                instanceRef = "drifttid"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              Unit = new h
+              {
+                softType = _SoftTypeUnit,
+                instanceRef = "h"
+              },
+              value = 0
+            },
+            kapacitet = new ReservkraftSpecifikation_kapacitet
+            {
+              generalProperty = new kapacitet
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "kapacitet"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              Unit = new kVA
+              {
+                softType = _SoftTypeUnit,
+                instanceRef = "kVA"
+              },
+              value = 0
+            }
+          },
           stringSet = new ReservkraftSpecifikationStringSet
           {
             faser = new ReservkraftSpecifikation_faser
@@ -651,37 +677,628 @@ namespace DataMappingExperiments.DataMapping
               {
                 softType = _SoftTypeUnit,
                 instanceRef = "Ah"
-              }
+              },
+              //Finns inget värde?
+              value = 0
             },
-            spänning = new BatteriSpecifikation_spänning()
+            spänning = new BatteriSpecifikation_spänning
+            {
+              generalProperty = new spänning
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "spänning"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              Unit = new V
+              {
+                softType = _SoftTypeUnit,
+                instanceRef = "V"
+              },
+              //Finns inget värde
+              value = 0
+            }
           },
           stringSet = new BatteriSpecifikationStringSet()
         };
-        reservkraftSpecifikation.id = reservkraftSpecifikation.name + suffix;
+        batteriSpecifikation.id = batteriSpecifikation.name + suffix;
 
-        var batteriProdukt = new BatteriProdukt();
-        var batteriIndivid = new BatteriIndivid();
-        var funktionellKlimatanläggning = new FunktionellKlimatanläggning();
-        var klimatanläggningProdukt = new KlimatanläggningProdukt();
-        var klimatanläggningIndivid = new KlimatanläggningIndivid();
-        var funktionellups = new FunktionellUPS();
-        var upsSpecifikation = new UPSSpecifikation();
-        var upsProdukt = new UPSProdukt();
-        var upsIndivid = new UPSIndivid();
+        var batteriProdukt = new BatteriProdukt
+        {
+          name = "BatteriProdukt",
+          notering = bisTeknikbyggnad.Notering,
+          versionId = _VersionId,
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "BatteriProdukt"
+            }
+          },
+          numericSet = new BatteriProduktNumericSet
+          {
+            kapacitet = new BatteriProdukt_kapacitet
+            {
+              Array = true,
+              JSonMapToPropertyName = _JsonMapToValue,
+              generalProperty = new kapacitet
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "kapacitet"
+              },
+              Unit = new Ah
+              {
+                softType = _SoftTypeUnit,
+                instanceRef = "Ah"
+              },
+              value = 0
+            }
+          },
+          stringSet = new BatteriProduktStringSet()
+        };
+        batteriProdukt.id = batteriProdukt.name + suffix;
 
-        //Not sure if used
-        var teknikbyggnadIndivid = new TeknikbyggnadIndivid();
-        var reservelverkIndivid = new ReservelverkIndivid();
+        var batteriIndivid = new BatteriIndivid
+        {
+          name = "BatteriIndivid",
+          versionId = _VersionId,
+          notering = bisTeknikbyggnad.Notering,
+          startSpecified = false,
+          endSpecified = false,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "BatteriIndivid"
+            }
+          }
+        };
+        batteriIndivid.id = batteriIndivid.name + suffix;
+
+        var funktionellKlimatanläggning = new FunktionellKlimatanläggning
+        {
+          name = "FunktionellKlimatanläggning",
+          versionId = _VersionId,
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTFunktionellAnläggningReference
+            {
+              softType = "FTFunktionellAnläggning",
+              instanceRef = "FunktionellKlimatanläggning"
+            }
+          }
+        };
+        funktionellKlimatanläggning.id = funktionellKlimatanläggning.name + suffix;
+
+        var klimatanläggningProdukt = new KlimatanläggningProdukt
+        {
+          name = "KlimatanläggningProdukt",
+          versionId = _VersionId,
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "KlimatanläggningProdukt"
+            }
+          },
+          numericSet = new KlimatanläggningProduktNumericSet
+          {
+            effektförbrukning = new KlimatanläggningProdukt_effektförbrukning
+            {
+              Array = true,
+              generalProperty = new effektförbrukning
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "effektförbrukning"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              Unit = new kVA
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "kVA"
+              },
+              value = 0
+            }
+          },
+          stringSet = new KlimatanläggningProduktStringSet()
+        };
+        klimatanläggningProdukt.id = klimatanläggningProdukt.name + suffix;
+
+        var klimatanläggningIndivid = new KlimatanläggningIndivid
+        {
+          name = "KlimatanläggningIndivid",
+          startSpecified = false,
+          endSpecified = false,
+          versionId = _VersionId,
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "KlimatanläggningIndivid"
+            }
+          }
+        };
+        klimatanläggningIndivid.id = klimatanläggningIndivid.name + suffix;
+
+        var teknikbyggnadIndivid = new TeknikbyggnadIndivid
+        {
+          name = "TeknikbyggnadIndivid",
+          startSpecified = false,
+          endSpecified = false,
+          versionId = _VersionId,
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "TeknikbyggnadIndivid"
+            }
+          }
+        };
+        teknikbyggnadIndivid.id = teknikbyggnadIndivid.name + suffix;
+
+        var reservelverkIndivid = new ReservelverkIndivid
+        {
+          name = "ReservelverkIndivid",
+          startSpecified = false,
+          endSpecified = false,
+          versionId = _VersionId,
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "ReservelverkIndivid"
+            }
+          }
+        };
+        reservelverkIndivid.id = reservelverkIndivid.name + suffix;
+
+        var funktionellUps = new FunktionellUPS
+        {
+          name = "FunktionellUPS",
+          versionId = _VersionId,
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTFunktionellAnläggningReference
+            {
+              softType = "FTFunktionellAnläggning",
+              instanceRef = "FunktionellUPS"
+            }
+          }
+        };
+        funktionellUps.id = funktionellUps.name + suffix;
+
+        var upsSpecifikation = new UPSSpecifikation
+        {
+          name = "UPSSpecifikation",
+          versionId = _VersionId,
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_Anläggningsspecifikation_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsspecifikationReference
+            {
+              softType = "FTAnläggningsspecifikation",
+              instanceRef = "UPSSpecifikation"
+            }
+          },
+          numericSet = new UPSSpecifikationNumericSet
+          {
+            minKapacitet = new UPSSpecifikation_minKapacitet
+            {
+              generalProperty = new minKapacitet
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "minKapacitet"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              Unit = new kVA
+              {
+                softType = _SoftTypeUnit,
+                instanceRef = "kVA"
+              },
+              value = 0
+            },
+            spänning = new UPSSpecifikation_spänning
+            {
+              generalProperty = new spänning
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "spänning"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              Unit = new V
+              {
+                softType = _SoftTypeUnit,
+                instanceRef = "V"
+              },
+              value = 0
+            }
+          },
+          stringSet = new UPSSpecifikationStringSet()
+        };
+        upsSpecifikation.id = upsSpecifikation.name + suffix;
+
+        var upsProdukt = new UPSProdukt
+        {
+          name = "UPSProdukt",
+          versionId = _VersionId,
+          notering = bisTeknikbyggnad.Notering,
+          företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTAnläggningsproduktReference
+            {
+              softType = "FTAnläggningsprodukt",
+              instanceRef = "UPSProdukt"
+            }
+          },
+          numericSet = new UPSProduktNumericSet
+          {
+            kapacitet = new UPSProdukt_kapacitet
+            {
+              Array = true,
+              generalProperty = new kapacitet
+              {
+                softType = _SoftTypeProperty,
+                instanceRef = "kapacitet"
+              },
+              JSonMapToPropertyName = _JsonMapToValue,
+              Unit = new kVA
+              {
+                softType = _SoftTypeUnit,
+                instanceRef = "kVA"
+              },
+              value = 0
+            }
+          },
+          stringSet = new UPSProduktStringSet()
+        };
+        upsProdukt.id = upsProdukt.name + suffix;
+
+        var upsIndivid = new UPSIndivid
+        {
+          name = "UPSIndivid",
+          versionId = _VersionId,
+          notering = bisTeknikbyggnad.Notering,
+          startSpecified = false,
+          endSpecified = false,
+          företeelsetyp = new ClassificationReference_Styckevara_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTStyckevaraReference
+            {
+              softType = "FTStyckevara",
+              instanceRef = "UPSIndivid"
+            }
+          }
+        };
+        upsIndivid.id = upsIndivid.name + suffix;
+
+        // ***---***---***---*** ENTRY INSTANCES ***---***---***---***
+
+        var funktionellTeknikbyggnadssystemEntry = new FunktionellAnläggningEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "FunktionellTeknikbyggnadssystem" + suffix,
+          data = funktionellTeknikbyggnadssystem
+        };
+        funktionellaAnläggningar.Add(funktionellTeknikbyggnadssystemEntry);
+        var teknikbyggnadEntry = new GeografiskPlaceringsreferensEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "Teknikbyggnad" + suffix,
+          data = teknikbyggnad
+        };
+        geografiskaPlaceringar.Add(teknikbyggnadEntry);
+
+        var funktionellTeknigbyggnadEntry = new FunktionellAnläggningEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "FunktionellTeknikbyggnad" + suffix,
+          data = funktionellTeknikbyggnad
+        };
+        funktionellaAnläggningar.Add(funktionellTeknigbyggnadEntry);
+
+        var teknikbyggnadProduktEntry = new AnläggningsproduktEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "TeknikbyggnadProdukt" + suffix,
+          data = teknikbyggnadProdukt
+        };
+        produkter.Add(teknikbyggnadProduktEntry);
+
+        var fasadBeklädnadMaterialEntry = new MaterialkompositEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "FasadbeklädnadMaterial" + suffix,
+          data = fasadbeklädnadMaterial
+        };
+        material.Add(fasadBeklädnadMaterialEntry);
+
+        var funktionellÅskskyddssystemEntry = new FunktionellAnläggningEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "FunktionellÅskskyddssystem" + suffix,
+          data = funktionellÅskskyddsystem
+        };
+        funktionellaAnläggningar.Add(funktionellÅskskyddssystemEntry);
+
+        var funktionellElkraftförsörjningEntry = new FunktionellAnläggningEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "FunktionellElkraftförsörjning" + suffix,
+          data = funktionellElkraftförsörjning
+        };
+        funktionellaAnläggningar.Add(funktionellElkraftförsörjningEntry);
+
+        var elkraftförsörjningSpecifikationEntry = new AnläggningsspecifikationEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "ElkraftförsörjningSpecifikation" + suffix,
+          data = elkraftförsörjningSpecifikation
+        };
+        specifikationer.Add(elkraftförsörjningSpecifikationEntry);
+
+        var elkraftförsörjningsPriduktEntry = new AnläggningsproduktEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "ElkraftförsörjningProdukt" + suffix,
+          data = elkraftförsörjningsProdukt
+        };
+        produkter.Add(elkraftförsörjningsPriduktEntry);
+
+        var elkraftförsörjningIndividEntry = new StyckevaraEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "ElkraftförsörjningsIndivid" + suffix,
+          data = elkraftförsörjningIndivid
+        };
+        styckevaror.Add(elkraftförsörjningIndividEntry);
+
+        var funktionellReservkraftEntry = new FunktionellAnläggningEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "FunktionellReservkraft" + suffix,
+          data = funktionellReservekraft
+        };
+        funktionellaAnläggningar.Add(funktionellReservkraftEntry);
+
+        var reservkraftSpecifikationEntry = new AnläggningsspecifikationEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "ReservekraftSpecifikation" + suffix,
+          data = reservkraftSpecifikation
+        };
+        specifikationer.Add(reservkraftSpecifikationEntry);
+
+        var reservelverkProduktEntry = new AnläggningsproduktEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "ReservelverkProdukt" + suffix,
+          data = reservelverkProdukt
+        };
+        produkter.Add(reservelverkProduktEntry);
+
+        var batteriSpecifikationEntry = new AnläggningsspecifikationEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "BatteriSpecifikation" + suffix,
+          data = batteriSpecifikation
+        };
+        specifikationer.Add(batteriSpecifikationEntry);
+
+        var batteriProduktEntry = new AnläggningsproduktEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "BatteriSpecifikation" + suffix,
+          data = batteriProdukt
+        };
+        produkter.Add(batteriProduktEntry);
+
+        var batteriIndividEntry = new StyckevaraEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "BatteriIndivid" + suffix,
+          data = batteriIndivid
+        };
+        styckevaror.Add(batteriIndividEntry);
+
+        var funktionellKlimatanläggningEntry = new FunktionellAnläggningEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "FunktionellKlimatanläggning" + suffix,
+          data = funktionellKlimatanläggning
+        };
+        funktionellaAnläggningar.Add(funktionellKlimatanläggningEntry);
+
+        var klimatanläggningProduktEntry = new AnläggningsproduktEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "KlimatanläggningProdukt" + suffix,
+          data = klimatanläggningProdukt
+        };
+        produkter.Add(klimatanläggningProduktEntry);
+
+        var klimatanläggningIndividEntry = new StyckevaraEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "KlimatanläggningIndivid" + suffix,
+          data = klimatanläggningIndivid
+        };
+        styckevaror.Add(klimatanläggningIndividEntry);
+
+        var teknikbyggnadIndividEntry = new StyckevaraEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "TeknikbyggnadIndivid" + suffix,
+          data = teknikbyggnadIndivid
+        };
+        styckevaror.Add(teknikbyggnadIndividEntry);
+
+        var reservelverkIndividEntry = new StyckevaraEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "ReservelverkIndivid" + suffix,
+          data = reservelverkIndivid
+        };
+        styckevaror.Add(reservelverkIndividEntry);
+
+        var funktionellUPSEntry = new FunktionellAnläggningEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "FunktionellUPS" + suffix,
+          data = funktionellUps
+        };
+        funktionellaAnläggningar.Add(funktionellUPSEntry);
+
+        var upsSpecifikationEntry = new AnläggningsspecifikationEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "UPSSpecifikation" + suffix,
+          data = upsSpecifikation
+        };
+        specifikationer.Add(upsSpecifikationEntry);
+
+        var upsProduktEntry = new AnläggningsproduktEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "UPSProdukt",
+          data = upsProdukt
+        };
+        produkter.Add(upsProduktEntry);
+
+        var upsIndividEntry = new StyckevaraEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "UPSIndivid" + suffix,
+          data = upsIndivid
+        };
+        styckevaror.Add(upsIndividEntry);
 
         ExtraCounter++;
       }
+
+      // ***---***---***---*** SOFTTYPES ***---***---***---***
+
+      var geografiskPlaceringsReferensSoftType = new SoftType_GeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "GeografiskPlaceringsreferens",
+        instances = geografiskaPlaceringar.ToArray()
+      };
+      containerSoftypes.Add(geografiskPlaceringsReferensSoftType);
+
+      var anläggningsSpecifikationSoftType = new SoftType_Anläggningsspecifikation
+      {
+        Array = true,
+        id = "Anläggningsspecifikation",
+        instances = specifikationer.ToArray()
+      };
+      containerSoftypes.Add(anläggningsSpecifikationSoftType);
+
+      var anläggningsProduktSoftType = new SoftType_Anläggningsprodukt
+      {
+        Array = true,
+        id = "Anläggningsprodukt",
+        instances = produkter.ToArray()
+      };
+      containerSoftypes.Add(anläggningsProduktSoftType);
+
+      var funktionellAnläggningSoftType = new SoftType_FunktionellAnläggning
+      {
+        Array = true,
+        id = "FunktionellAnläggning",
+        instances = funktionellaAnläggningar.ToArray()
+      };
+      containerSoftypes.Add(funktionellAnläggningSoftType);
+
+      var materialkompositSoftType = new SoftType_Materialkomposit
+      {
+        Array = true,
+        id = "Materialkomposit",
+        instances = material.ToArray()
+      };
+      containerSoftypes.Add(materialkompositSoftType);
+
+      var styckevaraSoftType = new SoftType_Styckevara
+      {
+        Array = true,
+        id = "Styckevara",
+        instances = styckevaror.ToArray()
+
+      };
+      containerSoftypes.Add(styckevaraSoftType);
+
+      //MORE SOFTTYPES!
+      containerSoftypes.AddRange(CreateSupplementarySoftypes());
+      //Not started
+      containerSoftypes.AddRange(CreateFTKeyReferenceSoftTypes());
+
       container.softTypes = containerSoftypes.ToArray();
       return container;
     }
 
     public override List<SoftType> CreateFTKeyReferenceSoftTypes()
     {
-      throw new System.NotImplementedException();
+      var softtypeList = new List<SoftType>();
+
+
+      return softtypeList;
     }
   }
 }

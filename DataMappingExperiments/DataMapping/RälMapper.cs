@@ -208,7 +208,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "RälAnläggningsspecifikation" + suffix,
+          id = "Anläggningsspecifikation" + suffix,
           data = rälSpec
         };
         rälAnläggningsSpecifikationer.Add(rälAnläggningsSpecifikation);
@@ -217,7 +217,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "RälAnläggningsprodukt" + suffix,
+          id = "Anläggningsprodukt" + suffix,
           data = rälprodukt
         };
         rälAnläggningsProdukter.Add(rälAnläggningsProdukt);
@@ -226,7 +226,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "RälBulkvara" + suffix,
+          id = "Bulkvara" + suffix,
           data = rälindivid
         };
         rälBulkvaror.Add(rälBulkvara);
@@ -260,8 +260,6 @@ namespace DataMappingExperiments.DataMapping
       containerSoftypes.AddRange(CreateSupplementarySoftypes());
       //New in this file
       containerSoftypes.AddRange(CreateFTKeyReferenceSoftTypes());
-      // OLD BIG METHOD IN MAPPER THAT IS NOT USED ANYMORE
-      //containerSoftypes.AddRange(CreateKeyReferences());
 
       container.softTypes = containerSoftypes.ToArray();
       return container;
