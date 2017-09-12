@@ -104,11 +104,10 @@ namespace DataMappingExperiments.DataMapping
       {
         var suffix = bisSkarv.ObjektTypNummer + bisSkarv.ObjektNummer + ExtraCounter;
 
-        //Noterings fix
-        if (string.IsNullOrEmpty(bisSkarv.Notering))
-        {
-          bisSkarv.Notering = "Ingen notering";
-        }
+        //Noterings Fix
+        bisSkarv.Notering = string.IsNullOrEmpty(bisSkarv.Notering)
+          ? "Ingen Notering"
+          : bisSkarv.Notering;
 
         var isolerskarvsprodukt = CreateIsolerSkarvsProdukt(bisSkarv, suffix);
         var isolerskarvsindivid = CreateIsolerSkarvsIndivid(bisSkarv, suffix);
@@ -335,7 +334,7 @@ namespace DataMappingExperiments.DataMapping
         {
           längdPassräl = new Isolerskarvprodukt_längdPassräl
           {
-            value = CreateLength(skarv.isolerskarv_Passräl_längd),
+            value = DecimalConverter(skarv.isolerskarv_Passräl_längd),
             Array = true,
             generalProperty = new längdPassräl
             {
@@ -466,7 +465,7 @@ namespace DataMappingExperiments.DataMapping
               instanceRef = "mm",
               softType = _SoftTypeUnit
             },
-            value = CreateLength(skarv.skarvavst_End_partikelm),
+            value = DecimalConverter(skarv.skarvavst_End_partikelm),
             generalProperty = new avståndFrånSkarv
             {
               instanceRef = "avståndFrånSkarv",

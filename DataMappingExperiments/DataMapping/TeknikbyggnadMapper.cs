@@ -627,7 +627,7 @@ namespace DataMappingExperiments.DataMapping
                 softType = _SoftTypeUnit,
                 instanceRef = "kVA"
               },
-              value = CreateLength(bisTeknikbyggnad.ReservelverkStorlek) 
+              value = DecimalConverter(bisTeknikbyggnad.ReservelverkStorlek) 
             },
             tankvolym = new ReservelverkProdukt_tankvolym
             {
@@ -642,7 +642,7 @@ namespace DataMappingExperiments.DataMapping
                 softType = _SoftTypeProperty,
                 instanceRef = "l"
               },
-              value = CreateLength(bisTeknikbyggnad.ReservelverkTankvolym) 
+              value = DecimalConverter(bisTeknikbyggnad.ReservelverkTankvolym) 
             }
           },
           stringSet = new ReservelverkProduktStringSet()

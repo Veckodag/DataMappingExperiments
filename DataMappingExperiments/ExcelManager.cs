@@ -77,7 +77,6 @@ namespace DataMappingExperiments
     //Sets and instatiates the mappingtype property on the Mapper
     private Mapper GetMappingType(MapperType mapperType)
     {
-      //TODO: Add the other mapping classes
       switch (mapperType)
       {
         case MapperType.Plattform:
@@ -91,9 +90,11 @@ namespace DataMappingExperiments
         case MapperType.Skarv:
           return new SkarvMapper();
         case MapperType.Kanalisation:
+          return new KanalisationMapper();
         case MapperType.Trumma:
+          return new TrummaMapper();
         case MapperType.TågOchLokVärmeanläggning:
-          return null;
+          return new TågochLokvärmeMapper();
         default:
           throw new ArgumentOutOfRangeException(nameof(mapperType), mapperType, null);
       }

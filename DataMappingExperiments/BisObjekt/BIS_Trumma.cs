@@ -22,5 +22,6 @@
     public string DiameterFörlängningHögerSida { get; set; }
     public string LängdFörlängningVänsterSida { get; set; }
     public string LängdFörlängningHögerSida { get; set; }
+    public string ByggnadsÅr { get; set; }
   }
 }

@@ -7,11 +7,10 @@ namespace DataMappingExperiments.DataMapping
 {
   public class SpårspärrMapper : Mapper
   {
-    private readonly string _featureTypeName = "Läst från fil BIS_Spårspärr-datadefinition infomod 2p0_Arbete.xlsm";
     public SpårspärrMapper()
     {
       MapperType = MapperType.Spårspärr;
-      ExtraCounter = 1;
+      FeatureTypeName = "Läst från fil BIS_Spårspärr-datadefinition infomod 2p0_Arbete.xlsm";
     }
     public sealed override MapperType MapperType { get; set; }
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject)
@@ -112,9 +111,10 @@ namespace DataMappingExperiments.DataMapping
       {
         var suffix = bisSpårSpärr.ObjektTypNummer + bisSpårSpärr.ObjektNummer + ExtraCounter;
 
-        //Noterings fix
-        if (string.IsNullOrEmpty(bisSpårSpärr.Notering))
-          bisSpårSpärr.Notering = "Ingen notering";
+        //Noterings Fix
+        bisSpårSpärr.Notering = string.IsNullOrEmpty(bisSpårSpärr.Notering)
+          ? "Ingen Notering"
+          : bisSpårSpärr.Notering;
 
         var spårspärr = CreateSpårSpärr(bisSpårSpärr, suffix);
         var funktionellspårspärr = CreateFunktionellSPårSpärr(bisSpårSpärr, suffix);
@@ -315,6 +315,7 @@ namespace DataMappingExperiments.DataMapping
       containerSofttypes.Add(funktionellanläggningsofttype);
       containerSofttypes.Add(styckevarasofttype);
       containerSofttypes.Add(geografiskplaceringsreferenssofttype);
+      containerSofttypes.AddRange(CreateSupplementarySoftypes());
       containerSofttypes.AddRange(CreateFTKeyReferenceSoftTypes());
 
       container.softTypes = containerSofttypes.ToArray();
@@ -335,7 +336,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTGeografiskPlaceringsreferensdefaultIn
         {
           id = "Spårspärr",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
       var FTGeografiskPlaceringsreferensInstances = new List<FTGeografiskPlaceringsreferensInstances>
@@ -357,7 +358,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTFunktionellAnläggningdefaultIn
         {
           id = "FunktionellSpårspärr",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -380,7 +381,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Spårspärrindivid",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -392,7 +393,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Spårspärrklotsindivid",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -404,7 +405,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Spårspärrdrivindivid",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -416,7 +417,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Elmotorindivid",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -428,7 +429,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Växelställindivid",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -440,7 +441,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Kontrollanordningsindivid",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -452,7 +453,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Staggropsvärmeindivid",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -477,7 +478,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Spårspärrprodukt",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -489,7 +490,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Spårspärrklotsprodukt",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -501,7 +502,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Spårspärrdrivprodukt",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
       var elmotorprodukt = new FTAnläggningsproduktEntrydefaultIn
@@ -512,7 +513,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Elmotorprodukt",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
       var växelställprodukt = new FTAnläggningsproduktEntrydefaultIn
@@ -523,7 +524,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Växelställprodukt",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
       var kontrollanordningsprodukt = new FTAnläggningsproduktEntrydefaultIn
@@ -534,7 +535,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Kontrollanordningsprodukt",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
 
@@ -546,7 +547,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Staggropsvärmeprodukt",
-          name = _featureTypeName
+          name = FeatureTypeName
         }
       };
       var FTAnläggningsproduktInstances = new List<FTAnläggningsproduktInstances>
@@ -671,7 +672,7 @@ namespace DataMappingExperiments.DataMapping
             value = HandleEmtyStringValue(p.CentralOmläggningsbar),
             generalProperty = new Centraltomläggningsbar
             {
-              instanceRef = "Centralt omläggningsbar",
+              instanceRef = "Centraltomläggningsbar",
               softType = _SoftTypeProperty
             },
             JSonMapToPropertyName = _JsonMapToValue
@@ -681,7 +682,7 @@ namespace DataMappingExperiments.DataMapping
             value = HandleEmtyStringValue(p.GårAttSpärraIStällv),
             generalProperty = new Gårattspärraiställverk
             {
-              instanceRef = "Går att spärra i ställverk",
+              instanceRef = "Gårattspärraiställverk",
               softType = _SoftTypeProperty
             },
             JSonMapToPropertyName = _JsonMapToValue
@@ -691,7 +692,7 @@ namespace DataMappingExperiments.DataMapping
             value = HandleEmtyStringValue(p.LokalfrigivBarIndivid),
             generalProperty = new Lokalfrigivningsbarindividuellt
             {
-              instanceRef = "Lokalfrigivningsbar individuellt",
+              instanceRef = "Lokalfrigivningsbarindividuellt",
               softType = _SoftTypeProperty
             },
             JSonMapToPropertyName = _JsonMapToValue

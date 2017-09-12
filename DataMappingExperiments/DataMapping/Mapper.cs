@@ -17,7 +17,7 @@ namespace DataMappingExperiments.DataMapping
     internal string _SoftTypeUnit = "Unit";
     internal string _JsonMapToValue = "value";
     internal string _InputSchemaRef = "defaultIn";
-    internal string _VersionId = "001";
+    internal string _VersionId = "S0000A";
     public abstract MapperType MapperType { get; set; }
     public int ExtraCounter { get; set; } = 1;
     public string FeatureTypeName { get; set; } = "";
@@ -25,13 +25,22 @@ namespace DataMappingExperiments.DataMapping
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);
     public abstract List<SoftType> CreateFTKeyReferenceSoftTypes();
 
-    public decimal CreateLength(string value)
+    public decimal DecimalConverter(string value)
     {
       if (string.IsNullOrEmpty(value))
       {
         return 0;
       }
       return decimal.Parse(value.Replace(".", ","));
+    }
+
+    public string NoteringsFix(string value)
+    {
+      value = string.IsNullOrEmpty(value)
+        ? "Ingen Notering"
+        : value;
+
+      return value;
     }
 
     /// <summary>
@@ -132,7 +141,7 @@ namespace DataMappingExperiments.DataMapping
     {
       var unitlist = new List<UnitInstances>();
       //The actual values could come from a config file.
-      string[] unitNameString = 
+      string[] unitNameString =
         { "mm", "Procent", "Grader", "st", "m", "kVA", "l", "Ah", "V", "h" };
 
       foreach (var unitName in unitNameString)
@@ -159,15 +168,19 @@ namespace DataMappingExperiments.DataMapping
 
       string[] properties =
       {
-        "verkligHöjd", "längd", "bredd", "nominellHöjd", "PlattformBeläggning", "plattformskantMaterial",
-        "harSkyddsräcken", "harPlattformsutrustning", "harLedstråk", "harSkyddzon", "harFotsteg", "typ",
-        "profiltyp", "vikt", "revideradKlassifikation", "tillverkningsprocess", "stålsort", "skarvTyp",
-        "SystemID", "åskskyddsnivå", "faser", "skyddstransformatorKapacitet", "säkring", "OrtsNätsavtal",
-        "kapacitet", "tankvolym", "längdPassräl", "hårdgjord", "partikelmagnetposition", "avståndFrånSkarv",
-        "ID-ICONIS", "TLS-beteckning", "TLS-id", "TLS-terminal", "TLS-typ", "TLS-ursprung", "spårspärrNr",
-        "Centralt omläggningsbar", "Går att spärra i ställverk", "Återgående", "drifttid", "kapacitet",
-        "Lokalfrigivningsbar individuellt", "spänning", "effektförbrukning", "minKapacitet"
-
+        "typ", "verkligHöjd", "höjd", "längd", "bredd", "nominellHöjd", "PlattformBeläggning", "plattformskantMaterial",
+        "harSkyddsräcken", "harPlattformsutrustning", "harLedstråk", "harSkyddzon", "harFotsteg", "profiltyp",
+        "vikt", "revideradKlassifikation", "tillverkningsprocess", "stålsort", "skarvTyp","SystemID", "åskskyddsnivå",
+        "faser", "skyddstransformatorKapacitet", "säkring", "OrtsNätsavtal", "kapacitet", "tankvolym", "längdPassräl",
+        "hårdgjord", "partikelmagnetposition", "avståndFrånSkarv", "ID-ICONIS", "TLS-beteckning", "TLS-id", "TLS-terminal",
+        "TLS-typ", "TLS-ursprung", "spårspärrNr", "Återgående","drifttid", "kapacitet", "spänning", "effektförbrukning",
+        "minKapacitet", "materialKanalisation", "materialLock", "antalvattengångar", "diamRörinfodring", "diameter",
+        "diameterFörlängningHögerSida", "diameterFörlängningVänsterSida", "fyllnadshöjdURUK", "längdFörlängningHögerSida",
+        "längdFörlängningVänsterSida", "infodring", "materialFörlängningHögerrSida", "materialFörlängningVänsterSida",
+        "släntlutningÖverstigande1_1_5", "typFörlängningHögerSida", "typFörlängningVänsterSida", "ursprungligTyp",
+        "ursprungligtMaterial", "faunatrumma",
+        //Speciallare
+        "Centraltomläggningsbar", "Lokalfrigivningsbarindividuellt", "Gårattspärraiställverk"
       };
 
       foreach (var propertyName in properties)

@@ -2586,7 +2586,7 @@ public partial class Lokalfrigivningsbarindividuellt {
     
     public Lokalfrigivningsbarindividuellt() {
         this.softTypeField = "Property";
-        this.instanceRefField = "Lokalfrigivningsbar_x0020_individuellt";
+        this.instanceRefField = "Lokalfrigivningsbarindividuellt";
     }
     
     /// <remarks/>
@@ -2677,7 +2677,7 @@ public partial class Gårattspärraiställverk {
     
     public Gårattspärraiställverk() {
         this.softTypeField = "Property";
-        this.instanceRefField = "Går_x0020_att_x0020_spärra_x0020_i_x0020_ställverk";
+        this.instanceRefField = "Gårattspärraiställverk";
     }
     
     /// <remarks/>
@@ -2768,7 +2768,7 @@ public partial class Centraltomläggningsbar {
     
     public Centraltomläggningsbar() {
         this.softTypeField = "Property";
-        this.instanceRefField = "Centralt_x0020_omläggningsbar";
+        this.instanceRefField = "Centraltomläggningsbar";
     }
     
     /// <remarks/>

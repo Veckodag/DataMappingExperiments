@@ -75,19 +75,37 @@ namespace DataMappingExperiments.DataMapping
     {
       var formattedBisList = bisList;
       Container container = new Container();
-      var containerSoftypes = new List<SoftType>();
+      var containerSofttypes = new List<SoftType>();
 
+      var rälGpr = new List<GeografiskPlaceringsreferensInstances>();
       var rälAnläggningsSpecifikationer = new List<AnläggningsspecifikationInstances>();
       var rälAnläggningsProdukter = new List<AnläggningsproduktInstances>();
       var rälBulkvaror = new List<BulkvaraInstances>();
       foreach (BIS_Räl bisRäl in formattedBisList)
       {
         var suffix = bisRäl.ObjektTypNummer + bisRäl.ObjektNummer + ExtraCounter;
-        //Noterings fix
-        if (string.IsNullOrEmpty(bisRäl.Notering))
+        //Noterings Fix
+        bisRäl.Notering = string.IsNullOrEmpty(bisRäl.Notering)
+          ? "Ingen Notering"
+          : bisRäl.Notering;
+        //Finsih this
+        var räl = new Räl
         {
-          bisRäl.Notering = "Ingen notering";
-        }
+          name = "Räl",
+          notering = bisRäl.Notering,
+          versionId = _VersionId,
+          företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTGeografiskPlaceringsreferensReference
+            {
+              softType = "FTGeografiskPlaceringsreferens",
+              instanceRef = "Räl"
+            }
+          }
+        };
+        räl.id = räl.name + suffix;
         //Allt nytt
         var rälSpec = new Rälspecifikation
         {
@@ -205,6 +223,15 @@ namespace DataMappingExperiments.DataMapping
         };
 
         //ENTRY INSTANCES
+        var rälEntry = new GeografiskPlaceringsreferensEntrydefaultIn
+        {
+          Array = true,
+          inputSchemaRef = _InputSchemaRef,
+          id = "Räl" + suffix,
+          data = räl
+        };
+        rälGpr.Add(rälEntry);
+
         var rälAnläggningsSpecifikation = new AnläggningsspecifikationEntrydefaultIn
         {
           Array = true,
@@ -236,6 +263,12 @@ namespace DataMappingExperiments.DataMapping
       }
 
       //SOFTTYPES
+      var rälSoftype = new SoftType_GeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "Räl",
+        instances = rälGpr.ToArray()
+      };
       var anläggningsSpecifikationSoftType = new SoftType_Anläggningsspecifikation
       {
         Array = true,
@@ -255,21 +288,42 @@ namespace DataMappingExperiments.DataMapping
         instances = rälBulkvaror.ToArray()
       };
 
-      containerSoftypes.Add(anläggningsSpecifikationSoftType);
-      containerSoftypes.Add(anläggningsProduktSoftType);
-      containerSoftypes.Add(bulkvaraSoftType);
-      containerSoftypes.AddRange(CreateSupplementarySoftypes());
-      //New in this file
-      containerSoftypes.AddRange(CreateFTKeyReferenceSoftTypes());
+      containerSofttypes.Add(rälSoftype);
+      containerSofttypes.Add(anläggningsSpecifikationSoftType);
+      containerSofttypes.Add(anläggningsProduktSoftType);
+      containerSofttypes.Add(bulkvaraSoftType);
+      containerSofttypes.AddRange(CreateSupplementarySoftypes());
+      containerSofttypes.AddRange(CreateFTKeyReferenceSoftTypes());
 
-      container.softTypes = containerSoftypes.ToArray();
+      container.softTypes = containerSofttypes.ToArray();
       return container;
     }
 
     public override List<SoftType> CreateFTKeyReferenceSoftTypes()
     {
       var softtypeList = new List<SoftType>();
-      //TODO: LÄGG TILL GPR
+      //FTGeografiskPlaceringsReferens
+      var räl = new FTGeografiskPlaceringsreferensEntrydefaultIn
+      {
+        Array = true,
+        id = "Räl",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTGeografiskPlaceringsreferensdefaultIn
+        {
+          id = "Räl",
+          name = FeatureTypeName
+        }
+      };
+      var FTGeografiskPlaceringsreferensInstances = new List<FTGeografiskPlaceringsreferensInstances>
+      { räl };
+      var FTGeografiskPlaceringsReferensSoftType = new SoftType_FTGeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "FTGeografiskPlaceringsreferens",
+        instances = FTGeografiskPlaceringsreferensInstances.ToArray()
+      };
+      softtypeList.Add(FTGeografiskPlaceringsReferensSoftType);
+      //FTGPR END
 
       //FTAnläggningsProdukt
       var FTAnläggningsProdukt = new FTAnläggningsproduktEntrydefaultIn

@@ -105,6 +105,12 @@ namespace DataMappingExperiments.DataMapping
       foreach (BIS_Plattform bisPlattform in formattedBisList)
       {
         var suffix = bisPlattform.ObjektTypNummer + bisPlattform.ObjektNummer + ExtraCounter;
+
+        //Noterings fix
+        bisPlattform.Notering = string.IsNullOrEmpty(bisPlattform.Notering)
+          ? "Ingen Notering"
+          : bisPlattform.Notering;
+
         var plattformsProduktInstans = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,
