@@ -15,7 +15,7 @@ namespace DataMappingExperiments
     static void Main(string[] args)
     {
       //Set the datatype once here
-      SelectedDataContainer = DataContainerType("trumma");
+      SelectedDataContainer = DataContainerType("tågochlokvärmeanläggning");
       sourceFile = StringManager.GetFilePathSetting(SelectedDataContainer.Input);
       xmlOutput = StringManager.GetFilePathSetting(SelectedDataContainer.Output);
       StartManager(sourceFile, SelectedDataContainer.MapperType);
@@ -54,25 +54,9 @@ namespace DataMappingExperiments
         case "kanalisation":
           return new DataContainer { Input = "KanalisationInput", Output = "KanalisationOutput", Json = "KanalisationJson", MapperType = MapperType.Kanalisation, Name = "Kanalisation" };
         case "trumma":
-          return new DataContainer
-          {
-            Input = "TrummaInput",
-            Output = "TrummaOutput",
-            Json = "TrummaJson",
-            MapperType = MapperType.Trumma,
-            Name = "Trumma"
-
-          };
+          return new DataContainer { Input = "TrummaInput", Output = "TrummaOutput", Json = "TrummaJson", MapperType = MapperType.Trumma, Name = "Trumma" };
         case "tågochlokvärmeanläggning":
-          return new DataContainer
-          {
-            Input = "TågochlokInput",
-            Output = "TågochlokOutput",
-            Json = "TågochlokJson",
-            MapperType = MapperType.TågOchLokVärmeanläggning,
-            Name = "Tågochlokvärmeanläggning"
-
-          };
+          return new DataContainer { Input = "TågochlokInput", Output = "TågochlokOutput", Json = "TågochlokJson", MapperType = MapperType.TågOchLokVärmeanläggning, Name = "Tågochlokvärmeanläggning" };
         default:
           throw new ArgumentNullException();
       }

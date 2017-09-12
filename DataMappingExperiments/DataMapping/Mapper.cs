@@ -178,7 +178,7 @@ namespace DataMappingExperiments.DataMapping
         "diameterFörlängningHögerSida", "diameterFörlängningVänsterSida", "fyllnadshöjdURUK", "längdFörlängningHögerSida",
         "längdFörlängningVänsterSida", "infodring", "materialFörlängningHögerrSida", "materialFörlängningVänsterSida",
         "släntlutningÖverstigande1_1_5", "typFörlängningHögerSida", "typFörlängningVänsterSida", "ursprungligTyp",
-        "ursprungligtMaterial", "faunatrumma",
+        "ursprungligtMaterial", "faunatrumma", "transformatorEffekt",
         //Speciallare
         "Centraltomläggningsbar", "Lokalfrigivningsbarindividuellt", "Gårattspärraiställverk"
       };
