@@ -156,7 +156,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "SpårSpärrProdukt" + suffix,
+          id = "Spårspärrprodukt" + suffix,
           data = spårspärrprodukt
         };
         anläggningsprodukter.Add(spårspärrproduktEntry);
@@ -315,6 +315,7 @@ namespace DataMappingExperiments.DataMapping
       containerSofttypes.Add(funktionellanläggningsofttype);
       containerSofttypes.Add(styckevarasofttype);
       containerSofttypes.Add(geografiskplaceringsreferenssofttype);
+      containerSofttypes.AddRange(CreateFTKeyReferenceSoftTypes());
 
       container.softTypes = containerSofttypes.ToArray();
 
@@ -670,7 +671,7 @@ namespace DataMappingExperiments.DataMapping
             value = HandleEmtyStringValue(p.CentralOmläggningsbar),
             generalProperty = new Centraltomläggningsbar
             {
-              instanceRef = "Centralt_x0020_omläggningsbar",
+              instanceRef = "Centralt omläggningsbar",
               softType = _SoftTypeProperty
             },
             JSonMapToPropertyName = _JsonMapToValue
@@ -680,7 +681,7 @@ namespace DataMappingExperiments.DataMapping
             value = HandleEmtyStringValue(p.GårAttSpärraIStällv),
             generalProperty = new Gårattspärraiställverk
             {
-              instanceRef = "Går_x0020_att_x0020_spärra_x0020_i_x0020_ställverk",
+              instanceRef = "Går att spärra i ställverk",
               softType = _SoftTypeProperty
             },
             JSonMapToPropertyName = _JsonMapToValue
@@ -690,7 +691,7 @@ namespace DataMappingExperiments.DataMapping
             value = HandleEmtyStringValue(p.LokalfrigivBarIndivid),
             generalProperty = new Lokalfrigivningsbarindividuellt
             {
-              instanceRef = "Lokalfrigivningsbar_x0020_individuellt",
+              instanceRef = "Lokalfrigivningsbar individuellt",
               softType = _SoftTypeProperty
             },
             JSonMapToPropertyName = _JsonMapToValue
@@ -750,20 +751,20 @@ namespace DataMappingExperiments.DataMapping
         name = "Spårspärrprodukt",
         notering = p.Notering,
         versionId = _VersionId,
-        stringSet = new SpårspärrproduktStringSet
-        {
-          Typavspårspärr = new Spårspärrprodukt_Typavspårspärr
-          {
-            Array = true,
-            value = p.Modell,
-            generalProperty = new Typavspårspärr
-            {
-              instanceRef = "Typ_x0020_av_x0020_spårspärr",
-              softType = _SoftTypeProperty
-            },
-            JSonMapToPropertyName = _JsonMapToValue
-          }
-        },
+        //stringSet = new SpårspärrproduktStringSet
+        //{
+        //  Typavspårspärr = new Spårspärrprodukt_Typavspårspärr
+        //  {
+        //    Array = true,
+        //    value = p.Modell,
+        //    generalProperty = new Typavspårspärr
+        //    {
+        //      instanceRef = "Typ av spårspärr",
+        //      softType = _SoftTypeProperty
+        //    },
+        //    JSonMapToPropertyName = _JsonMapToValue
+        //  }
+        //},
         företeelsetyp = new ClassificationReference_Anläggningsprodukt_företeelsetyp
         {
           @class = new FTAnläggningsproduktReference

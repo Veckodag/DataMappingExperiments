@@ -10,6 +10,7 @@ namespace DataMappingExperiments.DataMapping
     public RälMapper()
     {
       MapperType = MapperType.Räl;
+      FeatureTypeName = "Läst från fil BIS_Räl - datadefinition infomod 2p0.xlsm";
     }
     public sealed override MapperType MapperType { get; set; }
     public override BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject)
@@ -268,7 +269,7 @@ namespace DataMappingExperiments.DataMapping
     public override List<SoftType> CreateFTKeyReferenceSoftTypes()
     {
       var softtypeList = new List<SoftType>();
-      //FT A-Spec, A-Produkt och Bulkvara
+      //TODO: LÄGG TILL GPR
 
       //FTAnläggningsProdukt
       var FTAnläggningsProdukt = new FTAnläggningsproduktEntrydefaultIn
@@ -279,7 +280,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Rälprodukt",
-          name = "Läst från fil BIS_Räl - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
       var FTAnläggningsproduktInstances = new List<FTAnläggningsproduktInstances> { FTAnläggningsProdukt };
@@ -301,7 +302,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsspecifikationdefaultIn
         {
           id = "Rälspecifikation",
-          name = "Läst från fil BIS_Räl - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
       var FTAnläggningsspecifikationInstances = new List<FTAnläggningsspecifikationInstances> { FTAnläggningsspecifikationInstance };
@@ -323,7 +324,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTBulkvaradefaultIn
         {
           id = "Rälindivid",
-          name = "Läst från fil BIS_Räl - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
       var FTBulkvaraInstances = new List<FTBulkvaraInstances> { FTBulkvaraInstance };

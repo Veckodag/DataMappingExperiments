@@ -490,14 +490,5 @@ namespace DataMappingExperiments.DataMapping
 
       return partikelmagnetindivid;
     }
-
-    public decimal CreateLength(string value)
-    {
-      if (string.IsNullOrEmpty(value))
-      {
-        return 0;
-      }
-      return decimal.Parse(value.Replace(".", ","));
-    }
   }
 }

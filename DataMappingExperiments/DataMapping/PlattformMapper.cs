@@ -11,6 +11,7 @@ namespace DataMappingExperiments.DataMapping
     public PlattformMapper()
     {
       MapperType = MapperType.Plattform;
+      FeatureTypeName = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm";
     }
     public sealed override MapperType MapperType { get; set; }
 
@@ -550,6 +551,7 @@ namespace DataMappingExperiments.DataMapping
     public override List<SoftType> CreateFTKeyReferenceSoftTypes()
     {
       var softtypeList = new List<SoftType>();
+      //TODO: LÄGG TILL GPR UPPE OCH NERE
 
       //FTAnläggningsProdukter 
       var plattformProdukt = new FTAnläggningsproduktEntrydefaultIn
@@ -560,7 +562,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Plattformprodukt",
-          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
 
@@ -572,7 +574,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Väderskyddprodukt",
-          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
 
@@ -584,7 +586,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Skärmtakprodukt",
-          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
       
@@ -596,7 +598,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Fast_skyltprodukt",
-          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
       
@@ -608,6 +610,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Kanalisationprodukt",
+          //SPECIAL NAME
           name = "Läst från fil BIS_Kanalisation - datadefinition infomod 2p0.xlsm BIS_Plattform - datadefinition infomod 2p0.xlsm"
         }
       };
@@ -633,7 +636,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Väderskyddindivid",
-          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
       
@@ -645,7 +648,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Skärmtakindivid",
-          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
 
@@ -657,7 +660,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Kanalisationindivid",
-          name = "Läst från fil BIS_Kanalisation - datadefinition infomod 2p0.xlsm BIS_Plattform - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
 
@@ -669,7 +672,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Plattformindivid",
-          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
       
@@ -681,7 +684,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Fast_skyltindivid",
-          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
 
@@ -705,7 +708,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTFunktionellAnläggningdefaultIn
         {
           id = "Plattformfunktion",
-          name = "Läst från fil BIS_Plattform - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
 

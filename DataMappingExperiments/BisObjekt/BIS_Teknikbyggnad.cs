@@ -22,9 +22,9 @@
     public string Northing { get; set; }
     public string Easting { get; set; }
     public string ReservelverkUtförande { get; set; }
-    public decimal ReservelverkStorlek { get; set; }
+    public string ReservelverkStorlek { get; set; }
     public string ReservelverkInstÅr { get; set; }
-    public decimal ReservelverkTankvolym { get; set; }
+    public string ReservelverkTankvolym { get; set; }
     public string ReservelverkBatterimodell { get; set; }
     public string ReserveelverkBatteriInDatum { get; set; }
     public string Beskrivning { get; set; }

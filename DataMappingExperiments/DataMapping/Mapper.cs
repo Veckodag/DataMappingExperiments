@@ -20,9 +20,19 @@ namespace DataMappingExperiments.DataMapping
     internal string _VersionId = "001";
     public abstract MapperType MapperType { get; set; }
     public int ExtraCounter { get; set; } = 1;
+    public string FeatureTypeName { get; set; } = "";
     public abstract BIS_GrundObjekt MapXmlValue(int index, string attributeValue, BIS_GrundObjekt bisObject);
     public abstract Container ObjectStructure(List<BIS_GrundObjekt> bisList);
     public abstract List<SoftType> CreateFTKeyReferenceSoftTypes();
+
+    public decimal CreateLength(string value)
+    {
+      if (string.IsNullOrEmpty(value))
+      {
+        return 0;
+      }
+      return decimal.Parse(value.Replace(".", ","));
+    }
 
     /// <summary>
     /// Writes out the XML file and entry point for JSON conversion
@@ -155,9 +165,8 @@ namespace DataMappingExperiments.DataMapping
         "SystemID", "åskskyddsnivå", "faser", "skyddstransformatorKapacitet", "säkring", "OrtsNätsavtal",
         "kapacitet", "tankvolym", "längdPassräl", "hårdgjord", "partikelmagnetposition", "avståndFrånSkarv",
         "ID-ICONIS", "TLS-beteckning", "TLS-id", "TLS-terminal", "TLS-typ", "TLS-ursprung", "spårspärrNr",
-        "Centralt_x0020_omläggningsbar", "Går_x0020_att_x0020_spärra_x0020_i_x0020_ställverk", "Återgående",
-        "drifttid", "kapacitet", "Lokalfrigivningsbar_x0020_individuellt", "spänning", "effektförbrukning",
-        "minKapacitet"
+        "Centralt omläggningsbar", "Går att spärra i ställverk", "Återgående", "drifttid", "kapacitet",
+        "Lokalfrigivningsbar individuellt", "spänning", "effektförbrukning", "minKapacitet"
 
       };
 
