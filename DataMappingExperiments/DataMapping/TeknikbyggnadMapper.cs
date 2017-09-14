@@ -194,7 +194,7 @@ namespace DataMappingExperiments.DataMapping
               },
               JSonMapToPropertyName = _JsonMapToValue,
               Array = true,
-              value = bisTeknikbyggnad.Beteckning
+              value = string.IsNullOrEmpty(bisTeknikbyggnad.Beteckning) ? "-" : bisTeknikbyggnad.Beteckning
             }
           }
         };
@@ -236,7 +236,7 @@ namespace DataMappingExperiments.DataMapping
                 softType = _SoftTypeProperty,
                 instanceRef = "typ"
               },
-              value = bisTeknikbyggnad.Typ
+              value = bisTeknikbyggnad.Modell
             }
           },
           företeelsetyp = new ClassificationReference_FunktionellAnläggning_företeelsetyp
@@ -268,7 +268,7 @@ namespace DataMappingExperiments.DataMapping
               },
               Array = true,
               JSonMapToPropertyName = _JsonMapToValue,
-              value = bisTeknikbyggnad.Typ
+              value = string.IsNullOrEmpty(bisTeknikbyggnad.Typ) ? "?" : bisTeknikbyggnad.Typ
             }
           },
           numericSet = new TeknikbyggnadProduktNumericSet(),
@@ -482,7 +482,7 @@ namespace DataMappingExperiments.DataMapping
                 instanceRef = "OrtsNätsavtal"
               },
               JSonMapToPropertyName = _JsonMapToValue,
-              value = bisTeknikbyggnad.OrtsnätIDNummer
+              value = string.IsNullOrEmpty(bisTeknikbyggnad.OrtsnätIDNummer) ? "?" : bisTeknikbyggnad.OrtsnätIDNummer
             }
           },
           numericSet = new ElkraftförsörjningIndividNumericSet()
@@ -1091,7 +1091,7 @@ namespace DataMappingExperiments.DataMapping
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
-          id = "ElkraftförsörjningsIndivid" + suffix,
+          id = "ElkraftförsörjningIndivid" + suffix,
           data = elkraftförsörjningIndivid
         };
         styckevaror.Add(elkraftförsörjningIndividEntry);
@@ -1287,7 +1287,6 @@ namespace DataMappingExperiments.DataMapping
 
       //MORE SOFTTYPES!
       containerSoftypes.AddRange(CreateSupplementarySoftypes());
-      //Not started
       containerSoftypes.AddRange(CreateFTKeyReferenceSoftTypes());
 
       container.softTypes = containerSoftypes.ToArray();

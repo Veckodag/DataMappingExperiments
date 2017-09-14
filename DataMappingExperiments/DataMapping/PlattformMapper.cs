@@ -92,6 +92,7 @@ namespace DataMappingExperiments.DataMapping
       var containerSoftTypes = new List<SoftType>();
 
       //Sort this mess out at some point
+      var geoPlaceringar = new List<GeografiskPlaceringsreferensInstances>();
       var plattformsProdukter = new List<AnläggningsproduktInstances>();
       var plattformsFunktioner = new List<FunktionellAnläggningInstances>();
       var plattformVäderskydd = new List<AnläggningsproduktInstances>();
@@ -110,6 +111,32 @@ namespace DataMappingExperiments.DataMapping
         bisPlattform.Notering = string.IsNullOrEmpty(bisPlattform.Notering)
           ? "Ingen Notering"
           : bisPlattform.Notering;
+
+        var plattform = new Plattform
+        {
+          name = "Plattform",
+          notering = bisPlattform.Notering,
+          versionId = _VersionId,
+          företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTGeografiskPlaceringsreferensReference
+            {
+              softType = "FTGeografiskPlaceringsreferens",
+              instanceRef = "Plattform"
+            }
+          }
+        };
+        plattform.id = plattform.name + suffix;
+        var plattformGPR = new GeografiskPlaceringsreferensEntrydefaultIn
+        {
+          Array = true,
+          id = "GeografiskPlaceringsreferens" + suffix,
+          inputSchemaRef = _InputSchemaRef,
+          data = plattform
+        };
+        geoPlaceringar.Add(plattformGPR);
 
         var plattformsProduktInstans = new AnläggningsproduktEntrydefaultIn
         {
@@ -532,6 +559,12 @@ namespace DataMappingExperiments.DataMapping
         id = "Styckevara",
         instances = plattformIndivider.ToArray()
       };
+      var geoPlaceringSoftType = new SoftType_GeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "GeografiskPlacering",
+        instances = geoPlaceringar.ToArray()
+      };
 
       containerSoftTypes.Add(anläggningsProduktSoftType);
       containerSoftTypes.Add(funktionellAnläggningsSoftType);
@@ -542,11 +575,10 @@ namespace DataMappingExperiments.DataMapping
       containerSoftTypes.Add(anläggningsProduktKanalisation);
       containerSoftTypes.Add(styckevaraProduktKanalisation);
       containerSoftTypes.Add(plattformIndivid);
+      containerSoftTypes.Add(geoPlaceringSoftType);
 
       //Adds the extra softypes needed
       containerSoftTypes.AddRange(CreateSupplementarySoftypes());
-      //containerSoftTypes.AddRange(CreateKeyReferences());
-
       containerSoftTypes.AddRange(CreateFTKeyReferenceSoftTypes());
 
       //Last step is to prepare the container for serialization
@@ -557,7 +589,28 @@ namespace DataMappingExperiments.DataMapping
     public override List<SoftType> CreateFTKeyReferenceSoftTypes()
     {
       var softtypeList = new List<SoftType>();
-      //TODO: LÄGG TILL GPR UPPE OCH NERE
+      
+      //GPR
+      var plattform = new FTGeografiskPlaceringsreferensEntrydefaultIn
+      {
+        Array = true,
+        id = "Plattform",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTGeografiskPlaceringsreferensdefaultIn
+        {
+          id = "Plattform",
+          name = FeatureTypeName
+        }
+      };
+      var FTGPRlista = new List<FTGeografiskPlaceringsreferensInstances> { plattform };
+      var FTGeografiskPlaceringsReferensSoftType = new SoftType_FTGeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "FTGeografiskPlaceringsreferens",
+        instances = FTGPRlista.ToArray()
+      };
+      softtypeList.Add(FTGeografiskPlaceringsReferensSoftType);
+      //GPR END
 
       //FTAnläggningsProdukter 
       var plattformProdukt = new FTAnläggningsproduktEntrydefaultIn
@@ -595,7 +648,7 @@ namespace DataMappingExperiments.DataMapping
           name = FeatureTypeName
         }
       };
-      
+
       var skyltProdukt = new FTAnläggningsproduktEntrydefaultIn
       {
         Array = true,
@@ -607,7 +660,7 @@ namespace DataMappingExperiments.DataMapping
           name = FeatureTypeName
         }
       };
-      
+
       var kanalisationprodukt = new FTAnläggningsproduktEntrydefaultIn
       {
         Array = true,
@@ -633,7 +686,7 @@ namespace DataMappingExperiments.DataMapping
       //FTAnläggningsProdukter END
 
       //FTStyckevaror
-      
+
       var väderskyddindivid = new FTStyckevaraEntrydefaultIn
       {
         Array = true,
@@ -645,7 +698,7 @@ namespace DataMappingExperiments.DataMapping
           name = FeatureTypeName
         }
       };
-      
+
       var skärmtakindivid = new FTStyckevaraEntrydefaultIn
       {
         Array = true,
@@ -681,7 +734,7 @@ namespace DataMappingExperiments.DataMapping
           name = FeatureTypeName
         }
       };
-      
+
       var skyltindivid = new FTStyckevaraEntrydefaultIn
       {
         Array = true,

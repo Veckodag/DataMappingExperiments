@@ -88,7 +88,7 @@ namespace DataMappingExperiments.DataMapping
         bisRäl.Notering = string.IsNullOrEmpty(bisRäl.Notering)
           ? "Ingen Notering"
           : bisRäl.Notering;
-        //Finsih this
+
         var räl = new Räl
         {
           name = "Räl",
@@ -126,7 +126,6 @@ namespace DataMappingExperiments.DataMapping
               JSonMapToPropertyName = _JsonMapToValue,
               value = "?"
             }
-            //TODO: Vikt + Rälprofil(Rälmodell) + hårdhet; Don't know where it comes from
           },
           företeelsetyp = new ClassificationReference_Anläggningsspecifikation_företeelsetyp
           {

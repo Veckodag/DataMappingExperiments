@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
 
@@ -11,7 +9,7 @@ namespace DataMappingExperiments.DataMapping
     public SkarvMapper()
     {
       MapperType = MapperType.Skarv;
-      ExtraCounter = 1;
+      FeatureTypeName = "Läst från fil BIS_Skarv - datadefinition infomod 2p0.xlsm";
     }
 
     public sealed override MapperType MapperType { get; set; }
@@ -195,6 +193,7 @@ namespace DataMappingExperiments.DataMapping
       //Använder inte funktionellAnläggning för tillfället
       containerSofttypes.Add(funktionellSoftType);
       containerSofttypes.Add(geografiskplaceringsreferenssofttype);
+      containerSofttypes.AddRange(CreateSupplementarySoftypes());
       containerSofttypes.AddRange(CreateFTKeyReferenceSoftTypes());
 
       container.softTypes = containerSofttypes.ToArray();
@@ -214,7 +213,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTGeografiskPlaceringsreferensdefaultIn
         {
           id = "Isolerskarv",
-          name = "Läst från fil BIS_Skarv - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
       var FTGeografiskPlaceringsreferensInstances = new List<FTGeografiskPlaceringsreferensInstances>
@@ -237,7 +236,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Isolerskarvprodukt",
-          name = "Läst från fil BIS_Skarv - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
 
@@ -249,7 +248,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTAnläggningsproduktdefaultIn
         {
           id = "Partikelmagnetprodukt",
-          name = "Läst från fil BIS_Skarv - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
 
@@ -273,7 +272,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "Isolerskarvindivid",
-          name = "Läst från fil BIS_Skarv - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
 
@@ -285,7 +284,7 @@ namespace DataMappingExperiments.DataMapping
         data = new FTStyckevaradefaultIn
         {
           id = "PartikelmagnetIndivid",
-          name = "Läst från fil BIS_Skarv - datadefinition infomod 2p0.xlsm"
+          name = FeatureTypeName
         }
       };
 
