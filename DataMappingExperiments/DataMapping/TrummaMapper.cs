@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DataMappingExperiments.BisObjekt;
 using DataMappingExperiments.Helpers;
 
@@ -111,6 +110,7 @@ namespace DataMappingExperiments.DataMapping
       var anläggningsprodukter = new List<AnläggningsproduktInstances>();
       var funktionellaanläggningar = new List<FunktionellAnläggningInstances>();
       var styckevaror = new List<StyckevaraInstances>();
+      var GprLista = new List<GeografiskPlaceringsreferensInstances>();
 
       foreach (BIS_Trumma bisTrumma in bisList)
       {
@@ -122,7 +122,25 @@ namespace DataMappingExperiments.DataMapping
         var trummafunktion = CreateTrummaFunktion(bisTrumma, suffix);
         var trummaindivid = CreateTrummaIndivid(bisTrumma, suffix);
 
-        var trummafunktionEntry = new FunktionellAnläggningEntrydefaultIn()
+        var trumma = new Trumma
+        {
+          name = "Trumma",
+          notering = bisTrumma.Notering,
+          versionId = _VersionId,
+          företeelsetyp = new ClassificationReference_GeografiskPlaceringsreferens_företeelsetyp
+          {
+            startSpecified = false,
+            endSpecified = false,
+            @class = new FTGeografiskPlaceringsreferensReference
+            {
+              softType = "FTGeografiskPlaceringsreferens",
+              instanceRef = "Trumma"
+            }
+          }
+        };
+        trumma.id = trumma.name + suffix;
+
+        var trummafunktionEntry = new FunktionellAnläggningEntrydefaultIn
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
@@ -131,7 +149,7 @@ namespace DataMappingExperiments.DataMapping
         };
         funktionellaanläggningar.Add(trummafunktionEntry);
 
-        var trummaproduktEntry = new AnläggningsproduktEntrydefaultIn()
+        var trummaproduktEntry = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
@@ -140,7 +158,7 @@ namespace DataMappingExperiments.DataMapping
         };
         anläggningsprodukter.Add(trummaproduktEntry);
 
-        var trummaindividEntry = new StyckevaraEntrydefaultIn()
+        var trummaindividEntry = new StyckevaraEntrydefaultIn
         {
           Array = true,
           inputSchemaRef = _InputSchemaRef,
@@ -152,6 +170,13 @@ namespace DataMappingExperiments.DataMapping
         ExtraCounter++;
       }
       //SOFTTYPES
+      var geografiskPlaceringsReferensSoftType = new SoftType_GeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "GeografiskPlaceringsreferens",
+        instances = GprLista.ToArray()
+      };
+
       var anläggningsproduktsofttype = new SoftType_Anläggningsprodukt
       {
         Array = true,
@@ -159,20 +184,21 @@ namespace DataMappingExperiments.DataMapping
         instances = anläggningsprodukter.ToArray()
       };
 
-      var funktionellanläggningsofttype = new SoftType_FunktionellAnläggning()
+      var funktionellanläggningsofttype = new SoftType_FunktionellAnläggning
       {
         Array = true,
         id = "FunktionellAnläggning",
         instances = funktionellaanläggningar.ToArray()
       };
 
-      var styckevarasofttype = new SoftType_Styckevara()
+      var styckevarasofttype = new SoftType_Styckevara
       {
         Array = true,
         id = "Styckevara",
         instances = styckevaror.ToArray()
       };
 
+      containerSofttypes.Add(geografiskPlaceringsReferensSoftType);
       containerSofttypes.Add(anläggningsproduktsofttype);
       containerSofttypes.Add(funktionellanläggningsofttype);
       containerSofttypes.Add(styckevarasofttype);
@@ -393,7 +419,7 @@ namespace DataMappingExperiments.DataMapping
               softType = _SoftTypeProperty
             },
             JSonMapToPropertyName = _JsonMapToValue,
-            value = p.MaterialFörlängningVänsterSida,
+            value = p.MaterialFörlängningVänsterSida
           },
           släntlutningÖverstigande1_1_5 = new Trummaprodukt_släntlutningÖverstigande1_1_5
           {
@@ -511,7 +537,27 @@ namespace DataMappingExperiments.DataMapping
     public override List<SoftType> CreateFTKeyReferenceSoftTypes()
     {
       var softtypeList = new List<SoftType>();
-
+      //FTGeografiskPlaceringsReferens
+      var trumma = new FTGeografiskPlaceringsreferensEntrydefaultIn
+      {
+        Array = true,
+        id = "Trumma",
+        inputSchemaRef = _InputSchemaRef,
+        data = new FTGeografiskPlaceringsreferensdefaultIn
+        {
+          id = "Trumma",
+          name = FeatureTypeName
+        }
+      };
+      var FTGeografiskPlaceringsreferensInstances = new List<FTGeografiskPlaceringsreferensInstances>
+      { trumma };
+      var FTGeografiskPlaceringsReferensSoftType = new SoftType_FTGeografiskPlaceringsreferens
+      {
+        Array = true,
+        id = "FTGeografiskPlaceringsreferens",
+        instances = FTGeografiskPlaceringsreferensInstances.ToArray()
+      };
+      softtypeList.Add(FTGeografiskPlaceringsReferensSoftType);
       //FTAnläggningsProdukt
       var trummaprodukt = new FTAnläggningsproduktEntrydefaultIn
       {

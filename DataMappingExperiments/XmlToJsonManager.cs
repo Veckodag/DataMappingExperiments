@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using DataMappingExperiments.Helpers;
+using Newtonsoft.Json;
 using TRV.ANDA.DataExchange.Toolbox.SasXml.Convert.JsonCustomCodeGenerators;
 
 namespace DataMappingExperiments
@@ -19,7 +20,9 @@ namespace DataMappingExperiments
       Serialize(container, out document, @"inputschemasföreteelsetyperDx");
  
       string json = SerializeXmlNode.XmlToJson(document);
-      
+      if (Program.SelectedDataContainer.MapperType == MapperType.Plattform)
+        json = PlattformJsonFix(json);
+
       using (Stream stream = new FileStream(StringManager.GetFilePathSetting(Program.SelectedDataContainer.Json), FileMode.Create))
       {
         using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
@@ -30,6 +33,15 @@ namespace DataMappingExperiments
       Console.ForegroundColor = ConsoleColor.White;
       Console.WriteLine("Json file complete!");
       Console.ForegroundColor = ConsoleColor.Gray;
+
+
+    }
+
+    private static string PlattformJsonFix(string json)
+    {
+      Console.WriteLine("Initiating Plattform special formatting");
+
+      return json;
     }
 
     public static void Serialize(object instance, out XmlDocument xmlDocument, string nameSpace = null)

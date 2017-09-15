@@ -132,7 +132,7 @@ namespace DataMappingExperiments.DataMapping
         var plattformGPR = new GeografiskPlaceringsreferensEntrydefaultIn
         {
           Array = true,
-          id = "GeografiskPlaceringsreferens" + suffix,
+          id = "Plattform" + suffix,
           inputSchemaRef = _InputSchemaRef,
           data = plattform
         };
@@ -562,7 +562,7 @@ namespace DataMappingExperiments.DataMapping
       var geoPlaceringSoftType = new SoftType_GeografiskPlaceringsreferens
       {
         Array = true,
-        id = "GeografiskPlacering",
+        id = "GeografiskPlaceringsreferens",
         instances = geoPlaceringar.ToArray()
       };
 

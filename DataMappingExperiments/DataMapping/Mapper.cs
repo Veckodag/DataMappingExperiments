@@ -31,6 +31,10 @@ namespace DataMappingExperiments.DataMapping
       {
         return 0;
       }
+      if (value.Contains("E"))
+      {
+        value = value.Substring(0, 16);
+      }
       return decimal.Parse(value.Replace(".", ","));
     }
 

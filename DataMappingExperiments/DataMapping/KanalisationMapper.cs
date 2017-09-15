@@ -78,7 +78,7 @@ namespace DataMappingExperiments.DataMapping
 
         var kanalisationsprodukt = CreateKanalisationProdukt(bisKanalisation, suffix);
         var kanalisationindivid = CreateKanalisationIndivid(bisKanalisation, suffix);
-
+        
         var kanalisationproduktEntry = new AnläggningsproduktEntrydefaultIn
         {
           Array = true,

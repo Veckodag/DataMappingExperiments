@@ -265,7 +265,7 @@ namespace DataMappingExperiments.DataMapping
       var rälSoftype = new SoftType_GeografiskPlaceringsreferens
       {
         Array = true,
-        id = "Räl",
+        id = "GeografiskPlaceringsreferens",
         instances = rälGpr.ToArray()
       };
       var anläggningsSpecifikationSoftType = new SoftType_Anläggningsspecifikation

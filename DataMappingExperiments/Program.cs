@@ -15,7 +15,7 @@ namespace DataMappingExperiments
     static void Main(string[] args)
     {
       //Set the datatype once here
-      SelectedDataContainer = DataContainerType("räl");
+      SelectedDataContainer = DataContainerType("plattform");
       sourceFile = StringManager.GetFilePathSetting(SelectedDataContainer.Input);
       xmlOutput = StringManager.GetFilePathSetting(SelectedDataContainer.Output);
       StartManager(sourceFile, SelectedDataContainer.MapperType);
@@ -51,12 +51,13 @@ namespace DataMappingExperiments
           return new DataContainer { Input = "SkarvInput", Output = "SkarvOutput", Json = "SkarvJson", MapperType = MapperType.Skarv, Name = "Skarv" };
         case "spårspärr":
           return new DataContainer { Input = "SpårspärrInput", Output = "SpårspärrOutput", Json = "SpårspärrJson", MapperType = MapperType.Spårspärr, Name = "Spårspärr" };
-        case "kanalisation":
-          return new DataContainer { Input = "KanalisationInput", Output = "KanalisationOutput", Json = "KanalisationJson", MapperType = MapperType.Kanalisation, Name = "Kanalisation" };
         case "trumma":
           return new DataContainer { Input = "TrummaInput", Output = "TrummaOutput", Json = "TrummaJson", MapperType = MapperType.Trumma, Name = "Trumma" };
         case "tågochlokvärmeanläggning":
           return new DataContainer { Input = "TågochlokInput", Output = "TågochlokOutput", Json = "TågochlokJson", MapperType = MapperType.TågOchLokVärmeanläggning, Name = "Tågochlokvärmeanläggning" };
+        //OLD DATA
+        case "kanalisation":
+          return new DataContainer { Input = "KanalisationInput", Output = "KanalisationOutput", Json = "KanalisationJson", MapperType = MapperType.Kanalisation, Name = "Kanalisation" };
         default:
           throw new ArgumentNullException();
       }

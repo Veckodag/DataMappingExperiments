@@ -107,6 +107,13 @@
     <None Include="Testdata\ANDAImportAndraGenerationen.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Testdata\Detaljerad plattform region Syd_20170914.xlsx" />
+    <None Include="Testdata\Detaljerad räl region Syd_20170914.xlsx" />
+    <None Include="Testdata\Detaljerad skarv region Syd_20170914.xlsx" />
+    <None Include="Testdata\Detaljerad spårspärr region Syd_20170914.xlsx" />
+    <None Include="Testdata\Detaljerad teknikbyggnad region Syd_20170914.xlsx" />
+    <None Include="Testdata\Detaljerad trumma region Syd_20170914.xlsx" />
+    <None Include="Testdata\Detaljerad tåg och lokvärmeanläggning region Syd_20170914.xlsx" />
     <None Include="Testdata\Fln-Blg Kanalisation Detaljlägen.xlsx" />
     <None Include="Testdata\Fln-Blg Plattformar Detaljlägen.xlsx" />
     <None Include="Testdata\Fln-Blg Räl Detaljlägen.xlsx" />

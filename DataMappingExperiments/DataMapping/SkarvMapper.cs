@@ -184,7 +184,7 @@ namespace DataMappingExperiments.DataMapping
       var geografiskplaceringsreferenssofttype = new SoftType_GeografiskPlaceringsreferens
       {
         Array = true,
-        id = "Anläggningsprodukt",
+        id = "GeografiskPlaceringsreferens",
         instances = geografiskaplaceringsreferenser.ToArray()
       };
 
@@ -464,7 +464,7 @@ namespace DataMappingExperiments.DataMapping
               instanceRef = "mm",
               softType = _SoftTypeUnit
             },
-            value = DecimalConverter(skarv.skarvavst_End_partikelm),
+            value = SkapaSkarvPartikel(skarv.skarvavst_End_partikelm),
             generalProperty = new avståndFrånSkarv
             {
               instanceRef = "avståndFrånSkarv",
@@ -487,6 +487,15 @@ namespace DataMappingExperiments.DataMapping
       partikelmagnetindivid.id = partikelmagnetindivid.name + suffix;
 
       return partikelmagnetindivid;
+    }
+
+    decimal SkapaSkarvPartikel(string value)
+    {
+      if (value == "45 cm" || value == "45cm")
+        value = "0,45";
+
+      var decValue = DecimalConverter(value);
+      return decValue;
     }
   }
 }
